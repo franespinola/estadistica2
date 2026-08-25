@@ -1,0 +1,23 @@
+# Archivos auxiliares generados por LaTeX/latexmk
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+
+# Otros auxiliares habituales de LaTeX
+*.bbl
+*.bcf
+*.blg
+*.idx
+*.ilg
+*.ind
+*.lof
+*.lot
+*.nav
+*.snm
+*.synctex.gz
+*.vrb
+*.xdv
+

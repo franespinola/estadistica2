@@ -1,0 +1,2496 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{geometry}
+\geometry{top=2.1cm,bottom=2.2cm,left=2.2cm,right=2.2cm}
+\usepackage{microtype}
+\usepackage{booktabs,array,multirow,tabularx,colortbl}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,fit,backgrounds,babel}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{float}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{multicol}
+
+\definecolor{rejectred}{RGB}{190,55,55}
+\definecolor{acceptblue}{RGB}{55,105,175}
+\definecolor{altorange}{RGB}{220,125,45}
+\definecolor{accentgreen}{RGB}{55,145,95}
+\definecolor{softgray}{RGB}{245,246,248}
+\definecolor{purplebox}{RGB}{115,80,155}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Estadística II -- Unidad 2}
+\rhead{Pruebas de Hipótesis}
+\cfoot{\thepage\ de \pageref{LastPage}}
+\setlength{\headheight}{14pt}
+
+\newtcolorbox{ideaclave}{
+  colback=acceptblue!5,colframe=acceptblue!75!black,
+  title=\textbf{Idea clave},fonttitle=\bfseries,arc=2mm,boxrule=.8pt}
+\newtcolorbox{regla}{
+  colback=accentgreen!6,colframe=accentgreen!75!black,
+  title=\textbf{Regla para recordar},fonttitle=\bfseries,arc=2mm,boxrule=.8pt}
+\newtcolorbox{errorfrecuente}{
+  colback=rejectred!5,colframe=rejectred!75!black,
+  title=\textbf{Error frecuente},fonttitle=\bfseries,arc=2mm,boxrule=.8pt}
+\newtcolorbox{aclaracion}{
+  colback=yellow!8,colframe=orange!80!black,
+  title=\textbf{Aclaración de la guía},fonttitle=\bfseries,arc=2mm,boxrule=.8pt}
+\newtcolorbox{oral}{
+  colback=purplebox!5,colframe=purplebox!75!black,
+  title=\textbf{Cómo explicarlo oralmente},fonttitle=\bfseries,arc=2mm,boxrule=.8pt}
+\newtcolorbox{observargrafico}{
+  colback=softgray,colframe=black!45,
+  title=\textbf{Qué debo observar en este gráfico},fonttitle=\bfseries,arc=1mm,boxrule=.6pt}
+\newtcolorbox{lecturagrafico}{
+  colback=softgray,colframe=black!45,
+  title=\textbf{¿Cómo se lee este gráfico?},fonttitle=\bfseries,arc=1mm,boxrule=.6pt}
+\newtcolorbox{casotroncal}{
+  colback=accentgreen!5,colframe=accentgreen!70!black,
+  title=\textbf{Caso troncal: pintura de secado rápido},fonttitle=\bfseries,
+  arc=2mm,boxrule=.9pt}
+\newtcolorbox{calculor}{
+  colback=acceptblue!4,colframe=acceptblue!80!black,
+  title=\textbf{Cálculo en R},fonttitle=\bfseries,arc=2mm,boxrule=.8pt}
+\newtcolorbox{leerformula}{
+  colback=softgray,colframe=black!50,
+  title=\textbf{Cómo leer la fórmula},fonttitle=\bfseries,arc=2mm,boxrule=.7pt}
+\newtcolorbox{preguntaoral}{
+  colback=purplebox!5,colframe=purplebox!75!black,
+  title=\textbf{Pregunta del profesor},fonttitle=\bfseries,arc=2mm,boxrule=.8pt}
+\newcommand{\paso}[2]{\par\medskip\noindent\textbf{PASO #1 -- #2}\par}
+
+\setlist[itemize]{leftmargin=1.4em,itemsep=3pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=4pt,topsep=4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\captionsetup{font=small,labelfont=bf}
+
+\title{\vspace{-1.2cm}\textbf{CAPÍTULO 2 -- PRUEBAS DE HIPÓTESIS}\\[4pt]
+\large Apunte visual para comprender, resolver y exponer en el final oral}
+\author{Estadística Aplicada II}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{TEMA A -- HIPÓTESIS}
+\subsection{2-A-1 Hipótesis nula y prueba de significancia}
+\subsubsection{¿Qué es una hipótesis y qué es una prueba de hipótesis?}
+
+\textbf{Hipótesis:} es una suposición sobre un parámetro de la población que requiere ser verificada mediante evidencia. En toda la primera parte de esta unidad utilizaremos un mismo caso: un fabricante afirma que su pintura de secado rápido tarda, en promedio, $20$ minutos. La afirmación de referencia es entonces $\mu=20$ min.
+
+\textbf{Prueba de hipótesis:} es un procedimiento estandarizado que permite decidir si una afirmación relativa a un parámetro es compatible o no con la evidencia obtenida de una muestra.
+
+\begin{ideaclave}
+Una prueba de hipótesis no consiste solamente en calcular una fórmula. Consiste en construir una \textbf{regla de decisión} y después decidir si la evidencia muestral es suficientemente extrema como para rechazar la hipótesis nula.
+\end{ideaclave}
+
+\begin{center}
+\begin{tikzpicture}[node distance=16mm, box/.style={draw,rounded corners,align=center,minimum width=3.3cm,minimum height=9mm}, arr/.style={-{Latex},thick}]
+\node[box,fill=acceptblue!5] (pop) {Población\\parámetro $\mu$};
+\node[box,fill=softgray,right=of pop] (sample) {Muestra\\estadístico $\bar{x}$};
+\node[box,fill=accentgreen!5,right=of sample] (decision) {Regla estadística\\de decisión};
+\draw[arr] (pop)--node[above,font=\small]{seleccionamos}(sample);
+\draw[arr] (sample)--node[above,font=\small]{calculamos}(decision);
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Hipótesis nula e hipótesis alternativa}
+
+\begin{itemize}
+\item \textbf{Hipótesis Nula ($H_0$):} es el punto de partida. Se asume temporalmente para confrontarla con los datos. En la forma usada por la cátedra contiene la igualdad: $=$, $\le$ o $\ge$.
+\item \textbf{Hipótesis Alternativa ($H_a$ o $H_1$):} expresa lo que se concluirá si existe evidencia suficiente para rechazar $H_0$. No lleva igualdad: $<$, $>$ o $\neq$.
+\end{itemize}
+
+\begin{regla}
+El \textbf{no rechazo de $H_0$ no demuestra que $H_0$ sea verdadera}. Significa solamente que la muestra no aporta evidencia suficiente para rechazarla.
+\end{regla}
+
+\subsubsection{Hipótesis simple e hipótesis compuesta}
+
+La guía distingue:
+\begin{itemize}
+\item \textbf{Hipótesis Simple:} especifica por completo un valor del parámetro, por ejemplo $\mu=20$.
+\item \textbf{Hipótesis Compuesta:} comprende más de un valor posible del parámetro, por ejemplo $\mu\le20$ o $\mu>20$.
+\end{itemize}
+
+\begin{casotroncal}
+Para evitar cambiar de contexto en cada concepto, utilizaremos siempre los datos del ejemplo de la guía:
+\[
+\mu_0=20\text{ min},\qquad \sigma=2.4\text{ min},\qquad n=36.
+\]
+Por lo tanto, la distribución muestral de la media tiene error estándar
+\[
+\sigma_{\bar{x}}=\frac{\sigma}{\sqrt n}=\frac{2.4}{\sqrt{36}}=0.4\text{ min}.
+\]
+A partir de estos mismos datos cambiaremos solamente la \textbf{pregunta de investigación}. Así podremos ver con claridad por qué aparece una cola derecha, una cola izquierda o dos colas.
+\end{casotroncal}
+
+\subsubsection{Procedimiento general de una prueba de hipótesis}
+
+El procedimiento completo debe conocerse antes de entrar en los detalles. Cada ejercicio del capítulo sigue siempre esta secuencia:
+
+\begin{enumerate}[label=\textbf{PASO \arabic*.},leftmargin=2.3cm]
+\item Preguntar: \textbf{¿qué quiere demostrar el problema?}
+\item Formular $H_0$ y $H_1$.
+\item Mirar el signo de $H_1$ y determinar si la prueba es derecha, izquierda o bilateral.
+\item Fijar el nivel de significancia $\alpha$.
+\item Elegir el estadístico: $Z$, $t$, $Z_{\bar{x}_1-\bar{x}_2}$, $t_{\bar{x}_1-\bar{x}_2}$ u otro.
+\item Encontrar el valor crítico y construir la región de rechazo.
+\item Calcular $z_{calc}$ o $t_{calc}$ con los datos de la muestra.
+\item Comparar el estadístico calculado con el valor crítico.
+\item Decidir: \textbf{rechazar $H_0$} o \textbf{no rechazar $H_0$}.
+\item Interpretar la decisión con las palabras del problema.
+\end{enumerate}
+
+\begin{center}
+\begin{tikzpicture}[node distance=4.5mm, every node/.style={font=\small},
+ box/.style={draw,rounded corners,align=center,text width=7.1cm,minimum height=7mm,fill=softgray},
+ decision/.style={draw,diamond,aspect=2.7,align=center,fill=yellow!10,text width=3.7cm},
+ arr/.style={-{Latex[length=2mm]},thick}]
+\node[box] (a) {1. Identificar qué se quiere demostrar};
+\node[box,below=of a] (b) {2. Formular $H_0$ y $H_1$};
+\node[decision,below=of b] (c) {3. ¿$H_1$ tiene $>$, $<$ o $\neq$?};
+\node[box,below=of c] (d) {4--5. Fijar $\alpha$ y elegir $Z$, $t$ u otro estadístico};
+\node[box,below=of d] (e) {6. Valor crítico y región de rechazo};
+\node[box,below=of e] (f) {7--8. Calcular y comparar};
+\node[decision,below=of f] (g) {9. ¿Cae en la región de rechazo?};
+\node[box,below left=7mm and -4mm of g,fill=rejectred!8,text width=4.5cm] (h) {Sí: rechazar $H_0$};
+\node[box,below right=7mm and -4mm of g,fill=acceptblue!8,text width=4.5cm] (i) {No: no rechazar $H_0$};
+\node[box,below=17mm of g] (j) {10. Interpretar en el contexto del problema};
+\draw[arr](a)--(b);\draw[arr](b)--(c);\draw[arr](c)--(d);\draw[arr](d)--(e);
+\draw[arr](e)--(f);\draw[arr](f)--(g);\draw[arr](g)--(h);\draw[arr](g)--(i);
+\draw[arr](h)--(j);\draw[arr](i)--(j);
+\end{tikzpicture}
+\end{center}
+
+\begin{regla}
+La idea mental es siempre: \textbf{ya formulé la pregunta $\Rightarrow$ ahora planteo hipótesis $\Rightarrow$ determino la cola $\Rightarrow$ elijo el estadístico $\Rightarrow$ construyo la regla $\Rightarrow$ calculo, comparo e interpreto}.
+\end{regla}
+
+\subsubsection{Nivel de significancia antes del valor crítico}
+
+El nivel de significancia determina \textbf{qué tan extrema debe ser la evidencia para rechazar $H_0$}. Formalmente,
+\[
+\alpha=P(\text{Error Tipo I}).
+\]
+Por ahora basta recordar la cadena:
+\[
+\boxed{\alpha}\ \Longrightarrow\ \boxed{\text{valor crítico}}\ \Longrightarrow\
+\ \boxed{\text{región de rechazo}}.
+\]
+El desarrollo completo de los errores se presenta después de resolver una prueba completa.
+
+\subsubsection{Valor crítico y región de rechazo}
+
+El \textbf{valor crítico} es la frontera entre resultados compatibles con $H_0$ y resultados suficientemente extremos para rechazarla. Primero se fija $\alpha$; después, el tipo de cola indica dónde ubicar esa frontera.
+
+\[
+\boxed{\text{cola} + \alpha}
+\Longrightarrow
+\boxed{\text{valor crítico}}
+\Longrightarrow
+\boxed{\text{región de rechazo}}.
+\]
+
+En escala tipificada la frontera se expresa como $z_{crit}$ o $t_{crit}$. En escala real puede transformarse en un límite para $\bar{x}$. Ambas formas producen exactamente la misma decisión.
+
+\subsubsection{Cómo elegir los signos}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3cm} X X}
+\toprule
+Situación & Planteamiento & Qué se busca \\
+\midrule
+Aumento / mejora & $H_0:\mu\le\mu_0$ vs. $H_a:\mu>\mu_0$ & Detectar valores significativamente mayores.\\
+Disminución & $H_0:\mu\ge\mu_0$ vs. $H_a:\mu<\mu_0$ & Detectar valores significativamente menores.\\
+Cambio / diferencia & $H_0:\mu=\mu_0$ vs. $H_a:\mu\neq\mu_0$ & Detectar una diferencia en cualquier dirección.\\
+Garantía ``por lo menos'' & La garantía queda en $H_0$ y el incumplimiento en $H_a$ & Se supone válida la afirmación mientras la muestra no aporte evidencia en contra.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{regla}
+El signo de $H_a$ funciona como una flecha hacia la región de rechazo:
+\[
+H_a:\mu>\mu_0\Rightarrow\text{derecha},\qquad
+H_a:\mu<\mu_0\Rightarrow\text{izquierda},\qquad
+H_a:\mu\neq\mu_0\Rightarrow\text{dos colas}.
+\]
+\end{regla}
+
+\begin{center}
+\begin{tikzpicture}[
+  every node/.style={font=\small},
+  decision/.style={draw,diamond,aspect=2.5,align=center,text width=3.2cm,
+                   minimum width=4.4cm,minimum height=1.25cm,fill=yellow!10},
+  result/.style={draw,rounded corners,align=center,text width=4.25cm,
+                 minimum width=4.55cm,minimum height=2.25cm},
+  arr/.style={-{Latex[length=2mm]},thick}]
+\node[decision] (signo) at (0,0) {¿Qué signo tiene $H_1$?};
+\node[result,fill=rejectred!7] (der) at (-5.0,-3.0)
+ {\textbf{$H_1:\mu>\mu_0$}\\cola derecha\\[2pt]
+  $\displaystyle\text{rechazar si }z>z_\alpha$};
+\node[result,fill=acceptblue!7] (izq) at (0,-3.0)
+ {\textbf{$H_1:\mu<\mu_0$}\\cola izquierda\\[2pt]
+  $\displaystyle\text{rechazar si }z<-z_\alpha$};
+\node[result,fill=purplebox!7] (bil) at (5.0,-3.0)
+ {\textbf{$H_1:\mu\neq\mu_0$}\\dos colas\\[2pt]
+  $\displaystyle\text{rechazar si }|z|>z_{\alpha/2}$};
+\draw[arr] (signo)--node[above left,font=\small]{$>$}(der);
+\draw[arr] (signo)--node[right,font=\small]{$<$}(izq);
+\draw[arr] (signo)--node[above right,font=\small]{$\neq$}(bil);
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Antes de calcular: elegir la distribución y la función de R}
+
+La cola indica \emph{dónde} estará la región crítica. Antes de buscar su frontera también hay que decidir
+\emph{con qué distribución} se trabajará. En este apunte se conserva el criterio utilizado por la cátedra:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{4.7cm}p{2.0cm}X}
+\toprule
+Situación & Usar & Función para el valor crítico\\
+\midrule
+$\sigma$ poblacional conocida & $Z$ & \texttt{qnorm()}\\
+$\sigma$ desconocida y $n\ge30$ & $Z$ con $s$ & \texttt{qnorm()} (criterio de la cátedra)\\
+$\sigma$ desconocida, $n<30$ y población normal & $t$ & \texttt{qt()} con $\nu=n-1$\\
+\bottomrule
+\end{tabularx}
+\caption{La distribución determina si el cuantil se obtiene con \texttt{qnorm()} o con \texttt{qt()}.}
+\end{table}
+
+\begin{leerformula}
+Para una media,
+\[
+z=\frac{\bar{x}-\mu_0}{\sigma/\sqrt n}
+\qquad\text{o}\qquad
+t=\frac{\bar{x}-\mu_0}{s/\sqrt n}.
+\]
+\textbf{Se lee:} media muestral menos media propuesta por $H_0$, dividido por el error estándar.\par
+\textbf{Numerador:} cuánto se aleja lo observado de lo afirmado por $H_0$.\par
+\textbf{Denominador:} cuánto puede variar la media muestral por azar.
+\end{leerformula}
+
+\subsubsection{\texorpdfstring{Funciones de R: \texttt{qnorm}, \texttt{pnorm}, \texttt{qt} y \texttt{pt}}{Funciones de R para cuantiles y probabilidades}}
+
+La diferencia que conviene memorizar es la dirección de la pregunta:
+\[
+\boxed{\text{área conocida}\ \Longrightarrow\ \text{abscisa crítica}}
+\quad\text{usa}\quad \boxed{\texttt{qnorm()}\text{ o }\texttt{qt()}},
+\]
+\[
+\boxed{\text{abscisa conocida}\ \Longrightarrow\ \text{área}}
+\quad\text{usa}\quad \boxed{\texttt{pnorm()}\text{ o }\texttt{pt()}}.
+\]
+
+\begin{calculor}
+\textbf{Normal.} \texttt{qnorm(p, mean = 0, sd = 1)} devuelve la abscisa $x_p$ que deja a su izquierda el área $p$:
+\[
+x_p=\operatorname{qnorm}(p,\mu,\sigma)
+\quad\Longleftrightarrow\quad
+P(X\le x_p)=p.
+\]
+En la normal estándar, la instrucción de la imagen del profesor se interpreta así:
+\[
+\texttt{qnorm(0.05, 0, 1)}=-1.644854\approx-1.645,
+\qquad P(Z\le-1.645)=0.05.
+\]
+Los parámetros son: \texttt{p}, área acumulada desde $-\infty$; \texttt{mean}, media; y \texttt{sd}, desviación estándar. R usa punto decimal, aunque en el texto escribamos coma decimal.
+\end{calculor}
+
+\begin{calculor}
+\textbf{Recorrido inverso.} \texttt{pnorm(x, mean, sd)} recibe una abscisa y devuelve $P(X\le x)$. Para una cola derecha se puede escribir
+\[
+\texttt{pnorm(x, mean, sd, lower.tail = FALSE)}=P(X>x).
+\]
+En Student, \texttt{qt(p, df)} busca el cuantil y \texttt{pt(t, df)} calcula el área; \texttt{df} son los grados de libertad.
+\end{calculor}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{3.2cm}p{5.0cm}X}
+\toprule
+Prueba & Código en R & Resultado crítico\\
+\midrule
+Derecha, $\alpha=0.05$ & \texttt{qnorm(0.95, 0, 1)} & $1.644854\approx1.645$\\
+Izquierda, $\alpha=0.05$ & \texttt{qnorm(0.05, 0, 1)} & $-1.644854\approx-1.645$\\
+Bilateral, $\alpha=0.05$ & \texttt{qnorm(0.975, 0, 1)} & $1.959964\approx1.96$\\
+Student izquierda, $\nu=7$ & \texttt{qt(0.05, df = 7)} & $-1.894579\approx-1.895$\\
+\bottomrule
+\end{tabularx}
+\caption{La probabilidad entregada a la función siempre es el área acumulada desde $-\infty$.}
+\end{table}
+
+\begin{regla}
+Cola derecha: usar $1-\alpha$. Cola izquierda: usar $\alpha$. Bilateral: usar $\alpha/2$ a la izquierda y $1-\alpha/2$ a la derecha. Con Student se aplican las mismas áreas, pero mediante \texttt{qt()} y especificando los grados de libertad.
+\end{regla}
+
+\subsubsection{El mismo ejemplo de pintura para entender los tres tipos de cola}
+
+En esta subsección mantenemos siempre $\mu_0=20$, $\sigma=2.4$ y $n=36$, y fijamos \textbf{$\alpha=0.05$} únicamente para comparar las tres formas de prueba bajo un mismo criterio.
+
+\begin{aclaracion}
+No confundir estas \textbf{variantes didácticas con $\alpha=0.05$} con el criterio original del ejemplo de la guía, que rechaza si $\bar{x}>20.75$ min. Ese límite original no corresponde exactamente a $\alpha=0.05$: produce $\alpha\approx0.0304$. Más adelante utilizaremos $20.75$ para estudiar los Errores Tipo I y II tal como aparecen en la fuente.
+\end{aclaracion}
+
+\paragraph{Caso A: ¿la pintura tarda más de 20 minutos? -- cola derecha.}
+
+La pregunta tiene dirección hacia valores mayores:
+\[
+H_0:\mu\le20
+\qquad\text{vs.}\qquad
+H_a:\mu>20.
+\]
+Para una cola con $\alpha=0.05$:
+primero ubicamos la región de rechazo hacia la derecha. Debajo del gráfico traducimos esa dirección a una frontera numérica.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=11.8cm,height=5.4cm,xmin=18.4,xmax=21.6,ymin=0,ymax=1.08,
+ axis lines=left,axis y line=none,ytick=\empty,xlabel={Media muestral $\bar{x}$ (min)},
+ xtick={20,20.658},xticklabels={$20$,$20.658$},clip=false]
+\addplot[draw=none,fill=acceptblue!18,domain=18.4:20.658,samples=130]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))}\closedcycle;
+\addplot[draw=none,fill=rejectred!38,domain=20.658:21.6,samples=100]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))}\closedcycle;
+\addplot[very thick,acceptblue!80!black,domain=18.4:21.6,samples=170]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))};
+\draw[dashed,thick] (axis cs:20.658,0)--(axis cs:20.658,.26);
+\node at (axis cs:19.65,.45) {\small Región de no rechazo};
+\node[align=center,rejectred!90!black] at (axis cs:21.05,.15)
+ {\small\bfseries Rechazo\\$\alpha=0.05$};
+\node[align=center] at (axis cs:20.02,1.02) {\small $H_0$ centrada en $20$ min};
+\end{axis}
+\end{tikzpicture}
+\caption{Mismo caso de pintura: cola derecha cuando buscamos detectar un aumento del tiempo de secado.}
+\end{figure}
+
+\begin{observargrafico}
+La única pregunta es si el tiempo medio \textbf{superó} los $20$ min. Por eso $H_a$ contiene $>$ y la región crítica queda a la derecha.
+\end{observargrafico}
+
+Ahora se calcula la frontera:
+\[
+z_{\alpha}=1.645,\qquad
+\bar{x}_c=20+1.645(0.4)=20.658\text{ min}.
+\]
+\begin{calculor}
+\textbf{Área $\rightarrow$ abscisa:} \texttt{qnorm(0.95, 0, 1)} da $1.644854\approx1.645$. Se usa $0.95=1-\alpha$ porque el $5\%$ queda en la cola derecha. Luego se vuelve a minutos con $\bar{x}_c=20+1.645(0.4)=20.658$.
+\end{calculor}
+Por tanto:
+\[
+\boxed{\bar{x}>20.658\ \Rightarrow\ \text{rechazar }H_0.}
+\]
+
+\paragraph{Caso B: ¿la pintura tarda menos de 20 minutos? -- cola izquierda.}
+
+Ahora suponemos que se introdujo una mejora y queremos comprobar si la pintura seca más rápido:
+\[
+H_0:\mu\ge20
+\qquad\text{vs.}\qquad
+H_a:\mu<20.
+\]
+Con el mismo $\alpha=0.05$:
+la dirección se invierte: la zona crítica queda a la izquierda.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=11.8cm,height=5.4cm,xmin=18.4,xmax=21.6,ymin=0,ymax=1.08,
+ axis lines=left,axis y line=none,ytick=\empty,xlabel={Media muestral $\bar{x}$ (min)},
+ xtick={19.342,20},xticklabels={$19.342$,$20$},clip=false]
+\addplot[draw=none,fill=rejectred!38,domain=18.4:19.342,samples=100]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))}\closedcycle;
+\addplot[draw=none,fill=acceptblue!18,domain=19.342:21.6,samples=130]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))}\closedcycle;
+\addplot[very thick,acceptblue!80!black,domain=18.4:21.6,samples=170]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))};
+\draw[dashed,thick] (axis cs:19.342,0)--(axis cs:19.342,.26);
+\node[align=center,rejectred!90!black] at (axis cs:18.95,.15)
+ {\small\bfseries Rechazo\\$\alpha=0.05$};
+\node at (axis cs:20.35,.45) {\small Región de no rechazo};
+\end{axis}
+\end{tikzpicture}
+\caption{Mismo caso de pintura: cola izquierda cuando buscamos detectar una disminución del tiempo de secado.}
+\end{figure}
+
+\begin{observargrafico}
+Ahora la pregunta es si el tiempo medio \textbf{bajó} de $20$ min. Por eso $H_a$ contiene $<$ y toda la región de rechazo se traslada a la izquierda. Los datos base no cambiaron; solamente cambió la pregunta.
+\end{observargrafico}
+
+Después se obtiene la frontera numérica:
+\[
+z_{crit}=-1.645,
+\qquad
+\bar{x}_c=20-1.645(0.4)=19.342\text{ min}.
+\]
+\begin{calculor}
+\textbf{Área $\rightarrow$ abscisa:} \texttt{qnorm(0.05, 0, 1)} da $-1.644854\approx-1.645$. Aquí se entrega directamente $\alpha=0.05$ porque la región crítica está a la izquierda.
+\end{calculor}
+Por tanto:
+\[
+\boxed{\bar{x}<19.342\ \Rightarrow\ \text{rechazar }H_0.}
+\]
+
+\paragraph{Caso C: ¿el tiempo medio cambió respecto de 20 minutos? -- prueba bilateral.}
+
+Si cualquier desviación respecto de $20$ min es importante, sin importar la dirección:
+\[
+H_0:\mu=20
+\qquad\text{vs.}\qquad
+H_a:\mu\neq20.
+\]
+Con $\alpha=0.05$, el riesgo se reparte:
+\[
+\frac{\alpha}{2}=0.025\quad\text{en cada cola},
+\qquad z_{\alpha/2}=1.96,
+\]
+y las zonas críticas quedan en ambos extremos.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=12.2cm,height=5.5cm,xmin=18.4,xmax=21.6,ymin=0,ymax=1.08,
+ axis lines=left,axis y line=none,ytick=\empty,xlabel={Media muestral $\bar{x}$ (min)},
+ xtick={19.216,20,20.784},xticklabels={$19.216$,$20$,$20.784$},clip=false]
+\addplot[draw=none,fill=rejectred!38,domain=18.4:19.216,samples=95]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))}\closedcycle;
+\addplot[draw=none,fill=acceptblue!18,domain=19.216:20.784,samples=130]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))}\closedcycle;
+\addplot[draw=none,fill=rejectred!38,domain=20.784:21.6,samples=95]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))}\closedcycle;
+\addplot[very thick,acceptblue!80!black,domain=18.4:21.6,samples=170]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))};
+\draw[dashed,thick] (axis cs:19.216,0)--(axis cs:19.216,.15);
+\draw[dashed,thick] (axis cs:20.784,0)--(axis cs:20.784,.15);
+\node at (axis cs:20,.42) {\small\bfseries $1-\alpha=0.95$};
+\node[rejectred!90!black] at (axis cs:18.9,.09) {\small $\alpha/2=0.025$};
+\node[rejectred!90!black] at (axis cs:21.1,.09) {\small $\alpha/2=0.025$};
+\end{axis}
+\end{tikzpicture}
+\caption{Mismo caso de pintura: prueba bilateral cuando interesa cualquier cambio respecto de 20 minutos.}
+\end{figure}
+
+\begin{observargrafico}
+La prueba bilateral no pregunta si la pintura tarda más o menos: pregunta si \textbf{dejó de tener media 20}. Por eso aparecen dos regiones de rechazo y $\alpha$ se divide entre ambos extremos.
+\end{observargrafico}
+
+Finalmente se traducen los dos críticos a minutos:
+\[
+L_I=20-1.96(0.4)=19.216,
+\qquad
+L_S=20+1.96(0.4)=20.784.
+\]
+\begin{calculor}
+\textbf{Área $\rightarrow$ abscisas:} \texttt{qnorm(0.025, 0, 1)} da $-1.959964$ y \texttt{qnorm(0.975, 0, 1)} da $1.959964$. El área total $\alpha=0.05$ se reparte en $0.025$ por cola.
+\end{calculor}
+Por tanto:
+\[
+\boxed{\bar{x}<19.216\ \text{o}\ \bar{x}>20.784
+\ \Rightarrow\ \text{rechazar }H_0.}
+\]
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{3.1cm}p{3.2cm}p{3.2cm}X}
+\toprule
+Pregunta sobre la pintura & $H_0$ & $H_a$ & Región de rechazo con $\alpha=0.05$\\
+\midrule
+¿Tarda más? & $\mu\le20$ & $\mu>20$ & $\bar{x}>20.658$\\
+¿Tarda menos? & $\mu\ge20$ & $\mu<20$ & $\bar{x}<19.342$\\
+¿Cambió? & $\mu=20$ & $\mu\neq20$ & $\bar{x}<19.216$ o $\bar{x}>20.784$\\
+\bottomrule
+\end{tabularx}
+\caption{Una sola situación, tres preguntas distintas y tres regiones críticas distintas.}
+\end{table}
+
+\begin{regla}
+Manteniendo iguales $\mu_0$, $\sigma$, $n$ y $\alpha$, \textbf{lo que determina la forma de la región crítica es la hipótesis alternativa}. Así se evita memorizar tres historias diferentes.
+\end{regla}
+
+\subsubsection{Ejemplo completo: pintura, cola derecha}
+
+Supongamos que la muestra de $36$ tableros produce $\bar{x}=20.80$ min.
+
+\paso{1}{¿Qué se quiere demostrar?}
+Determinar si la pintura tarda, en promedio, \textbf{más de 20 minutos}.
+\paso{2}{Hipótesis}
+\[H_0:\mu\le20,\qquad H_1:\mu>20.\]
+\paso{3}{Tipo de prueba}
+Como $H_1$ contiene $>$, corresponde una \textbf{cola derecha}.
+\paso{4}{Nivel de significancia}
+\[\alpha=0.05.\]
+\paso{5}{¿Qué estadístico corresponde?}
+Se conoce $\sigma=2.4$ y $n=36$, por lo tanto corresponde $Z$.
+\paso{6}{Valor crítico y región de rechazo}
+\[z_{crit}=1.645,\qquad \text{rechazar }H_0\text{ si }z>1.645.\]
+\begin{calculor}
+\texttt{qnorm(1 - 0.05, mean = 0, sd = 1)} devuelve $1.644854$. Es el límite que deja $95\%$ a la izquierda y $5\%$ a la derecha.
+\end{calculor}
+\paso{7}{Estadístico calculado}
+\[
+z_{calc}=\frac{\bar{x}-\mu_0}{\sigma/\sqrt n}
+=\frac{20.80-20}{2.4/\sqrt{36}}=\frac{0.80}{0.40}=2.00.
+\]
+\paso{8}{Comparación}
+\[z_{calc}=2.00>1.645=z_{crit}.\]
+\paso{9}{Decisión}
+\[\boxed{\text{Rechazar }H_0}.\]
+\paso{10}{Interpretación}
+Con un nivel de significancia del $5\%$, la muestra aporta evidencia suficiente para concluir que el tiempo medio de secado es mayor que $20$ minutos.
+
+\begin{oral}
+Primero digo qué se quiere demostrar y planteo las hipótesis. Luego justifico la cola y el estadístico, construyo la regla de decisión, calculo, comparo y recién al final traduzco la decisión al problema.
+\end{oral}
+
+\begin{preguntaoral}
+\textbf{Pregunta:} si la media muestral hubiera sido $20.40$, ¿qué decidiría?\par
+\textbf{Respuesta corta:} no rechazaría $H_0$, porque $20.40<20.658$.\par
+\textbf{Explicación completa:} la observación queda en la región de no rechazo. Esto no demuestra que $H_0$ sea verdadera; solamente indica que la muestra no es suficientemente extrema al nivel $\alpha=0.05$.
+\end{preguntaoral}
+
+\subsubsection{Nivel de significancia y errores de decisión}
+
+\paragraph{Nivel de significancia $\alpha$.}
+
+El \textbf{nivel de significancia} es la probabilidad fijada de cometer un \textbf{Error Tipo I}: rechazar $H_0$ siendo verdadera. La guía utiliza habitualmente $0.05$, $0.01$ y $0.10$.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{cl}
+\toprule
+$\alpha$ & Aplicación indicada en el apunte de estudio \\
+\midrule
+$0.05$ & Proyectos de investigación relacionados con consumidores.\\
+$0.01$ & Control de calidad.\\
+$0.10$ & Encuestas.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Error Tipo I, Error Tipo II y potencia.}
+
+Como decidimos utilizando una muestra y no observamos toda la población, podemos acertar o equivocarnos.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{p{3.6cm}cc}
+\toprule
+ & \textbf{$H_0$ verdadera} & \textbf{$H_0$ falsa}\\
+\midrule
+\textbf{Rechazar $H_0$} & \cellcolor{rejectred!16}\textbf{Error Tipo I} $\alpha$ & \cellcolor{accentgreen!14}\textbf{Decisión correcta} $1-\beta$\\
+\textbf{No rechazar $H_0$} & \cellcolor{acceptblue!12}\textbf{Decisión correcta} $1-\alpha$ & \cellcolor{altorange!16}\textbf{Error Tipo II} $\beta$\\
+\bottomrule
+\end{tabular}
+\caption{Las cuatro posibilidades al decidir sobre $H_0$.}
+\end{table}
+
+\begin{itemize}
+\item \textbf{Error Tipo I ($\alpha$):} rechazar $H_0$ cuando $H_0$ es verdadera.
+\item \textbf{Error Tipo II ($\beta$):} no rechazar $H_0$ cuando $H_0$ es falsa.
+\item \textbf{Potencia ($1-\beta$):} rechazar correctamente una $H_0$ falsa; es decir, detectar un cambio real.
+\end{itemize}
+
+\subsubsection*{Caso original de la pintura: ver $\alpha$, $\beta$ y potencia juntos}
+
+\begin{aclaracion}
+Aquí volvemos al \textbf{criterio exacto de la guía}: rechazar el producto si $\bar{x}>20.75$ min. Ya no estamos imponiendo $\alpha=0.05$. Con esta frontera, el propio cálculo determina $\alpha\approx0.0304$.
+\end{aclaracion}
+
+La guía parte de una pintura cuyo tiempo medio declarado es $20$ min. Conservamos exactamente:
+\[
+\mu_0=20\text{ min},\qquad
+\sigma=2.4\text{ min},\qquad n=36,
+\]
+\[
+\sigma_{\bar{x}}=\frac{2.4}{\sqrt{36}}=0.4\text{ min}.
+\]
+La frontera y la regla original son:
+\[
+\bar{x}_c=20.75,
+\qquad
+\boxed{\bar{x}>20.75\Rightarrow\text{rechazar }H_0}.
+\]
+El valor $20.75$ es una \textbf{frontera de decisión para la media muestral}; no es una nueva media poblacional.
+
+\paragraph{¿Cómo se obtienen los valores $\alpha$ y $\beta$?}
+
+\begin{enumerate}[label=\textbf{Paso \arabic* --},leftmargin=2.2cm,itemsep=3pt]
+\item \textbf{Se fija la frontera crítica:} $\bar{x}_c=20.75$. A la izquierda queda la región de no rechazo y a la derecha, la región de rechazo.
+\item \textbf{Se elige qué realidad se supone verdadera:} para $\alpha$, $\mu=20$ porque se supone $H_0$ verdadera; para $\beta$, $\mu=21$ porque se estudia una alternativa concreta donde $H_0$ es falsa.
+\item \textbf{Se tipifica la frontera:}
+\[
+z=\frac{\bar{x}_c-\mu}{\sigma_{\bar{x}}}.
+\]
+\item \textbf{Se busca $z$ en la tabla normal.} La tabla utilizada por la cátedra da el área comprendida entre $0$ y $z$.
+\item \textbf{Se calcula la cola buscada.} Tanto para una cola derecha con $z>0$ como para una cola izquierda con $z<0$:
+\[
+\text{cola}=0.5-\text{área entre }0\text{ y }|z|.
+\]
+\item \textbf{Se interpreta el área final:} en el primer cálculo es $\alpha$ y en el segundo es $\beta$.
+\end{enumerate}
+
+\begin{center}
+\begin{tikzpicture}[node distance=3.5mm,every node/.style={font=\small},
+ box/.style={draw,rounded corners,align=center,minimum height=8mm,text width=2.65cm,fill=softgray},
+ arr/.style={-{Latex[length=2mm]},thick}]
+\node[box,fill=accentgreen!7] (a) {$\bar{x}_c$\\frontera};
+\node[box,right=of a] (b) {$z$\\tipificación};
+\node[box,right=of b] (c) {tabla normal\\área $0$ a $|z|$};
+\node[box,right=of c] (d) {$0.5-$\\área de tabla};
+\node[box,right=of d,fill=altorange!8] (e) {$\alpha$ o $\beta$\\área buscada};
+\draw[arr](a)--(b);\draw[arr](b)--(c);\draw[arr](c)--(d);\draw[arr](d)--(e);
+\end{tikzpicture}
+\end{center}
+
+\paragraph{Cálculo completo de $\alpha$.}
+
+\textbf{Pregunta para $\alpha$:} si realmente la pintura tarda $20$ min, ¿qué probabilidad existe de rechazarla por error?
+
+\textbf{Paso A -- Frontera crítica.}
+\[
+\bar{x}_c=20.75.
+\]
+\textbf{Paso B -- Realidad supuesta.} Como se estudia un Error Tipo I, se supone $H_0$ verdadera:
+\[
+\mu=20.
+\]
+\textbf{Paso C -- Tipificación.}
+\[
+z=\frac{20.75-20}{0.4}=1.875.
+\]
+Esto significa que la frontera $20.75$ se encuentra a $1.875$ errores estándar a la derecha de la media $20$.
+
+\textbf{Paso D -- Ubicación en la tabla normal.} Como $1.875$ queda entre $1.87$ y $1.88$, se consultan la fila $1.8$ y las columnas $0.07$ y $0.08$:
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{c|cc}
+\toprule
+$z$ & columna $0.07$ & columna $0.08$\\
+\midrule
+fila $1.8$ & \cellcolor{acceptblue!16}$0.4693$ & \cellcolor{acceptblue!16}$0.4699$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Interpolando aproximadamente a mitad de camino:
+\[
+\boxed{\text{valor de tabla para }z=1.875\approx0.4696}.
+\]
+
+\textbf{Paso E -- Significado del valor de tabla.} La tabla no entrega directamente la cola derecha; entrega el área entre $0$ y $z$:
+\[
+P(0<Z<1.875)\approx0.4696.
+\]
+
+\textbf{Paso F -- Cálculo de la cola derecha.}
+\begin{regla}
+La mitad derecha de la normal tiene área $0.5$. Por eso se resta el área central leída en la tabla:
+\[
+P(Z>1.875)=\boxed{0.5-0.4696}=0.0304.
+\]
+\end{regla}
+
+\textbf{Paso G -- Resultado final.}
+\[
+\boxed{\alpha=P(Z>1.875)\approx0.0304},
+\qquad
+\boxed{\alpha\approx3.04\%}.
+\]
+
+\begin{calculor}
+\textbf{Abscisa $\rightarrow$ área:}
+\[
+\texttt{pnorm(20.75, mean = 20, sd = 0.4, lower.tail = FALSE)}
+\approx0.0304.
+\]
+También puede escribirse \texttt{1 - pnorm(20.75, mean = 20, sd = 0.4)}. Aquí no corresponde \texttt{qnorm()}, porque la frontera $20.75$ ya es conocida y se busca su área de cola.
+\end{calculor}
+
+\textbf{Paso H -- Interpretación.} Existe aproximadamente un $3.04\%$ de probabilidad de rechazar $H_0$ aunque la verdadera media sea $20$ min.
+
+\paragraph{Cálculo completo de $\beta$.}
+
+\textbf{Pregunta para $\beta$:} si realmente la pintura tarda $21$ min, ¿qué probabilidad existe de que la prueba no detecte el problema?
+
+\textbf{Paso A -- Frontera crítica.}
+\[
+\bar{x}_c=20.75.
+\]
+\textbf{Paso B -- Realidad supuesta.} Para estudiar este Error Tipo II se supone una alternativa concreta:
+\[
+\mu=21.
+\]
+\textbf{Paso C -- Tipificación.}
+\[
+z=\frac{20.75-21}{0.4}=-0.625.
+\]
+Esto significa que la frontera $20.75$ queda a $0.625$ errores estándar a la izquierda de la media $21$.
+
+\textbf{Paso D -- Ubicación en la tabla normal.} Por simetría, para el valor negativo se busca $|z|=0.625$. Como queda entre $0.62$ y $0.63$, se consultan la fila $0.6$ y las columnas $0.02$ y $0.03$:
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{c|cc}
+\toprule
+$z$ & columna $0.02$ & columna $0.03$\\
+\midrule
+fila $0.6$ & \cellcolor{altorange!18}$0.2324$ & \cellcolor{altorange!18}$0.2357$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Interpolando aproximadamente a mitad de camino:
+\[
+\boxed{\text{valor de tabla para }z=0.625\approx0.2340}.
+\]
+
+\textbf{Paso E -- Significado del valor de tabla.}
+\[
+P(0<Z<0.625)\approx0.2340.
+\]
+
+\textbf{Paso F -- Cálculo de la cola izquierda.}
+\begin{regla}
+La mitad izquierda de la normal también tiene área $0.5$. Se resta el área comprendida entre $-0.625$ y $0$:
+\[
+P(Z\le-0.625)=\boxed{0.5-0.2340}=0.2660.
+\]
+\end{regla}
+
+\textbf{Paso G -- Resultado final.}
+\[
+\boxed{\beta=P(Z\le-0.625)\approx0.2660},
+\qquad
+\boxed{\beta\approx26.60\%}.
+\]
+
+\begin{calculor}
+\textbf{Abscisa $\rightarrow$ área:}
+\[
+\texttt{pnorm(20.75, mean = 21, sd = 0.4)}\approx0.2660.
+\]
+Se pide el área izquierda porque el Error Tipo II ocurre cuando, siendo $\mu=21$, la media muestral queda en la región de no rechazo $\bar{x}\le20.75$.
+\end{calculor}
+
+\textbf{Paso H -- Interpretación.} Si la verdadera media fuera $21$ min, existe aproximadamente un $26.60\%$ de probabilidad de no detectar el problema.
+
+\paragraph{Potencia de la prueba para $\mu=21$.}
+\[
+1-\beta=1-0.2660=0.7340,
+\]
+\[
+\boxed{1-\beta\approx0.7340},
+\qquad
+\boxed{\text{Potencia}\approx73.40\%}.
+\]
+La prueba tiene aproximadamente un $73.40\%$ de probabilidad de detectar correctamente que la media real es $21$ min.
+
+\medskip\noindent\textbf{Los dos cálculos vistos por separado.}\par\smallskip
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{.48\textwidth}
+\centering\textbf{Gráfico de $\alpha$: realidad $\mu=20$}\par\smallskip
+\begin{tikzpicture}
+\begin{axis}[width=\linewidth,height=5cm,xmin=18.5,xmax=21.6,ymin=0,ymax=1.08,
+ axis lines=left,axis y line=none,ytick=\empty,xlabel={$\bar{x}$ (min)},
+ xtick={20,20.75},xticklabels={$20$,$20.75$},
+ xticklabel style={font=\scriptsize},clip=false]
+\addplot[draw=none,fill=rejectred!42,domain=20.75:21.6,samples=80]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))}\closedcycle;
+\addplot[very thick,acceptblue,domain=18.5:21.6,samples=150]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))};
+\draw[dashed,thick](axis cs:20.75,0)--(axis cs:20.75,.19);
+\node[font=\scriptsize,anchor=south west] at(axis cs:20.75,.20){$\bar{x}_c$};
+\node[font=\scriptsize,fill=white,inner sep=1pt] at(axis cs:20.48,.47){$z=1.875$};
+\node[rejectred!90!black,font=\scriptsize,align=center,fill=white,inner sep=1pt]
+ at(axis cs:21.30,.07){\textbf{$\alpha=0.0304$}\\cola derecha};
+\end{axis}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[t]{.48\textwidth}
+\centering\textbf{Gráfico de $\beta$: realidad $\mu=21$}\par\smallskip
+\begin{tikzpicture}
+\begin{axis}[width=\linewidth,height=5cm,xmin=19.4,xmax=22.6,ymin=0,ymax=1.08,
+ axis lines=left,axis y line=none,ytick=\empty,xlabel={$\bar{x}$ (min)},
+ xtick={20.75},xticklabels={$20.75$},
+ xticklabel style={font=\scriptsize},clip=false]
+\addplot[draw=none,fill=altorange!28,domain=19.4:20.75,samples=80]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-21)^2)/(2*0.4^2))}\closedcycle;
+\addplot[very thick,altorange,domain=19.4:22.6,samples=150]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-21)^2)/(2*0.4^2))};
+\draw[dashed,thick](axis cs:20.75,0)--(axis cs:20.75,.84);
+\node[font=\scriptsize,anchor=south east] at(axis cs:20.75,.85){$\bar{x}_c$};
+\node[font=\scriptsize,altorange!90!black,fill=white,inner sep=1pt]
+ at(axis cs:21,1.02){$\mu=21$};
+\node[font=\scriptsize,fill=white,inner sep=1pt] at(axis cs:21.28,.53){$z=-0.625$};
+\node[altorange!90!black,font=\scriptsize,align=center,fill=white,inner sep=1pt]
+ at(axis cs:19.92,.09){\textbf{$\beta=0.2660$}\\cola izquierda};
+\end{axis}
+\end{tikzpicture}
+\end{minipage}
+\caption{La misma frontera $20.75$ produce una cola derecha bajo $\mu=20$ y una cola izquierda bajo $\mu=21$.}
+\end{figure}
+
+\begin{observargrafico}
+En el gráfico de $\alpha$, el área buscada queda a la derecha de $20.75$ bajo la distribución centrada en $20$. En el gráfico de $\beta$, el área buscada queda a la izquierda de la misma frontera bajo la distribución centrada en $21$.
+\end{observargrafico}
+
+\medskip\noindent\textbf{Resumen numérico del flujo.}\par\smallskip
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.18}
+\begin{tabular}{>{\bfseries}lcc}
+\toprule
+Cantidad & $\alpha$ & $\beta$\\
+\midrule
+Frontera $\bar{x}_c$ & $20.75$ & $20.75$\\
+Media supuesta & $20$ & $21$\\
+Error estándar & $0.4$ & $0.4$\\
+$z$ de la frontera & $1.875$ & $-0.625$\\
+Valor de tabla: área de $0$ a $|z|$ & $0.4696$ & $0.2340$\\
+Cálculo final & $0.5-0.4696$ & $0.5-0.2340$\\
+Resultado & \cellcolor{rejectred!14}$0.0304$ & \cellcolor{altorange!16}$0.2660$\\
+\bottomrule
+\end{tabular}
+\caption{El mismo procedimiento, observado bajo dos medias reales diferentes.}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=13.4cm,height=6.7cm,xmin=18.3,xmax=22.6,ymin=0,ymax=1.12,
+ axis lines=left,xlabel={Media muestral $\bar{x}$ (min)},xlabel style={yshift=-7pt},ylabel={Densidad},
+ xtick={20,21},xticklabels={$\mu_0=20$,$\mu_1=21$},
+ extra x ticks={20.75},extra x tick labels={$\bar{x}_c=20.75$},
+ extra x tick style={xticklabel style={font=\scriptsize,yshift=-10pt}},
+ xticklabel style={font=\scriptsize},ytick=\empty,clip=false]
+% potencia bajo H1
+\addplot[draw=none,fill=accentgreen!18,domain=20.75:22.6,samples=100]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-21)^2)/(2*0.4^2))} \closedcycle;
+% Las áreas se dibujan antes de las curvas para que no las oculten.
+\addplot[draw=none,fill=rejectred!45,domain=20.75:22.6,samples=100]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))} \closedcycle;
+\addplot[draw=none,fill=altorange!25,domain=18.3:20.75,samples=100]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-21)^2)/(2*0.4^2))} \closedcycle;
+\addplot[thick,acceptblue] coordinates {(18.200,0.00004) (18.240,0.00006) (18.280,0.00010) (18.320,0.00015) (18.360,0.00022) (18.400,0.00033) (18.440,0.00050) (18.480,0.00073) (18.520,0.00106) (18.560,0.00153) (18.600,0.00218) (18.640,0.00308) (18.680,0.00431) (18.720,0.00596) (18.760,0.00817) (18.800,0.01108) (18.840,0.01488) (18.880,0.01979) (18.920,0.02605) (18.960,0.03396) (19.000,0.04382) (19.040,0.05599) (19.080,0.07082) (19.120,0.08869) (19.160,0.10996) (19.200,0.13498) (19.240,0.16404) (19.280,0.19738) (19.320,0.23512) (19.360,0.27730) (19.400,0.32379) (19.440,0.37432) (19.480,0.42842) (19.520,0.48547) (19.560,0.54463) (19.600,0.60493) (19.640,0.66521) (19.680,0.72423) (19.720,0.78063) (19.760,0.83306) (19.800,0.88016) (19.840,0.92068) (19.880,0.95347) (19.920,0.97761) (19.960,0.99238) (20.000,0.99736) (20.040,0.99238) (20.080,0.97761) (20.120,0.95347) (20.160,0.92068) (20.200,0.88016) (20.240,0.83306) (20.280,0.78063) (20.320,0.72423) (20.360,0.66521) (20.400,0.60493) (20.440,0.54463) (20.480,0.48547) (20.520,0.42842) (20.560,0.37432) (20.600,0.32379) (20.640,0.27730) (20.680,0.23512) (20.720,0.19738) (20.760,0.16404) (20.800,0.13498) (20.840,0.10996) (20.880,0.08869) (20.920,0.07082) (20.960,0.05599) (21.000,0.04382) (21.040,0.03396) (21.080,0.02605) (21.120,0.01979) (21.160,0.01488) (21.200,0.01108) (21.240,0.00817) (21.280,0.00596) (21.320,0.00431) (21.360,0.00308) (21.400,0.00218) (21.440,0.00153) (21.480,0.00106) (21.520,0.00073) (21.560,0.00050) (21.600,0.00033) (21.640,0.00022) (21.680,0.00015) (21.720,0.00010) (21.760,0.00006) (21.800,0.00004) (21.840,0.00003) (21.880,0.00002) (21.920,0.00001) (21.960,0.00001) (22.000,0.00000) (22.040,0.00000) (22.080,0.00000) (22.120,0.00000) (22.160,0.00000) (22.200,0.00000) (22.240,0.00000) (22.280,0.00000) (22.320,0.00000) (22.360,0.00000) (22.400,0.00000) (22.440,0.00000) (22.480,0.00000) (22.520,0.00000) (22.560,0.00000) (22.600,0.00000) (22.640,0.00000) (22.680,0.00000) (22.720,0.00000) (22.760,0.00000) (22.800,0.00000)};
+\addplot[thick,altorange] coordinates {(18.200,0.00000) (18.240,0.00000) (18.280,0.00000) (18.320,0.00000) (18.360,0.00000) (18.400,0.00000) (18.440,0.00000) (18.480,0.00000) (18.520,0.00000) (18.560,0.00000) (18.600,0.00000) (18.640,0.00000) (18.680,0.00000) (18.720,0.00000) (18.760,0.00000) (18.800,0.00000) (18.840,0.00000) (18.880,0.00000) (18.920,0.00000) (18.960,0.00000) (19.000,0.00000) (19.040,0.00001) (19.080,0.00001) (19.120,0.00002) (19.160,0.00003) (19.200,0.00004) (19.240,0.00006) (19.280,0.00010) (19.320,0.00015) (19.360,0.00022) (19.400,0.00033) (19.440,0.00050) (19.480,0.00073) (19.520,0.00106) (19.560,0.00153) (19.600,0.00218) (19.640,0.00308) (19.680,0.00431) (19.720,0.00596) (19.760,0.00817) (19.800,0.01108) (19.840,0.01488) (19.880,0.01979) (19.920,0.02605) (19.960,0.03396) (20.000,0.04382) (20.040,0.05599) (20.080,0.07082) (20.120,0.08869) (20.160,0.10996) (20.200,0.13498) (20.240,0.16404) (20.280,0.19738) (20.320,0.23512) (20.360,0.27730) (20.400,0.32379) (20.440,0.37432) (20.480,0.42842) (20.520,0.48547) (20.560,0.54463) (20.600,0.60493) (20.640,0.66521) (20.680,0.72423) (20.720,0.78063) (20.760,0.83306) (20.800,0.88016) (20.840,0.92068) (20.880,0.95347) (20.920,0.97761) (20.960,0.99238) (21.000,0.99736) (21.040,0.99238) (21.080,0.97761) (21.120,0.95347) (21.160,0.92068) (21.200,0.88016) (21.240,0.83306) (21.280,0.78063) (21.320,0.72423) (21.360,0.66521) (21.400,0.60493) (21.440,0.54463) (21.480,0.48547) (21.520,0.42842) (21.560,0.37432) (21.600,0.32379) (21.640,0.27730) (21.680,0.23512) (21.720,0.19738) (21.760,0.16404) (21.800,0.13498) (21.840,0.10996) (21.880,0.08869) (21.920,0.07082) (21.960,0.05599) (22.000,0.04382) (22.040,0.03396) (22.080,0.02605) (22.120,0.01979) (22.160,0.01488) (22.200,0.01108) (22.240,0.00817) (22.280,0.00596) (22.320,0.00431) (22.360,0.00308) (22.400,0.00218) (22.440,0.00153) (22.480,0.00106) (22.520,0.00073) (22.560,0.00050) (22.600,0.00033) (22.640,0.00022) (22.680,0.00015) (22.720,0.00010) (22.760,0.00006) (22.800,0.00004)};
+% alfa bajo H0
+\addplot[draw=none,fill=rejectred!45,domain=20.75:22.6,samples=100] {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))} \closedcycle;
+% beta bajo H1
+\addplot[draw=none,fill=altorange!25,domain=18.3:20.75,samples=100] {1/(0.4*sqrt(2*pi))*exp(-((x-21)^2)/(2*0.4^2))} \closedcycle;
+% Curvas finales: la azul queda por encima en los solapamientos.
+\addplot[very thick,altorange,domain=18.3:22.6,samples=180]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-21)^2)/(2*0.4^2))};
+\addplot[very thick,acceptblue,domain=18.3:22.6,samples=180]
+ {1/(0.4*sqrt(2*pi))*exp(-((x-20)^2)/(2*0.4^2))};
+\draw[dashed,very thick] (axis cs:20.75,0)--(axis cs:20.75,1.0);
+\node[acceptblue,fill=white,inner sep=1.5pt] at (axis cs:19.72,.96) {\small $H_0:\mu=20$};
+\node[altorange,fill=white,inner sep=1.5pt] at (axis cs:21.34,.96) {\small $H_1:\mu=21$};
+\node[font=\scriptsize,fill=white,inner sep=1.5pt,anchor=south east]
+ at (axis cs:20.57,.80) {$z_{H_0}=1.875$};
+\node[font=\scriptsize,fill=white,inner sep=1.5pt,anchor=north west]
+ at (axis cs:20.94,.66) {$z_{H_1}=-0.625$};
+\node[font=\scriptsize,align=center] at (axis cs:19.15,1.04)
+ {\textbf{No rechazar $H_0$}\\$\bar{x}\le20.75$};
+\node[font=\scriptsize,align=center] at (axis cs:22.05,1.04)
+ {\textbf{Rechazar $H_0$}\\$\bar{x}>20.75$};
+\node[acceptblue!85!black,align=center,fill=white,inner sep=1pt] at (axis cs:19.18,.18)
+ {\small\bfseries $1-\alpha$\\[-1pt]\scriptsize decisión correcta};
+\node[rejectred!90!black,align=center,text width=1.8cm,fill=white,inner sep=1pt] at (axis cs:21.82,.20)
+ {\small\bfseries $\alpha=0.0304$\\[-1pt]\scriptsize Error I};
+\node[altorange!90!black,align=center,text width=1.8cm,fill=white,inner sep=1pt] at (axis cs:20.02,.22)
+ {\small\bfseries $\beta=0.2660$\\[-1pt]\scriptsize Error II};
+\node[accentgreen!70!black,align=center,fill=white,fill opacity=.88,text opacity=1,inner sep=1pt] at (axis cs:21.35,.38)
+ {\small\bfseries $1-\beta=0.7340$\\[-1pt]\scriptsize potencia};
+\end{axis}
+\end{tikzpicture}
+\caption{Los dos errores se entienden mirando la misma frontera de decisión desde dos realidades distintas.}
+\end{figure}
+
+\subsubsection*{Cómo leer este gráfico: las cuatro situaciones posibles}
+
+Para clasificar cualquier resultado hay que combinar dos datos: \textbf{qué media es realmente verdadera} y \textbf{qué decisión produce la muestra}. En este ejemplo se mantiene
+\[
+H_0:\mu=20,
+\]
+y se estudia la alternativa concreta centrada en $\mu=21$. La regla de decisión es siempre la misma:
+\[
+\bar{x}\le20.75\Rightarrow\text{no rechazar }H_0,
+\qquad
+\bar{x}>20.75\Rightarrow\text{rechazar }H_0.
+\]
+
+\begin{tcolorbox}[
+  colback=acceptblue!5,colframe=acceptblue!75!black,
+  title=\textbf{Situación 1 -- $H_0$ verdadera y no se rechaza},
+  fonttitle=\bfseries,arc=2mm,boxrule=.8pt]
+La pintura realmente tiene $\mu=20$ y la muestra da, por ejemplo, $\bar{x}=20.40$. Como
+\[
+20.40\le20.75,
+\qquad
+\boxed{\text{no rechazar }H_0},
+\]
+$H_0$ era verdadera y no se rechazó: la decisión es \textbf{correcta}. Esta zona representa $1-\alpha$.
+\[
+\boxed{\text{La pintura realmente cumple y la prueba no detecta un problema inexistente.}}
+\]
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+  colback=rejectred!5,colframe=rejectred!75!black,
+  title=\textbf{Situación 2 -- Error Tipo I},
+  fonttitle=\bfseries,arc=2mm,boxrule=.8pt]
+La pintura realmente tiene $\mu=20$, pero la variabilidad muestral produce, por ejemplo, $\bar{x}=20.90$. Como
+\[
+20.90>20.75,
+\qquad
+\boxed{\text{rechazar }H_0},
+\]
+se rechaza una $H_0$ que era verdadera. Por lo tanto, se comete un \textbf{Error Tipo I}, cuya probabilidad es
+\[
+\alpha=0.0304.
+\]
+La pintura realmente tarda $20$ minutos, pero la muestra hace creer que tarda demasiado.
+\[
+\boxed{\text{Estaba bien, pero la rechacé.}}
+\]
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+  colback=altorange!6,colframe=altorange!85!black,
+  title=\textbf{Situación 3 -- Error Tipo II},
+  fonttitle=\bfseries,arc=2mm,boxrule=.8pt]
+La verdadera media es $\mu=21$; por lo tanto, $H_0$ es falsa. Supongamos que la muestra da $\bar{x}=20.50$. Como
+\[
+20.50\le20.75,
+\qquad
+\boxed{\text{no rechazar }H_0},
+\]
+no se rechaza una $H_0$ que era falsa. Por lo tanto, se comete un \textbf{Error Tipo II}, cuya probabilidad para esta alternativa es
+\[
+\beta=0.2660.
+\]
+La pintura realmente tarda más de lo declarado, pero la muestra no logra detectar el problema.
+\[
+\boxed{\text{Estaba mal, pero no lo detecté.}}
+\]
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+  colback=accentgreen!6,colframe=accentgreen!75!black,
+  title=\textbf{Situación 4 -- $H_0$ falsa y se rechaza},
+  fonttitle=\bfseries,arc=2mm,boxrule=.8pt]
+La verdadera media es $\mu=21$ y la muestra da, por ejemplo, $\bar{x}=21.20$. Como
+\[
+21.20>20.75,
+\qquad
+\boxed{\text{rechazar }H_0},
+\]
+$H_0$ era falsa y se rechazó: la decisión es \textbf{correcta}. Esta probabilidad es la \textbf{potencia}:
+\[
+1-\beta=0.7340.
+\]
+La pintura realmente tarda demasiado y la prueba logra detectarlo.
+\[
+\boxed{\text{Cambio real detectado correctamente.}}
+\]
+\end{tcolorbox}
+
+\medskip\noindent\textbf{Resumen de las cuatro situaciones.}\par\smallskip
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{2.0cm}
+                              >{\centering\arraybackslash}p{3.2cm}
+                              >{\centering\arraybackslash}p{3.0cm}X}
+\toprule
+\textbf{Realidad} & \textbf{Resultado de la muestra} & \textbf{Decisión} & \textbf{Resultado}\\
+\midrule
+$\mu=20$ & $\bar{x}\le20.75$ & No rechazar $H_0$ & \cellcolor{acceptblue!10}Decisión correcta $1-\alpha$\\
+$\mu=20$ & $\bar{x}>20.75$ & Rechazar $H_0$ & \cellcolor{rejectred!14}Error Tipo I $\alpha$\\
+$\mu=21$ & $\bar{x}\le20.75$ & No rechazar $H_0$ & \cellcolor{altorange!14}Error Tipo II $\beta$\\
+$\mu=21$ & $\bar{x}>20.75$ & Rechazar $H_0$ & \cellcolor{accentgreen!14}Decisión correcta $1-\beta$\\
+\bottomrule
+\end{tabularx}
+\caption{Realidad y decisión determinan si el resultado es correcto o constituye un error.}
+\end{table}
+
+\begin{tcolorbox}[
+  colback=softgray,colframe=black!55,
+  title=\textbf{Regla para leer el gráfico},
+  fonttitle=\bfseries,arc=1mm,boxrule=.7pt]
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=1.8em]
+\item \textbf{Identificar la realidad:} mirar qué media centra la curva; $\mu=20$ representa $H_0$ y $\mu=21$ la alternativa concreta.
+\item \textbf{Localizar la frontera:} aquí es $\bar{x}_c=20.75$.
+\item \textbf{Determinar el lado de rechazo:} $\bar{x}>20.75$ lleva a rechazar $H_0$; el otro lado lleva a no rechazarla.
+\item \textbf{Ubicar el valor observado:} comparar la media muestral dada por el profesor con la frontera.
+\item \textbf{Combinar realidad y decisión:} clasificar el resultado como decisión correcta, Error Tipo I, Error Tipo II o potencia.
+\end{enumerate}
+\[
+\boxed{\text{REALIDAD}}
+\; + \;
+\boxed{\text{DECISIÓN}}
+\;\Rightarrow\;
+\boxed{\text{RESULTADO}}
+\]
+\end{tcolorbox}
+
+\begin{preguntaoral}
+\textbf{Si $\bar{x}=20.40$:} queda a la izquierda de $20.75$, por lo que no se rechaza $H_0$. Para saber si hubo error todavía hace falta conocer la media real.\par
+\textbf{Si $\bar{x}=20.90$ y la media real era $20$:} se rechaza una $H_0$ verdadera; es Error Tipo I.\par
+\textbf{Si $\bar{x}=20.50$ y la media real era $21$:} no se rechaza una $H_0$ falsa; es Error Tipo II.\par
+\textbf{Si $\bar{x}=21.20$ y la media real era $21$:} se rechaza una $H_0$ falsa; es una detección correcta y pertenece a la potencia.
+\end{preguntaoral}
+
+\begin{ideaclave}
+\[
+\boxed{\text{Error Tipo I: }H_0\text{ era verdadera y la rechacé}}
+\]
+\[
+\boxed{\text{Error Tipo II: }H_0\text{ era falsa y no la rechacé}}
+\]
+Aplicado al ejemplo de la pintura:
+\begin{itemize}
+\item \textbf{Tipo I:} la pintura estaba bien, pero concluí que estaba mal.
+\item \textbf{Tipo II:} la pintura estaba mal, pero no detecté el problema.
+\item \textbf{Potencia:} la pintura estaba mal y la prueba logró detectarlo.
+\end{itemize}
+\end{ideaclave}
+
+\begin{lecturagrafico}
+\begin{itemize}
+\item La frontera crítica $20.75$ es siempre la misma.
+\item Si observamos la distribución suponiendo $\mu=20$, el área de la derecha es $\alpha$.
+\item Si observamos la distribución suponiendo $\mu=21$, el área de la izquierda es $\beta$.
+\item El área restante a la derecha bajo $H_1$ es $1-\beta$, es decir, la potencia.
+\end{itemize}
+\[
+\boxed{\text{La frontera no cambia; cambia la distribución desde la cual la observamos.}}
+\]
+\end{lecturagrafico}
+
+\begin{regla}
+Para un criterio dado, reducir mucho $\alpha$ hace más difícil rechazar $H_0$ y puede aumentar $\beta$. La guía resume esta idea diciendo que no conviene elegir un $\alpha$ excesivamente pequeño sin considerar el Error Tipo II.
+\end{regla}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{scope}[xshift=0cm]
+\begin{axis}[width=6.4cm,height=4.3cm,xmin=-3,xmax=5,ymin=0,ymax=.43,axis lines=middle,axis y line=none,ytick=\empty,xtick={1.3},xticklabels={$c_1$},title={\small Frontera menos exigente},clip=false]
+\addplot[thick,acceptblue,domain=-3:3,samples=120]{1/sqrt(2*pi)*exp(-x^2/2)};
+\addplot[thick,altorange,domain=-1:5,samples=120]{1/sqrt(2*pi)*exp(-(x-2.2)^2/2)};
+\addplot[draw=none,fill=rejectred!35,domain=1.3:4,samples=80]{1/sqrt(2*pi)*exp(-x^2/2)}\closedcycle;
+\addplot[draw=none,fill=altorange!22,domain=-1:1.3,samples=80]{1/sqrt(2*pi)*exp(-(x-2.2)^2/2)}\closedcycle;
+\draw[dashed](axis cs:1.3,0)--(axis cs:1.3,.29);
+\node[rejectred!90!black] at(axis cs:1.7,.07){\scriptsize $\alpha$ mayor};
+\node[altorange!90!black] at(axis cs:.5,.12){\scriptsize $\beta$ menor};
+\end{axis}
+\end{scope}
+\begin{scope}[xshift=7.1cm]
+\begin{axis}[width=6.4cm,height=4.3cm,xmin=-3,xmax=5,ymin=0,ymax=.43,axis lines=middle,axis y line=none,ytick=\empty,xtick={1.8},xticklabels={$c_2$},title={\small Frontera más exigente},clip=false]
+\addplot[thick,acceptblue,domain=-3:3,samples=120]{1/sqrt(2*pi)*exp(-x^2/2)};
+\addplot[thick,altorange,domain=-1:5,samples=120]{1/sqrt(2*pi)*exp(-(x-2.2)^2/2)};
+\addplot[draw=none,fill=rejectred!35,domain=1.8:4,samples=80]{1/sqrt(2*pi)*exp(-x^2/2)}\closedcycle;
+\addplot[draw=none,fill=altorange!22,domain=-1:1.8,samples=80]{1/sqrt(2*pi)*exp(-(x-2.2)^2/2)}\closedcycle;
+\draw[dashed](axis cs:1.8,0)--(axis cs:1.8,.39);
+\node[rejectred!90!black] at(axis cs:2.1,.055){\scriptsize $\alpha$ menor};
+\node[altorange!90!black] at(axis cs:.8,.13){\scriptsize $\beta$ mayor};
+\end{axis}
+\end{scope}
+\end{tikzpicture}
+\caption{Con las distribuciones y el tamaño muestral fijos, desplazar la frontera para reducir $\alpha$ aumenta la región de no rechazo bajo la alternativa y, por tanto, $\beta$.}
+\end{figure}
+
+\begin{regla}
+Ahora sigue elegir y calcular el estadístico adecuado para una media: primero $Z/t$, después la fórmula, el crítico y la comparación.
+\end{regla}
+
+\subsection{2-A-2 Hipótesis relativas a una media}
+
+\subsubsection{\texorpdfstring{Cuándo usar $Z$ y cuándo usar $t$}{Cuándo usar Z y cuándo usar t}}
+
+Para el contraste de una media, la guía trabaja con el siguiente criterio práctico:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{3.2cm}p{2.6cm}X}
+\toprule
+Situación & Estadístico & Idea \\
+\midrule
+$\sigma$ conocida & $Z$ & Se conoce la variabilidad poblacional.\\
+Muestra grande ($n\ge30$), $\sigma$ desconocida & $Z$ usando $s$ & La guía usa la aproximación normal para muestras grandes.\\
+Muestra pequeña, $\sigma$ desconocida y población normal & $t$ de Student & Se usa $s$ y $\nu=n-1$ grados de libertad.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{center}
+\begin{tikzpicture}[
+  every node/.style={font=\footnotesize},
+  decision/.style={draw,diamond,aspect=2.5,align=center,text width=2.7cm,
+                   minimum width=4.0cm,minimum height=1.15cm,fill=yellow!10},
+  final/.style={draw,rounded corners,align=center,text width=5.15cm,
+                minimum width=5.45cm,minimum height=2.25cm},
+  arr/.style={-{Latex[length=2mm]},thick}]
+\node[decision] (q1) at (0,0) {¿Se conoce $\sigma$?};
+\node[final,fill=acceptblue!7] (zsig) at (-3.7,-2.8)
+ {\textbf{Usar $Z$}\\
+  Condición: $\sigma$ poblacional conocida\\[2pt]
+  $\displaystyle z=\frac{\bar{x}-\mu_0}{\sigma/\sqrt n}$\\
+  Sin grados de libertad};
+\node[decision] (q2) at (3.5,-2.8) {¿$n\ge30$?};
+\node[final,fill=acceptblue!7] (zs) at (-3.7,-6.25)
+ {\textbf{Usar $Z$ con $s$}\\
+  Condición: $\sigma$ desconocida y muestra grande\\[2pt]
+  $\displaystyle z=\frac{\bar{x}-\mu_0}{s/\sqrt n}$\\
+  Sin grados de libertad};
+\node[decision] (q3) at (3.5,-6.25) {¿La población es normal?};
+\node[final,fill=altorange!9] (t) at (-3.7,-10.0)
+ {\textbf{Usar $t$ de Student}\\
+  Condición: $\sigma$ desconocida, $n<30$ y normalidad\\[2pt]
+  $\displaystyle t=\frac{\bar{x}-\mu_0}{s/\sqrt n}$\\
+  Grados de libertad: $\nu=n-1$};
+\node[final,fill=rejectred!7] (no) at (3.7,-10.0)
+ {\textbf{No aplicar directamente este criterio}\\
+  $\sigma$ desconocida, muestra pequeña\\
+  y población no normal\\[2pt]
+  Revisar otro procedimiento o los supuestos};
+\draw[arr] (q1)--node[above left]{Sí}(zsig);
+\draw[arr] (q1)--node[above right]{No}(q2);
+\draw[arr] (q2)--node[above left]{Sí}(zs);
+\draw[arr] (q2)--node[right]{No}(q3);
+\draw[arr] (q3)--node[above left]{Sí}(t);
+\draw[arr] (q3)--node[above right]{No}(no);
+\end{tikzpicture}
+\end{center}
+
+\begin{tcolorbox}[
+  colback=softgray,colframe=black!50,
+  title=\textbf{Símbolos y regla de rechazo},fonttitle=\bfseries,
+  arc=1mm,boxrule=.6pt]
+\small
+$\bar{x}$ es la media muestral; $\mu_0$ es el valor planteado por $H_0$;
+$\sigma$ es la desviación estándar poblacional y $s$ es la desviación estándar muestral.
+Una vez calculado $z$ o $t$, la cola fijada por $H_1$ determina la regla:
+\[
+\text{derecha: }T>T_\alpha,
+\qquad
+\text{izquierda: }T<-T_\alpha,
+\qquad
+\text{bilateral: }|T|>T_{\alpha/2},
+\]
+donde $T$ representa el estadístico $Z$ o $t$ y el crítico $t$ se consulta con sus grados de libertad.
+\end{tcolorbox}
+
+\subsubsection{\texorpdfstring{Por qué $t$ tiene colas más anchas}{Por qué t tiene colas más anchas}}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=11.5cm,height=5.4cm,xmin=-4,xmax=4,ymin=0,ymax=.43,
+ axis lines=left,xlabel={valor del estadístico},ylabel={densidad},ytick=\empty,legend style={draw=none,at={(.98,.98)},anchor=north east}]
+\addplot[very thick,acceptblue,domain=-4:4,samples=160] {1/sqrt(2*pi)*exp(-x^2/2)};\addlegendentry{$Z$ normal}
+\addplot[very thick,rejectred] coordinates {(-4.000,0.00512) (-3.920,0.00562) (-3.840,0.00616) (-3.760,0.00677) (-3.680,0.00744) (-3.600,0.00819) (-3.520,0.00902) (-3.440,0.00995) (-3.360,0.01098) (-3.280,0.01213) (-3.200,0.01341) (-3.120,0.01483) (-3.040,0.01643) (-2.960,0.01821) (-2.880,0.02019) (-2.800,0.02242) (-2.720,0.02490) (-2.640,0.02767) (-2.560,0.03077) (-2.480,0.03423) (-2.400,0.03809) (-2.320,0.04240) (-2.240,0.04720) (-2.160,0.05255) (-2.080,0.05849) (-2.000,0.06509) (-1.920,0.07240) (-1.840,0.08047) (-1.760,0.08937) (-1.680,0.09913) (-1.600,0.10982) (-1.520,0.12146) (-1.440,0.13407) (-1.360,0.14766) (-1.280,0.16220) (-1.200,0.17766) (-1.120,0.19395) (-1.040,0.21096) (-0.960,0.22852) (-0.880,0.24645) (-0.800,0.26449) (-0.720,0.28236) (-0.640,0.29974) (-0.560,0.31628) (-0.480,0.33162) (-0.400,0.34538) (-0.320,0.35721) (-0.240,0.36678) (-0.160,0.37384) (-0.080,0.37815) (0.000,0.37961) (0.080,0.37815) (0.160,0.37384) (0.240,0.36678) (0.320,0.35721) (0.400,0.34538) (0.480,0.33162) (0.560,0.31628) (0.640,0.29974) (0.720,0.28236) (0.800,0.26449) (0.880,0.24645) (0.960,0.22852) (1.040,0.21096) (1.120,0.19395) (1.200,0.17766) (1.280,0.16220) (1.360,0.14766) (1.440,0.13407) (1.520,0.12146) (1.600,0.10982) (1.680,0.09913) (1.760,0.08937) (1.840,0.08047) (1.920,0.07240) (2.000,0.06509) (2.080,0.05849) (2.160,0.05255) (2.240,0.04720) (2.320,0.04240) (2.400,0.03809) (2.480,0.03423) (2.560,0.03077) (2.640,0.02767) (2.720,0.02490) (2.800,0.02242) (2.880,0.02019) (2.960,0.01821) (3.040,0.01643) (3.120,0.01483) (3.200,0.01341) (3.280,0.01213) (3.360,0.01098) (3.440,0.00995) (3.520,0.00902) (3.600,0.00819) (3.680,0.00744) (3.760,0.00677) (3.840,0.00616) (3.920,0.00562) (4.000,0.00512)};\addlegendentry{$t$, 5 gl}
+\addplot[thick,altorange,dashed] coordinates {(-4.000,0.00052) (-3.920,0.00065) (-3.840,0.00081) (-3.760,0.00100) (-3.680,0.00123) (-3.600,0.00151) (-3.520,0.00186) (-3.440,0.00229) (-3.360,0.00280) (-3.280,0.00342) (-3.200,0.00417) (-3.120,0.00508) (-3.040,0.00616) (-2.960,0.00745) (-2.880,0.00900) (-2.800,0.01083) (-2.720,0.01299) (-2.640,0.01553) (-2.560,0.01850) (-2.480,0.02197) (-2.400,0.02600) (-2.320,0.03065) (-2.240,0.03599) (-2.160,0.04210) (-2.080,0.04903) (-2.000,0.05685) (-1.920,0.06563) (-1.840,0.07542) (-1.760,0.08626) (-1.680,0.09818) (-1.600,0.11119) (-1.520,0.12528) (-1.440,0.14040) (-1.360,0.15652) (-1.280,0.17352) (-1.200,0.19129) (-1.120,0.20968) (-1.040,0.22849) (-0.960,0.24752) (-0.880,0.26652) (-0.800,0.28523) (-0.720,0.30336) (-0.640,0.32063) (-0.560,0.33674) (-0.480,0.35139) (-0.400,0.36432) (-0.320,0.37528) (-0.240,0.38404) (-0.160,0.39044) (-0.080,0.39433) (0.000,0.39563) (0.080,0.39433) (0.160,0.39044) (0.240,0.38404) (0.320,0.37528) (0.400,0.36432) (0.480,0.35139) (0.560,0.33674) (0.640,0.32063) (0.720,0.30336) (0.800,0.28523) (0.880,0.26652) (0.960,0.24752) (1.040,0.22849) (1.120,0.20968) (1.200,0.19129) (1.280,0.17352) (1.360,0.15652) (1.440,0.14040) (1.520,0.12528) (1.600,0.11119) (1.680,0.09818) (1.760,0.08626) (1.840,0.07542) (1.920,0.06563) (2.000,0.05685) (2.080,0.04903) (2.160,0.04210) (2.240,0.03599) (2.320,0.03065) (2.400,0.02600) (2.480,0.02197) (2.560,0.01850) (2.640,0.01553) (2.720,0.01299) (2.800,0.01083) (2.880,0.00900) (2.960,0.00745) (3.040,0.00616) (3.120,0.00508) (3.200,0.00417) (3.280,0.00342) (3.360,0.00280) (3.440,0.00229) (3.520,0.00186) (3.600,0.00151) (3.680,0.00123) (3.760,0.00100) (3.840,0.00081) (3.920,0.00065) (4.000,0.00052)};\addlegendentry{$t$, 30 gl}
+\end{axis}
+\end{tikzpicture}
+\caption{Con pocos grados de libertad, $t$ es más ancha; al aumentar los grados de libertad se aproxima a $Z$.}
+\end{figure}
+
+\begin{ideaclave}
+\[
+\nu\uparrow \quad\Longrightarrow\quad t\text{ de Student}\longrightarrow Z.
+\]
+La distribución $t$ compensa la incertidumbre adicional que aparece al estimar $\sigma$ mediante $s$ con una muestra pequeña.
+\end{ideaclave}
+
+\subsubsection{Fórmulas explicadas}
+
+\textbf{Una media, $Z$:}
+\[
+ z_{calc}=\frac{\overbrace{\bar{x}}^{\text{media muestral}}-\overbrace{\mu_0}^{\text{valor de }H_0}}
+ {\underbrace{\sigma/\sqrt{n}}_{\text{error estándar}}}
+\]
+
+\textbf{Una media, $t$:}
+\[
+ t_{calc}=\frac{\overbrace{\bar{x}}^{\text{media muestral}}-\overbrace{\mu_0}^{\text{valor de }H_0}}
+ {\underbrace{s/\sqrt{n}}_{\text{error estándar estimado}}},
+ \qquad \nu=n-1.
+\]
+
+\begin{ideaclave}
+El numerador mide \textbf{cuánto se aleja la muestra de lo que afirma $H_0$}. El denominador mide \textbf{cuánta variación muestral es esperable por azar}. Por eso el estadístico expresa el alejamiento en unidades de error estándar.
+\end{ideaclave}
+
+\subsubsection{Valor crítico y región crítica}
+
+El \textbf{valor crítico} es la frontera que separa resultados compatibles con $H_0$ de resultados suficientemente extremos como para rechazar $H_0$.
+\[
+\boxed{\alpha}\ \Longrightarrow\ \boxed{\text{valor crítico}}\ \Longrightarrow\
+\ \boxed{\text{región de rechazo}}.
+\]
+
+La tabla usada en el material muestra el área comprendida \textbf{desde $0$ hasta $z$}. Por eso:
+
+\begin{center}
+\begin{tikzpicture}[
+  every node/.style={font=\footnotesize},
+  decision/.style={draw,diamond,aspect=2.35,align=center,text width=3.0cm,
+                   minimum width=4.4cm,minimum height=1.15cm,fill=yellow!10},
+  boxstep/.style={draw,rounded corners,align=center,text width=4.25cm,
+               minimum width=4.55cm,minimum height=8.5mm},
+  arr/.style={-{Latex[length=1.9mm]},thick}]
+\node[decision] (tipo) at (0,0) {¿La prueba es de una o dos colas?};
+\node[boxstep,fill=acceptblue!7] (una) at (-3.9,-2.25)
+ {\textbf{Una cola}\\usar $\alpha$ completa};
+\node[boxstep,fill=acceptblue!7] (area1) at (-3.9,-3.75)
+ {Área de tabla: $0.5-\alpha$};
+\node[boxstep,fill=acceptblue!7] (crit1) at (-3.9,-5.25)
+ {Fila y columna $\Rightarrow z_\alpha$\\
+ regla: $z>z_\alpha$ o $z<-z_\alpha$};
+\node[boxstep,fill=purplebox!7] (dos) at (3.9,-2.25)
+ {\textbf{Dos colas}\\dividir: $\alpha/2$ en cada cola};
+\node[boxstep,fill=purplebox!7] (area2) at (3.9,-3.75)
+ {Área de tabla: $0.5-\alpha/2$};
+\node[boxstep,fill=purplebox!7] (crit2) at (3.9,-5.25)
+ {Fila y columna $\Rightarrow z_{\alpha/2}$\\
+ regla: $|z|>z_{\alpha/2}$};
+\node[boxstep,fill=accentgreen!8,text width=8.9cm,minimum width=9.2cm,
+      minimum height=1.1cm] (real) at (0,-7.05)
+ {Si se necesita la frontera en minutos: $\displaystyle
+  \bar{x}_c=\mu_0\pm z_{\mathrm{crit}}\frac{\sigma}{\sqrt n}$.};
+\draw[arr](tipo)--node[above left]{una}(una);
+\draw[arr](tipo)--node[above right]{dos}(dos);
+\draw[arr](una)--(area1); \draw[arr](area1)--(crit1);
+\draw[arr](dos)--(area2); \draw[arr](area2)--(crit2);
+\draw[arr](crit1)--(real); \draw[arr](crit2)--(real);
+\end{tikzpicture}
+\end{center}
+
+\textbf{Una cola con $\alpha=0.05$:}
+\[
+0.5-0.05=0.4500.
+\]
+Se busca aproximadamente $0.4500$ dentro de la tabla. El valor cercano $0.4505$ corresponde a fila $1.6$ y columna $0.05$:
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4.2pt}
+\renewcommand{\arraystretch}{1.22}
+\begin{tabular}{>{\bfseries}c|cccccccccc}
+\toprule
+$z$ & $0.00$ & $0.01$ & $0.02$ & $0.03$ & $0.04$ &
+\cellcolor{rejectred!22}\color{rejectred!90!black}\bfseries $0.05$ &
+$0.06$ & $0.07$ & $0.08$ & $0.09$\\
+\midrule
+$1.5$ & $0.4332$ & $0.4345$ & $0.4357$ & $0.4370$ & $0.4382$ &
+\cellcolor{rejectred!10}$0.4394$ & $0.4406$ & $0.4418$ & $0.4429$ & $0.4441$\\
+\rowcolor{acceptblue!10}
+\cellcolor{rejectred!22}\color{rejectred!90!black}\bfseries $1.6$ &
+$0.4452$ & $0.4463$ & $0.4474$ & $0.4484$ & $0.4495$ &
+\cellcolor{rejectred!38}\color{rejectred!90!black}\bfseries $0.4505$ &
+$0.4515$ & $0.4525$ & $0.4535$ & $0.4545$\\
+$1.7$ & $0.4554$ & $0.4564$ & $0.4573$ & $0.4582$ & $0.4591$ &
+\cellcolor{rejectred!10}$0.4599$ & $0.4608$ & $0.4616$ & $0.4625$ & $0.4633$\\
+\bottomrule
+\end{tabular}
+\caption{Tabla normal parcial: la fila $1.6$ y la columna $0.05$ se cruzan en el área $0.4505$.}
+\end{table}
+
+\begin{center}
+\begin{tikzpicture}[node distance=5mm,every node/.style={font=\small},
+ box/.style={draw,rounded corners,minimum height=8mm,minimum width=3.1cm,align=center},
+ arr/.style={-{Latex[length=2mm]},thick,draw=rejectred!80!black}]
+\node[box,fill=acceptblue!10] (f) {fila $1.6$};
+\node[box,fill=rejectred!12,right=of f] (c) {columna $0.05$};
+\node[box,fill=rejectred!25,right=of c] (v) {intersección\\$0.4505$};
+\node[box,fill=accentgreen!10,right=of v] (z) {$z=1.65$};
+\draw[arr](f)--(c);\draw[arr](c)--(v);\draw[arr](v)--(z);
+\end{tikzpicture}
+\end{center}
+
+\[
+z_{\alpha}\approx1.65.
+\]
+
+\begin{aclaracion}
+La tabla avanza de centésima en centésima y por eso conduce visualmente a $z\approx1.65$. El cuantil normal más preciso es $1.64485\ldots$, que se redondea a $1.645$. Ambos representan la misma frontera crítica con distinto nivel de redondeo.
+\end{aclaracion}
+
+\textbf{Dos colas con $\alpha=0.01$:}
+\[
+\frac{\alpha}{2}=0.005,
+\qquad
+0.5-0.005=0.4950.
+\]
+El área cercana a $0.4950$ lleva a:
+\[
+z_{\alpha/2}\approx2.58.
+\]
+
+La lectura es análoga. En la fila $2.5$, la columna $0.08$ conduce al área $0.4951$, la más próxima a $0.4950$ dentro de esta tabla:
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{c|ccc}
+\toprule
+$z$ & columna $0.07$ & \cellcolor{rejectred!22}\bfseries columna $0.08$ & columna $0.09$\\
+\midrule
+\cellcolor{rejectred!22}\bfseries fila $2.5$ & $0.4949$ &
+\cellcolor{rejectred!38}\bfseries $0.4951$ & $0.4952$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Por eso se lee $z\approx2.58$; con mayor precisión, $z=2.576$.
+
+\begin{regla}
+Antes de buscar en la tabla, decidir si el contraste es de \textbf{una cola o dos colas}. En dos colas, primero se divide $\alpha$ por $2$.
+\end{regla}
+
+\subsubsection{Dos maneras equivalentes de tomar la decisión}
+
+\textbf{Método A:} comparar $z_{calc}$ con $z_{crit}$.\qquad
+\textbf{Método B:} comparar $\bar{x}$ con los límites críticos reales.
+
+La misma regla de decisión puede expresarse de dos maneras. Por ejemplo, para una prueba bilateral:
+\[
+-z_{\alpha/2}\le z_{calc}\le z_{\alpha/2}
+\]
+es equivalente a exigir que la media muestral quede entre dos límites reales:
+\[
+L_I=\mu_0-z_{\alpha/2}\frac{\sigma}{\sqrt n},
+\qquad
+L_S=\mu_0+z_{\alpha/2}\frac{\sigma}{\sqrt n}.
+\]
+Si $\sigma$ se reemplaza por $s$ en el procedimiento de muestra grande usado por la guía, se emplea el error estándar estimado correspondiente.
+
+\begin{ideaclave}
+No son dos pruebas diferentes: una compara el \textbf{estadístico tipificado} con valores críticos y la otra compara $\bar{x}$ con los \textbf{límites críticos en las unidades originales}.
+\[
+\boxed{\text{Ambos métodos llevan a la misma decisión}.}
+\]
+\end{ideaclave}
+
+\subsubsection{Valores críticos que aparecen repetidamente en la unidad}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc}
+\toprule
+Prueba normal & $\alpha$ & Valor crítico \\
+\midrule
+Unilateral derecha & $0.05$ & $+1.645\approx1.65$\\
+Unilateral izquierda & $0.05$ & $-1.645\approx-1.65$\\
+Bilateral & $0.05$ & $\pm1.96$\\
+Unilateral & $0.01$ & $\pm2.326\approx\pm2.33$ según la dirección\\
+Bilateral & $0.01$ & $\pm2.576\approx\pm2.58$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{\texorpdfstring{Ejemplo $t$ con muestra pequeña: bombillas}{Ejemplo t con muestra pequeña: bombillas}}
+
+\begin{aclaracion}
+No conviene forzar el caso de la pintura para explicar $t$ de Student, porque en el ejemplo troncal conocemos $\sigma=2.4$ y además $n=36$. Para enseñar $t$ debemos cambiar precisamente esas condiciones metodológicas; por eso aquí se conserva el ejemplo de muestra pequeña de la guía.
+\end{aclaracion}
+
+La guía trabaja con $n=8$, $\bar{x}=1070$ h, valor de referencia $1120$ h y una desviación muestral de $125$ h utilizada en el cálculo.
+
+\paso{1}{¿Qué se quiere demostrar?} Verificar si la duración media es menor que $1120$ h.
+\paso{2}{Hipótesis} \[H_0:\mu\ge1120,\qquad H_1:\mu<1120.\]
+\paso{3}{Tipo de prueba} $H_1$ contiene $<$: cola izquierda.
+\paso{4}{Nivel de significancia} \[\alpha=0.05.\]
+\paso{5}{¿Qué estadístico corresponde?} $\sigma$ es desconocida, $n=8$ y se supone normalidad: corresponde $t$ con $\nu=7$.
+\paso{6}{Valor crítico} \[t_{crit}=-1.895,\qquad \text{rechazar si }t<-1.895.\]
+\begin{calculor}
+\texttt{qt(0.05, df = 7)} devuelve $-1.894579\approx-1.895$. Se usa $0.05$ porque la prueba es de cola izquierda y $\nu=n-1=7$.
+\end{calculor}
+\paso{7}{Estadístico calculado}
+\[
+t_{calc}=\frac{1070-1120}{125/\sqrt8}\approx-1.131,
+\qquad \nu=7.
+\]
+\paso{8}{Comparación} \[-1.131>-1.895.\]
+\paso{9}{Decisión} \[\boxed{\text{No rechazar }H_0}.\]
+\paso{10}{Interpretación} La muestra no aporta evidencia suficiente para concluir que la duración media sea menor que $1120$ h.
+
+\begin{aclaracion}
+En el enunciado de la guía, $125$ h aparece como desviación histórica y luego se utiliza dentro del estadístico $t$. Para seguir el procedimiento tal como se desarrolla en la materia, se conserva ese valor en el cálculo y se centra el estudio en la regla de decisión con $t$ y $7$ grados de libertad.
+\end{aclaracion}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=10.8cm,height=4.7cm,xmin=-4,xmax=4,ymin=0,ymax=.40,axis lines=middle,axis y line=none,ytick=\empty,
+ xtick={-1.895,0},xticklabels={$-1.895$,$0$},clip=false]
+\addplot[draw=none,fill=rejectred!30,domain=-4:-1.895,samples=100]{0.384991*(1+x^2/7)^(-4)}\closedcycle;
+\addplot[thick,acceptblue,domain=-4:4,samples=160]{0.384991*(1+x^2/7)^(-4)};
+\draw[dashed] (axis cs:-1.895,0)--(axis cs:-1.895,.07);
+\draw[very thick,altorange] (axis cs:-1.131,0)--(axis cs:-1.131,.20);
+\node[altorange!80!black,align=center] at(axis cs:-1.02,.25)
+ {\small $t_{calc}$\\[-1pt]\scriptsize $-1.131$};
+\end{axis}
+\end{tikzpicture}
+\caption{El estadístico $-1.131$ queda a la derecha del límite $-1.895$: no entra en la región de rechazo.}
+\end{figure}
+
+\begin{oral}
+En un ejercicio, conviene explicar primero \textbf{por qué la prueba es derecha, izquierda o bilateral}; después justificar \textbf{por qué se usa $Z$ o $t$}; y recién entonces calcular. El valor numérico final tiene sentido solamente cuando se compara con la región crítica correspondiente.
+\end{oral}
+
+\begin{preguntaoral}
+\textbf{Pregunta:} ¿por qué aquí no se usa \texttt{qnorm()}?\par
+\textbf{Respuesta corta:} porque se estima $\sigma$ con una muestra pequeña y el estadístico sigue una distribución $t$ con $7$ grados de libertad.\par
+\textbf{Explicación completa:} \texttt{qnorm()} daría el cuantil normal $-1.645$, que no incorpora la incertidumbre adicional de estimar la desviación. \texttt{qt(0.05, df = 7)} produce el crítico correcto, $-1.895$.
+\end{preguntaoral}
+
+\begin{regla}
+Ahora sigue evaluar la calidad de la regla de decisión: para cada media real posible estudiaremos $\beta$ mediante las Curvas C.O.
+\end{regla}
+
+\section{TEMA B -- CARACTERÍSTICAS DE OPERACIÓN}
+\subsection{2-B-1 Curvas características de operación}
+
+\begin{aclaracion}
+En esta sección seguimos \textbf{los límites reales utilizados por la guía para construir sus Curvas C.O.}: $20.75$ min para cola derecha, $19.25$ min para cola izquierda y el intervalo $[19.25,20.75]$ para dos colas. Estos límites se mantienen para reproducir la lógica de la fuente y \textbf{no deben confundirse} con las fronteras que obtuvimos antes al fijar exactamente $\alpha=0.05$.
+\end{aclaracion}
+
+\subsubsection{\texorpdfstring{Para qué sirven: de un $\beta$ a toda una curva}{Para qué sirven: de un beta a toda una curva}}
+
+Hasta ahora calculamos $\beta$ para una alternativa concreta, por ejemplo $\mu=21$. Pero la verdadera media podría ser
+\[
+20.5,\quad21,\quad21.5,\quad22,\ldots
+\]
+Para cada valor existe una probabilidad distinta de no rechazar $H_0$. La Curva Característica de Operación reúne todas esas probabilidades:
+\[
+\boxed{\text{Distintos valores reales de }\mu}
+\Longrightarrow
+\boxed{\text{Un }\beta\text{ para cada valor}}
+\Longrightarrow
+\boxed{\text{Curva C.O.}}.
+\]
+
+La \textbf{Curva Característica de Operación} estudia el Error Tipo II para distintos valores posibles de la verdadera media. La guía define:
+\[
+L(\mu)=P(\text{no rechazar }H_0\mid \mu\text{ es la media real}).
+\]
+
+Cuando la media real pertenece a la alternativa, $L(\mu)$ representa $\beta$ para ese valor de $\mu$.
+
+\begin{ideaclave}
+Una prueba de hipótesis responde: \emph{¿qué decido con esta muestra?} La Curva C.O. responde otra pregunta: \emph{¿qué tan fácil o difícil sería que mi prueba detectara distintos valores reales de $\mu$?}
+\end{ideaclave}
+
+\begin{center}
+\begin{tikzpicture}[
+  every node/.style={font=\footnotesize},
+  start/.style={draw,rounded corners,align=center,text width=6.2cm,
+                minimum width=6.5cm,minimum height=9mm,fill=softgray},
+  decision/.style={draw,diamond,aspect=2.4,align=center,text width=3.2cm,
+                   minimum width=4.7cm,minimum height=1.15cm,fill=yellow!10},
+  final/.style={draw,rounded corners,align=center,text width=4.9cm,
+                minimum width=5.2cm,minimum height=1.55cm},
+  arr/.style={-{Latex[length=1.9mm]},thick}]
+\node[start] (regla) at (0,0)
+ {Fijar $H_0$, $\alpha$, el tipo de cola y la regla de no rechazo};
+\node[start,fill=acceptblue!7] (medias) at (0,-1.65)
+ {Elegir varias medias reales posibles: $\mu_1,\mu_2,\ldots$};
+\node[start,fill=softgray] (calcular) at (0,-3.3)
+ {$\displaystyle L(\mu)=P(\text{no rechazar }H_0\mid\mu)$};
+\node[decision] (alt) at (0,-5.15)
+ {¿La media real pertenece a $H_1$?};
+\node[final,fill=altorange!9] (beta) at (-3.45,-7.35)
+ {$\displaystyle L(\mu)=\beta$\\
+ $\displaystyle\text{potencia}=1-L(\mu)=1-\beta$};
+\node[final,fill=acceptblue!7] (correcta) at (3.45,-7.35)
+ {$L(\mu)$ es la probabilidad de no rechazo\\
+ bajo esa realidad (por ejemplo, cerca de $\mu_0$)};
+\node[start,fill=accentgreen!8] (curva) at (0,-9.15)
+ {Repetir para todas las medias y graficar\\
+ $\mu$ en horizontal y $L(\mu)$ en vertical: \textbf{Curva C.O.}};
+\draw[arr](regla)--(medias); \draw[arr](medias)--(calcular);
+\draw[arr](calcular)--(alt);
+\draw[arr](alt)--node[above left]{Sí}(beta);
+\draw[arr](alt)--node[above right]{No}(correcta);
+\draw[arr](beta)--(curva); \draw[arr](correcta)--(curva);
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Cola derecha: ejemplo de la pintura}
+
+Con $\mu_0=20$, $\sigma=2.4$, $n=36$ y frontera $\bar{x}_c=20.75$, no se rechaza $H_0$ cuando $\bar{x}\le20.75$. Por tanto:
+\[
+L(\mu)=P(\bar{x}\le20.75\mid\mu)
+      =\Phi\!\left(\frac{20.75-\mu}{0.4}\right).
+\]
+
+\begin{calculor}
+Para construir cada punto de la Curva C.O. se usa
+\[
+\texttt{pnorm(20.75, mean = mu, sd = 0.4)}.
+\]
+Por ejemplo, con \texttt{mu = 21} se obtiene $0.2660$. Aquí $\mu$ cambia y la frontera permanece fija.
+\end{calculor}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+\toprule
+Media real $\mu$ & $z=(20.75-\mu)/0.4$ & $L(\mu)$\\
+\midrule
+19.50 & 3.125 & 0.999 \\
+20.00 & 1.875 & 0.970 \\
+20.50 & 0.625 & 0.734 \\
+20.75 & 0.000 & 0.500 \\
+21.00 & -0.625 & 0.266 \\
+21.50 & -1.875 & 0.030 \\
+22.00 & -3.125 & 0.001 \\
+\bottomrule
+\end{tabular}
+\caption{Valores seleccionados de la Curva C.O. de cola derecha del ejemplo de pintura.}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=11.5cm,height=5.5cm,xmin=19.4,xmax=22.05,ymin=0,ymax=1.03,
+ axis lines=left,xlabel={Media real $\mu$},ylabel={$L(\mu)$},ytick={0,.266,.5,.970,1},
+ yticklabels={$0$,$0.266$,$0.500$,$0.970$,$1$},xtick={19.5,20,20.75,21,21.5,22},
+ grid=major,grid style={black!10},clip=false]
+\addplot[very thick,rejectred] coordinates {(18.500,1.00000) (18.550,1.00000) (18.600,1.00000) (18.650,1.00000) (18.700,1.00000) (18.750,1.00000) (18.800,1.00000) (18.850,1.00000) (18.900,1.00000) (18.950,1.00000) (19.000,0.99999) (19.050,0.99999) (19.100,0.99998) (19.150,0.99997) (19.200,0.99995) (19.250,0.99991) (19.300,0.99986) (19.350,0.99977) (19.400,0.99963) (19.450,0.99942) (19.500,0.99911) (19.550,0.99865) (19.600,0.99798) (19.650,0.99702) (19.700,0.99567) (19.750,0.99379) (19.800,0.99123) (19.850,0.98778) (19.900,0.98321) (19.950,0.97725) (20.000,0.96960) (20.050,0.95994) (20.100,0.94792) (20.150,0.93319) (20.200,0.91543) (20.250,0.89435) (20.300,0.86971) (20.350,0.84134) (20.400,0.80921) (20.450,0.77337) (20.500,0.73401) (20.550,0.69146) (20.600,0.64617) (20.650,0.59871) (20.700,0.54974) (20.750,0.50000) (20.800,0.45026) (20.850,0.40129) (20.900,0.35383) (20.950,0.30854) (21.000,0.26599) (21.050,0.22663) (21.100,0.19079) (21.150,0.15866) (21.200,0.13029) (21.250,0.10565) (21.300,0.08457) (21.350,0.06681) (21.400,0.05208) (21.450,0.04006) (21.500,0.03040) (21.550,0.02275) (21.600,0.01679) (21.650,0.01222) (21.700,0.00877) (21.750,0.00621) (21.800,0.00433) (21.850,0.00298) (21.900,0.00202) (21.950,0.00135) (22.000,0.00089)};
+\draw[dashed] (axis cs:20.75,0)--(axis cs:20.75,.5);
+\draw[dashed] (axis cs:19.4,.5)--(axis cs:20.75,.5);
+\addplot[only marks,mark=*,mark size=2.1pt,acceptblue] coordinates {(20,.9696) (21,.26599)};
+\node[font=\scriptsize,fill=white,inner sep=1pt,anchor=south west] at(axis cs:20,.9696)
+ {$L(20)=0.970$};
+\node[font=\scriptsize,fill=white,inner sep=1pt,anchor=north west] at(axis cs:21,.26599)
+ {$L(21)=\beta=0.266$};
+\node[font=\scriptsize,align=center] at(axis cs:21.55,.76)
+ {$\mu\uparrow\Rightarrow\beta\downarrow$\\$n=36$};
+\end{axis}
+\end{tikzpicture}
+\caption{Curva C.O. para una alternativa de cola derecha con frontera fija en $20.75$ min.}
+\end{figure}
+\begin{observargrafico}
+A medida que la verdadera media aumenta, resulta cada vez menos probable que la media muestral permanezca por debajo de $20.75$. Por eso $L(\mu)$ disminuye: el Error Tipo II se vuelve menor para alternativas más alejadas.
+\end{observargrafico}
+
+\subsubsection{Cola izquierda: imagen espejo}
+
+Para la alternativa contraria, la guía usa una frontera inferior $19.25$ min. No se rechaza $H_0$ si $\bar{x}\ge19.25$:
+\[
+L(\mu)=P(\bar{x}\ge19.25\mid\mu).
+\]
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=11.5cm,height=5.5cm,xmin=18.0,xmax=22.0,ymin=0,ymax=1.03,
+ axis lines=left,xlabel={Media real $\mu$},ylabel={$L(\mu)$},ytick={0,.5,1},xtick={18,19,20,21,22},legend style={draw=none,at={(.5,-.18)},anchor=north,legend columns=2}]
+\addplot[very thick,rejectred] coordinates {(18.500,1.00000) (18.550,1.00000) (18.600,1.00000) (18.650,1.00000) (18.700,1.00000) (18.750,1.00000) (18.800,1.00000) (18.850,1.00000) (18.900,1.00000) (18.950,1.00000) (19.000,0.99999) (19.050,0.99999) (19.100,0.99998) (19.150,0.99997) (19.200,0.99995) (19.250,0.99991) (19.300,0.99986) (19.350,0.99977) (19.400,0.99963) (19.450,0.99942) (19.500,0.99911) (19.550,0.99865) (19.600,0.99798) (19.650,0.99702) (19.700,0.99567) (19.750,0.99379) (19.800,0.99123) (19.850,0.98778) (19.900,0.98321) (19.950,0.97725) (20.000,0.96960) (20.050,0.95994) (20.100,0.94792) (20.150,0.93319) (20.200,0.91543) (20.250,0.89435) (20.300,0.86971) (20.350,0.84134) (20.400,0.80921) (20.450,0.77337) (20.500,0.73401) (20.550,0.69146) (20.600,0.64617) (20.650,0.59871) (20.700,0.54974) (20.750,0.50000) (20.800,0.45026) (20.850,0.40129) (20.900,0.35383) (20.950,0.30854) (21.000,0.26599) (21.050,0.22663) (21.100,0.19079) (21.150,0.15866) (21.200,0.13029) (21.250,0.10565) (21.300,0.08457) (21.350,0.06681) (21.400,0.05208) (21.450,0.04006) (21.500,0.03040) (21.550,0.02275) (21.600,0.01679) (21.650,0.01222) (21.700,0.00877) (21.750,0.00621) (21.800,0.00433) (21.850,0.00298) (21.900,0.00202) (21.950,0.00135) (22.000,0.00089)};\addlegendentry{cola derecha}
+\addplot[very thick,acceptblue,dashed] coordinates {(18.000,0.00089) (18.050,0.00135) (18.100,0.00202) (18.150,0.00298) (18.200,0.00433) (18.250,0.00621) (18.300,0.00877) (18.350,0.01222) (18.400,0.01679) (18.450,0.02275) (18.500,0.03040) (18.550,0.04006) (18.600,0.05208) (18.650,0.06681) (18.700,0.08457) (18.750,0.10565) (18.800,0.13029) (18.850,0.15866) (18.900,0.19079) (18.950,0.22663) (19.000,0.26599) (19.050,0.30854) (19.100,0.35383) (19.150,0.40129) (19.200,0.45026) (19.250,0.50000) (19.300,0.54974) (19.350,0.59871) (19.400,0.64617) (19.450,0.69146) (19.500,0.73401) (19.550,0.77337) (19.600,0.80921) (19.650,0.84134) (19.700,0.86971) (19.750,0.89435) (19.800,0.91543) (19.850,0.93319) (19.900,0.94792) (19.950,0.95994) (20.000,0.96960) (20.050,0.97725) (20.100,0.98321) (20.150,0.98778) (20.200,0.99123) (20.250,0.99379) (20.300,0.99567) (20.350,0.99702) (20.400,0.99798) (20.450,0.99865) (20.500,0.99911) (20.550,0.99942) (20.600,0.99963) (20.650,0.99977) (20.700,0.99986) (20.750,0.99991) (20.800,0.99995) (20.850,0.99997) (20.900,0.99998) (20.950,0.99999) (21.000,0.99999) (21.050,1.00000) (21.100,1.00000) (21.150,1.00000) (21.200,1.00000) (21.250,1.00000) (21.300,1.00000) (21.350,1.00000) (21.400,1.00000) (21.450,1.00000) (21.500,1.00000)};\addlegendentry{cola izquierda}
+\end{axis}
+\end{tikzpicture}
+\caption{Las curvas de cola derecha e izquierda son imágenes especulares.}
+\end{figure}
+
+\subsubsection{Prueba bilateral}
+
+Si la región de no rechazo queda entre $19.25$ y $20.75$:
+\[
+L(\mu)=P(19.25\le\bar{x}\le20.75\mid\mu).
+\]
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=11.5cm,height=5.5cm,xmin=18.5,xmax=21.5,ymin=0,ymax=1.02,
+ axis lines=left,xlabel={Media real $\mu$},ylabel={$L(\mu)$},ytick={0,.5,1},xtick={18.5,19,19.5,20,20.5,21,21.5},grid=major,grid style={black!10}]
+\addplot[very thick,rejectred] coordinates {(18.500,0.03040) (18.550,0.04006) (18.600,0.05208) (18.650,0.06681) (18.700,0.08457) (18.750,0.10565) (18.800,0.13029) (18.850,0.15865) (18.900,0.19079) (18.950,0.22662) (19.000,0.26598) (19.050,0.30853) (19.100,0.35381) (19.150,0.40126) (19.200,0.45021) (19.250,0.49991) (19.300,0.54959) (19.350,0.59847) (19.400,0.64580) (19.450,0.69089) (19.500,0.73313) (19.550,0.77202) (19.600,0.80719) (19.650,0.83836) (19.700,0.86537) (19.750,0.88814) (19.800,0.90666) (19.850,0.92097) (19.900,0.93113) (19.950,0.93719) (20.000,0.93921) (20.050,0.93719) (20.100,0.93113) (20.150,0.92097) (20.200,0.90666) (20.250,0.88814) (20.300,0.86537) (20.350,0.83836) (20.400,0.80719) (20.450,0.77202) (20.500,0.73313) (20.550,0.69089) (20.600,0.64580) (20.650,0.59847) (20.700,0.54959) (20.750,0.49991) (20.800,0.45021) (20.850,0.40126) (20.900,0.35381) (20.950,0.30853) (21.000,0.26598) (21.050,0.22662) (21.100,0.19079) (21.150,0.15865) (21.200,0.13029) (21.250,0.10565) (21.300,0.08457) (21.350,0.06681) (21.400,0.05208) (21.450,0.04006) (21.500,0.03040)};
+\draw[dashed] (axis cs:20,0)--(axis cs:20,.939);
+\node at(axis cs:20.18,.89){\small máximo cerca de $\mu_0$};
+\end{axis}
+\end{tikzpicture}
+\caption{En dos colas, la probabilidad de no rechazo es máxima cerca de $\mu_0$ y disminuye hacia ambos lados.}
+\end{figure}
+
+\begin{observargrafico}
+La forma bilateral es simétrica: si la verdadera media se aleja de $20$ tanto hacia abajo como hacia arriba, disminuye la probabilidad de permanecer dentro del intervalo de no rechazo.
+\end{observargrafico}
+
+\begin{regla}
+Ahora sigue el trazado: pasamos de interpretar la forma de $L(\mu)$ a construirla y estudiar cómo cambian $\beta$ y la potencia.
+\end{regla}
+
+\subsection{2-B-2 Trazado de las curvas}
+
+\subsubsection{Efecto de aumentar el tamaño muestral}
+
+La fuente compara $n=36$ con $n=50$ manteniendo fija la frontera $\bar{x}_c=20.75$ min. Al aumentar $n$ disminuye el error estándar:
+\[
+\frac{\sigma}{\sqrt{n}}\downarrow.
+\]
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=11.7cm,height=5.5cm,xmin=19.5,xmax=22,ymin=0,ymax=1.03,
+ axis lines=left,xlabel={Media real $\mu$},ylabel={$L(\mu)$},ytick={0,.5,1},xtick={19.5,20,20.5,21,21.5,22},legend style={draw=none,at={(.98,.96)},anchor=north east}]
+\addplot[very thick,rejectred] coordinates {(18.500,1.00000) (18.550,1.00000) (18.600,1.00000) (18.650,1.00000) (18.700,1.00000) (18.750,1.00000) (18.800,1.00000) (18.850,1.00000) (18.900,1.00000) (18.950,1.00000) (19.000,0.99999) (19.050,0.99999) (19.100,0.99998) (19.150,0.99997) (19.200,0.99995) (19.250,0.99991) (19.300,0.99986) (19.350,0.99977) (19.400,0.99963) (19.450,0.99942) (19.500,0.99911) (19.550,0.99865) (19.600,0.99798) (19.650,0.99702) (19.700,0.99567) (19.750,0.99379) (19.800,0.99123) (19.850,0.98778) (19.900,0.98321) (19.950,0.97725) (20.000,0.96960) (20.050,0.95994) (20.100,0.94792) (20.150,0.93319) (20.200,0.91543) (20.250,0.89435) (20.300,0.86971) (20.350,0.84134) (20.400,0.80921) (20.450,0.77337) (20.500,0.73401) (20.550,0.69146) (20.600,0.64617) (20.650,0.59871) (20.700,0.54974) (20.750,0.50000) (20.800,0.45026) (20.850,0.40129) (20.900,0.35383) (20.950,0.30854) (21.000,0.26599) (21.050,0.22663) (21.100,0.19079) (21.150,0.15866) (21.200,0.13029) (21.250,0.10565) (21.300,0.08457) (21.350,0.06681) (21.400,0.05208) (21.450,0.04006) (21.500,0.03040) (21.550,0.02275) (21.600,0.01679) (21.650,0.01222) (21.700,0.00877) (21.750,0.00621) (21.800,0.00433) (21.850,0.00298) (21.900,0.00202) (21.950,0.00135) (22.000,0.00089)};\addlegendentry{$n=36$}
+\addplot[very thick,acceptblue,dashed] coordinates {(19.500,0.99988) (19.550,0.99980) (19.600,0.99965) (19.650,0.99940) (19.700,0.99901) (19.750,0.99839) (19.800,0.99744) (19.850,0.99600) (19.900,0.99387) (19.950,0.99079) (20.000,0.98644) (20.050,0.98041) (20.100,0.97226) (20.150,0.96145) (20.200,0.94743) (20.250,0.92964) (20.300,0.90755) (20.350,0.88070) (20.400,0.84878) (20.450,0.81162) (20.500,0.76931) (20.550,0.72216) (20.600,0.67073) (20.650,0.61586) (20.700,0.55856) (20.750,0.50000) (20.800,0.44144) (20.850,0.38414) (20.900,0.32927) (20.950,0.27784) (21.000,0.23069) (21.050,0.18838) (21.100,0.15122) (21.150,0.11930) (21.200,0.09245) (21.250,0.07036) (21.300,0.05257) (21.350,0.03855) (21.400,0.02774) (21.450,0.01959) (21.500,0.01356) (21.550,0.00921) (21.600,0.00613) (21.650,0.00400) (21.700,0.00256) (21.750,0.00161) (21.800,0.00099) (21.850,0.00060) (21.900,0.00035) (21.950,0.00020) (22.000,0.00012)};\addlegendentry{$n=50$}
+\end{axis}
+\end{tikzpicture}
+\caption{Con la misma frontera real, una muestra mayor produce una transición más abrupta de la Curva C.O.}
+\end{figure}
+
+\begin{regla}
+En el análisis de la guía, una muestra mayor hace que la distribución de $\bar{x}$ sea más estrecha y que la prueba discrimine con mayor nitidez entre medias cercanas y medias claramente alejadas del criterio.
+\end{regla}
+
+\subsubsection{\texorpdfstring{Distancia estandarizada $d$}{Distancia estandarizada d}}
+
+Necesitamos medir qué tan alejada está una media alternativa respecto de la media planteada por $H_0$. La distancia $d$ mide la separación entre la media nula y una alternativa en unidades de desviación estándar. Primero pensamos
+\[
+d=\frac{\text{distancia entre medias}}{\text{desviación estándar}},
+\]
+y luego escribimos la forma formal:
+
+La guía introduce la distancia estandarizada:
+\[
+d=\frac{|\mu-\mu_0|}{\sigma}.
+\]
+Para $\alpha=0.05$ de una cola y $z_\alpha\approx1.65$, presenta el Error Tipo II en función de $d$ y $n$ mediante la distribución normal. Escribiendo $\Phi$ para el área acumulada normal, el algoritmo de una cola puede condensarse como:
+\[
+\beta=L(d,n)=\Phi\!\left(z_\alpha-d\sqrt n\right).
+\]
+Para dos colas, con el valor crítico $z_{\alpha/2}$:
+\[
+\beta=\Phi\!\left(z_{\alpha/2}-d\sqrt n\right)
+      -\Phi\!\left(-z_{\alpha/2}-d\sqrt n\right).
+\]
+El punto conceptual a recordar es:
+\[
+ d\sqrt{n}\ \text{crece}\quad\Rightarrow\quad \beta\ \text{disminuye}.
+\]
+
+Para mantener el mismo caso de la pintura, si usamos la \textbf{variante didáctica de una cola con $\alpha=0.05$} y queremos estudiar la alternativa real $\mu=21$:
+\[
+d=\frac{|21-20|}{2.4}=0.4167,
+\qquad n=36.
+\]
+Entonces:
+\[
+\beta=\Phi\!\left(1.645-0.4167\sqrt{36}\right)
+     =\Phi(-0.855)\approx0.196,
+\]
+\[
+1-\beta\approx0.804.
+\]
+Este $\beta$ no coincide con $0.266$ del ejemplo original porque aquí fijamos $\alpha=0.05$ y, por lo tanto, usamos una frontera crítica distinta de $20.75$ min.
+
+\newpage
+\paragraph{Guía rápida: ¿cómo aumentar la potencia?}
+
+\begin{center}
+\begin{tikzpicture}[
+  every node/.style={font=\footnotesize},
+  decision/.style={draw,diamond,aspect=2.4,align=center,text width=3.2cm,
+                   minimum width=4.7cm,minimum height=1.15cm,fill=yellow!10},
+  final/.style={draw,rounded corners,align=center,text width=4.65cm,
+                minimum width=4.95cm,minimum height=2.0cm},
+  arr/.style={-{Latex[length=1.9mm]},thick}]
+\node[decision] (objetivo) at (0,0) {¿Quiero que la prueba detecte mejor un cambio real?};
+\node[final,fill=accentgreen!8] (n) at (-5.0,-3.0)
+ {\textbf{Aumentar $n$}\\
+ $\sigma_{\bar{x}}\downarrow\Rightarrow\beta\downarrow$\\
+ $\Rightarrow\text{potencia}\uparrow$};
+\node[final,fill=acceptblue!8] (d) at (0,-3.0)
+ {\textbf{Mayor distancia $d$}\\
+ alternativa más alejada de $\mu_0$\\
+ $\Rightarrow\beta\downarrow\Rightarrow\text{potencia}\uparrow$};
+\node[final,fill=rejectred!8] (alpha) at (5.0,-3.0)
+ {\textbf{¿Reducir $\alpha$?}\\
+ la región de rechazo se achica\\
+ puede ocurrir $\beta\uparrow$: evaluar el intercambio};
+\node[final,fill=softgray,text width=7.8cm,minimum width=8.1cm,
+      minimum height=1.0cm] (cond) at (0,-6.0)
+ {Estas relaciones se interpretan manteniendo comparables el problema, la dirección de la prueba y los demás supuestos.};
+\draw[arr](objetivo)--node[above left]{sí}(n);
+\draw[arr](objetivo)--(d);
+\draw[arr](objetivo)--node[above right]{cuidado}(alpha);
+\draw[arr](n)--(cond); \draw[arr](d)--(cond); \draw[arr](alpha)--(cond);
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Procedimiento para construir e interpretar una curva}
+\begin{enumerate}
+\item Fijar $H_0$, $\alpha$, el tipo de cola y la regla de no rechazo.
+\item Elegir varios valores reales posibles del parámetro.
+\item Calcular $L(\mu)$, la probabilidad de no rechazar $H_0$, para cada valor.
+\item Representar $\mu$ en el eje horizontal y $L(\mu)$ en el vertical.
+\item Leer $L(\mu)$ como $\beta$ cuando $\mu$ pertenece a la alternativa; la potencia es $1-L(\mu)$.
+\end{enumerate}
+\[
+d\uparrow\Rightarrow\beta\downarrow\Rightarrow\text{potencia}\uparrow,
+\]
+\[
+n\uparrow\Rightarrow\frac{\sigma}{\sqrt n}\downarrow
+\Rightarrow\beta\downarrow\Rightarrow\text{potencia}\uparrow.
+\]
+
+\begin{oral}
+La Curva C.O. es una forma de estudiar el Error Tipo II. Para cada valor real posible de $\mu$, indica la probabilidad de que la prueba no rechace $H_0$. Si el valor real se aleja en la dirección de la alternativa, esa probabilidad debería disminuir; por eso aumenta la capacidad de la prueba para detectar el cambio.
+\end{oral}
+
+\begin{regla}
+Ahora sigue ampliar la misma lógica desde una media frente a un valor hasta la comparación entre dos medias.
+\end{regla}
+
+\subsection{2-B-3 Hipótesis relativas a dos medias}
+
+\subsubsection{Qué cambia respecto de una sola media}
+
+Hasta ahora comparábamos una muestra con un valor de referencia:
+\[
+\boxed{\bar{x}-\mu_0}.
+\]
+Ahora comparamos dos poblaciones:
+\[
+\boxed{\text{Grupo 1}}\quad\text{vs.}\quad\boxed{\text{Grupo 2}},
+\qquad \boxed{\bar{x}_1-\bar{x}_2}.
+\]
+\begin{ideaclave}
+La lógica de la prueba de hipótesis no cambia. Lo que cambia es el estadístico.
+\end{ideaclave}
+
+\subsubsection{Antes de calcular: independientes o apareadas}
+
+\begin{center}
+\begin{tikzpicture}[
+  every node/.style={font=\footnotesize},
+  start/.style={draw,rounded corners,align=center,text width=4.6cm,
+                minimum width=4.9cm,minimum height=9mm,fill=softgray},
+  decision/.style={draw,diamond,aspect=2.4,align=center,text width=3.4cm,
+                   minimum width=5.0cm,minimum height=1.25cm,fill=yellow!10},
+  final/.style={draw,rounded corners,align=center,text width=6.15cm,
+                minimum width=6.45cm,minimum height=2.8cm},
+  arr/.style={-{Latex[length=2mm]},thick}]
+\node[start] (a) at (0,0) {Tengo dos conjuntos de datos};
+\node[decision] (b) at (0,-2.0) {¿Las observaciones están apareadas?};
+\node[final,fill=altorange!8] (par) at (-3.8,-5.35)
+ {\textbf{Sí: muestras apareadas}\\
+  $d_i=\text{Antes}_i-\text{Después}_i$\\[2pt]
+  $\displaystyle t=\frac{\bar d-\mu_{d,0}}{s_d/\sqrt n}$\\
+  Grados de libertad: $\nu=n-1$};
+\node[start,fill=acceptblue!7] (ind) at (3.8,-4.25)
+ {\textbf{No: muestras independientes}\\probar sobre $\mu_1-\mu_2$};
+\node[decision] (grande) at (3.8,-6.75)
+ {¿Son grandes o se conocen $\sigma_1$ y $\sigma_2$?};
+\node[final,fill=acceptblue!7] (z) at (-3.7,-10.35)
+ {\textbf{Sí: usar $Z$}\\
+  muestras grandes o varianzas conocidas\\[2pt]
+  $\displaystyle z=
+   \frac{(\bar{x}_1-\bar{x}_2)-\delta}
+        {\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}}$\\
+  Sin grados de libertad};
+\node[final,fill=purplebox!7,text width=6.45cm,minimum width=6.75cm,
+      minimum height=4.2cm] (tb) at (3.75,-11.0)
+ {\textbf{No: usar $t$ bimuestral}\\
+  muestras pequeñas, normales e igual varianza\\[2pt]
+  $\displaystyle s_p^2=
+   \frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2}$\\[3pt]
+  $\displaystyle t=
+   \frac{(\bar{x}_1-\bar{x}_2)-\delta}
+        {s_p\sqrt{1/n_1+1/n_2}}$\\
+  $\nu=n_1+n_2-2$};
+\draw[arr](a)--(b);
+\draw[arr](b)--node[above left]{Sí}(par);
+\draw[arr](b)--node[above right]{No}(ind);
+\draw[arr](ind)--(grande);
+\draw[arr](grande)--node[above left]{Sí}(z);
+\draw[arr](grande)--node[right]{No}(tb);
+\end{tikzpicture}
+\end{center}
+
+\begin{aclaracion}
+La $t$ bimuestral requiere muestras independientes, poblaciones normales y varianzas poblacionales iguales, según el criterio utilizado por la guía. Después de elegir el estadístico $T$ ($Z$ o $t$), el signo de $H_1$ fija la regla:
+\[
+\text{derecha: }T>T_\alpha,\qquad
+\text{izquierda: }T<-T_\alpha,\qquad
+\text{bilateral: }|T|>T_{\alpha/2}.
+\]
+\end{aclaracion}
+
+Ahora se comparan dos poblaciones independientes con medias $\mu_1$ y $\mu_2$. La hipótesis nula general de la guía es:
+\[
+H_0:\mu_1-\mu_2=\delta,
+\]
+donde $\delta$ es una constante, frecuentemente $0$.
+
+Para muestras independientes:
+\[
+E(\bar{x}_1-\bar{x}_2)=\mu_1-\mu_2,
+\]
+\[
+\sigma^2_{\bar{x}_1-\bar{x}_2}=\frac{\sigma_1^2}{n_1}+\frac{\sigma_2^2}{n_2}.
+\]
+
+\textbf{Con varianzas conocidas o muestras grandes:}
+\[
+ z_{calc}=\frac{(\bar{x}_1-\bar{x}_2)-\delta}
+ {\sqrt{\dfrac{\sigma_1^2}{n_1}+\dfrac{\sigma_2^2}{n_2}}}.
+\]
+\begin{leerformula}
+\textbf{Se lee:} diferencia observada entre medias menos diferencia planteada por $H_0$, dividido por el error estándar de la diferencia.\par
+\textbf{Numerador:} $(\bar{x}_1-\bar{x}_2)-\delta$, el exceso observado respecto de la diferencia nula.\par
+\textbf{Denominador:} variabilidad conjunta de ambas medias muestrales.
+\end{leerformula}
+Para muestras grandes, la guía sustituye $\sigma_1,\sigma_2$ por $s_1,s_2$.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{cc}
+\toprule
+Hipótesis alternativa & Rechazar $H_0$ si\\
+\midrule
+$\mu_1-\mu_2<\delta$ & $z<-z_\alpha$\\
+$\mu_1-\mu_2>\delta$ & $z>z_\alpha$\\
+$\mu_1-\mu_2\neq\delta$ & $z<-z_{\alpha/2}$ o $z>z_{\alpha/2}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{\texorpdfstring{Ejemplo $Z$: resistencia de conductores}{Ejemplo Z: resistencia de conductores}}
+
+La guía compara $32$ alambres ordinarios ($\bar{x}_1=0.136$, $s_1=0.004$ ohms) con $32$ alambres de aleación ($\bar{x}_2=0.083$, $s_2=0.005$ ohms). Se quiere probar si la reducción supera $0.050$ ohms:
+\paso{1}{¿Qué se quiere demostrar?} Que la reducción media supera $0.050$ ohms.
+\paso{2}{Hipótesis}
+\[
+H_0:\mu_1-\mu_2=0.050,
+\qquad
+H_a:\mu_1-\mu_2>0.050.
+\]
+\paso{3}{Tipo de prueba} $H_1$ contiene $>$: cola derecha.
+\paso{4}{Nivel de significancia} \[\alpha=0.05.\]
+\paso{5}{¿Qué estadístico corresponde?} Son dos muestras grandes independientes: corresponde $Z$ usando $s_1$ y $s_2$ según el criterio de la guía.
+\paso{6}{Valor crítico} \[z_{crit}=1.645,\qquad \text{rechazar si }z>1.645.\]
+\begin{calculor}
+\texttt{qnorm(0.95, 0, 1)} devuelve $1.644854\approx1.645$. La prueba es de cola derecha, por eso se acumula $1-\alpha=0.95$ a la izquierda.
+\end{calculor}
+\paso{7}{Estadístico calculado}
+\[
+z=\frac{(0.136-0.083)-0.050}
+{\sqrt{0.004^2/32+0.005^2/32}}\approx2.65.
+\]
+\paso{8}{Comparación} \[2.65>1.645.\]
+\paso{9}{Decisión} \[\boxed{\text{Rechazar }H_0}.\]
+\paso{10}{Interpretación} La muestra aporta evidencia suficiente para sostener que la aleación reduce la resistencia en más de $0.050$ ohms.
+
+\begin{preguntaoral}
+\textbf{Respuesta corta:} se rechaza $H_0$ porque $2.65>1.645$.\par
+\textbf{Explicación completa:} la diferencia observada supera a $0.050$ por más de dos errores estándar y cae en la cola derecha definida por $H_a$.
+\end{preguntaoral}
+
+\subsubsection{\texorpdfstring{Muestras pequeñas: prueba $t$ bimuestral}{Muestras pequeñas: prueba t bimuestral}}
+
+Si las muestras son pequeñas, se desconocen las varianzas poblacionales y se supone que las poblaciones son normales con varianzas iguales, la guía utiliza una $t$ bimuestral. Como tenemos dos muestras pequeñas y suponemos igual varianza poblacional, combinamos la información de ambas para obtener una estimación común de la variabilidad:
+\[
+s_1^2,\ s_2^2\ \Longrightarrow\ s_p^2\ \Longrightarrow\ t.
+\]
+
+Varianza combinada:
+\[
+ s_p^2=\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2}.
+\]
+Estadístico:
+\[
+ t_{calc}=\frac{(\bar{x}_1-\bar{x}_2)-\delta}
+ {s_p\sqrt{\dfrac1{n_1}+\dfrac1{n_2}}},
+ \qquad \nu=n_1+n_2-2.
+\]
+\begin{leerformula}
+\textbf{Se lee:} diferencia de medias menos diferencia nula, dividido por el error estándar estimado con la desviación combinada $s_p$.\par
+\textbf{Numerador:} efecto observado respecto de $\delta$.\par
+\textbf{Denominador:} incertidumbre de comparar dos medias independientes bajo el supuesto de varianzas iguales.
+\end{leerformula}
+
+\subsubsection{\texorpdfstring{Ejemplo $t$ bimuestral: fertilizante y trigo}{Ejemplo t bimuestral: fertilizante y trigo}}
+
+Datos de la guía:
+\[
+n_1=n_2=12,\quad
+\bar{x}_1=0.280,\ s_1=0.022,\quad
+\bar{x}_2=0.264,\ s_2=0.020.
+\]
+\paso{1}{¿Qué se quiere demostrar?} Que el fertilizante incrementa el rendimiento medio.
+\paso{2}{Hipótesis}
+\[
+H_0:\mu_1-\mu_2=0,
+\qquad
+H_a:\mu_1-\mu_2>0.
+\]
+\paso{3}{Tipo de prueba} $H_1$ contiene $>$: cola derecha.
+\paso{4}{Nivel de significancia} \[\alpha=0.05.\]
+\paso{5}{¿Qué estadístico corresponde?} Son dos muestras pequeñas independientes, con normalidad y varianzas iguales: corresponde $t$ bimuestral con $\nu=22$.
+\paso{6}{Valor crítico} \[t_{crit}=1.717,\qquad \text{rechazar si }t>1.717.\]
+\begin{calculor}
+\texttt{qt(0.95, df = 22)} devuelve $1.717144\approx1.717$. Los grados de libertad son $12+12-2=22$ y la cola derecha requiere el área acumulada $0.95$.
+\end{calculor}
+\paso{7}{Estadístico calculado} Primero se combina la variabilidad:
+\[
+s_p^2\approx0.000442,
+\qquad s_p\approx0.02102.
+\]
+\[
+t_{calc}=\frac{0.280-0.264}{0.02102\sqrt{1/12+1/12}}\approx1.849.
+\]
+\paso{8}{Comparación} \[1.849>1.717.\]
+\paso{9}{Decisión} \[\boxed{\text{Rechazar }H_0}.\]
+\paso{10}{Interpretación} La muestra aporta evidencia suficiente para concluir que el fertilizante produce un incremento significativo.
+
+\begin{preguntaoral}
+\textbf{Respuesta corta:} se rechaza $H_0$ porque $1.849>1.717$.\par
+\textbf{Explicación completa:} se comparan dos muestras independientes pequeñas, normales y con varianzas iguales; por eso se usa la variabilidad combinada $s_p$ y una $t$ con $22$ grados de libertad.
+\end{preguntaoral}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=10.5cm,height=4.5cm,xmin=-4,xmax=4,ymin=0,ymax=.40,axis lines=middle,axis y line=none,ytick=\empty,
+ xtick={0,1.717},xticklabels={$0$,$1.717$},clip=false]
+\addplot[draw=none,fill=rejectred!28,domain=1.717:4,samples=100]{0.394*(1+x^2/22)^(-11.5)}\closedcycle;
+\addplot[thick,acceptblue,domain=-4:4,samples=160]{0.394*(1+x^2/22)^(-11.5)};
+\draw[dashed](axis cs:1.717,0)--(axis cs:1.717,.09);
+\draw[very thick,altorange](axis cs:1.849,0)--(axis cs:1.849,.075);
+\node[altorange!80!black,align=center] at(axis cs:2.08,.105)
+ {\small $t_{calc}$\\[-1pt]\scriptsize $1.849$};
+\end{axis}
+\end{tikzpicture}
+\caption{El valor $t=1.849$ supera el crítico $1.717$ y entra en la cola de rechazo.}
+\end{figure}
+
+\subsubsection{Error Tipo II para dos medias}
+
+La guía adapta las Curvas C.O. utilizando la diferencia alternativa real $\delta'=\mu_1-\mu_2$ y define:
+\[
+d=\frac{|\delta-\delta'|}{\sqrt{\sigma_1^2+\sigma_2^2}}.
+\]
+Si $n_1\neq n_2$, el tamaño muestral equivalente que aparece en la guía es:
+\[
+ n=\frac{(\sigma_1^2+\sigma_2^2)}
+ {\dfrac{\sigma_1^2}{n_1}+\dfrac{\sigma_2^2}{n_2}}.
+\]
+En el ejemplo de estaturas de la fuente, para $\delta'=0.02$ m se obtiene $\beta=0.5549$.
+
+\subsubsection{Muestras apareadas: independientes vs. apareadas}
+
+Cuando las observaciones vienen en pares, no se analizan como dos muestras independientes. Se define para cada par:
+\[
+d_i=x_{\text{Antes},i}-x_{\text{Después},i}.
+\]
+El problema se transforma en una prueba sobre \textbf{una sola media de diferencias}:
+\[
+\bar d=\frac{\sum d_i}{n},
+\qquad
+s_d=\sqrt{\frac{\sum(d_i-\bar d)^2}{n-1}},
+\]
+\[
+ t_{calc}=\frac{\bar d-\mu_{d,0}}{s_d/\sqrt n},
+ \qquad \nu=n-1.
+\]
+\begin{leerformula}
+\textbf{Se lee:} diferencia media observada menos diferencia propuesta por $H_0$, dividido por el error estándar de las diferencias.\par
+\textbf{Numerador:} cambio medio dentro de las parejas.\par
+\textbf{Denominador:} variabilidad de esos cambios, no la variabilidad de dos grupos separados.
+\end{leerformula}
+
+\begin{center}
+\begin{tikzpicture}[node distance=9mm, every node/.style={font=\small},
+ box/.style={draw,rounded corners,align=center,minimum width=4.2cm,minimum height=9mm},arr/.style={-{Latex},thick}]
+\node[box,fill=altorange!7] (a) {Dos mediciones relacionadas};
+\node[box,fill=softgray,right=of a] (b) {Calcular $d_i$};
+\node[box,fill=accentgreen!7,right=of b] (c) {Prueba sobre $\mu_d$};
+\draw[arr](a)--(b);\draw[arr](b)--(c);
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Ejemplo apareado: programa de seguridad}
+
+La guía registra horas-hombre perdidas antes y después en diez plantas:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{c*{10}{c}}
+\toprule
+Planta &1&2&3&4&5&6&7&8&9&10\\
+\midrule
+Antes &45&73&46&124&33&57&83&34&26&17\\
+Después&36&60&44&119&35&51&77&29&24&11\\
+$d_i$ &9&13&2&5&-2&6&6&5&2&6\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paso{1}{¿Qué se quiere demostrar?} Verificar si el programa reduce las horas-hombre perdidas.
+\paso{2}{Hipótesis} Como $d_i=\text{Antes}-\text{Después}$, una reducción eficaz produce diferencias positivas:
+\[
+H_0:\mu_d=0,
+\qquad
+H_a:\mu_d>0.
+\]
+\paso{3}{Tipo de prueba} $H_1$ contiene $>$: cola derecha.
+\paso{4}{Nivel de significancia} \[\alpha=0.05.\]
+\paso{5}{¿Qué estadístico corresponde?} Son datos antes/después; se calculan diferencias y se usa una $t$ sobre $\mu_d$ con $\nu=9$.
+\paso{6}{Valor crítico} \[t_{crit}=1.833,\qquad \text{rechazar si }t>1.833.\]
+\begin{calculor}
+\texttt{qt(0.95, df = 9)} devuelve $1.833113\approx1.833$. Se usa $\nu=10-1=9$ porque el análisis se realiza sobre las diez diferencias.
+\end{calculor}
+\paso{7}{Estadístico calculado}
+\[
+\bar d=5.2,
+\qquad s_d\approx4.077,
+\qquad
+ t_{calc}=\frac{5.2}{4.077/\sqrt{10}}\approx4.033.
+\]
+\paso{8}{Comparación} \[4.033>1.833.\]
+\paso{9}{Decisión} \[\boxed{\text{Rechazar }H_0}.\]
+\paso{10}{Interpretación} La muestra aporta evidencia suficiente para concluir que el sistema de seguridad reduce las pérdidas.
+
+\begin{preguntaoral}
+\textbf{Respuesta corta:} se rechaza $H_0$ porque $4.033>1.833$.\par
+\textbf{Explicación completa:} no se comparan dos grupos independientes; cada planta aporta una diferencia antes--después. Como las diferencias positivas significan reducción, $H_a:\mu_d>0$ conduce a una cola derecha.
+\end{preguntaoral}
+
+\begin{errorfrecuente}
+No aplicar una prueba de muestras independientes a datos del tipo ``antes y después''. En datos apareados, la información esencial está en las diferencias de cada pareja.
+\end{errorfrecuente}
+
+\begin{regla}
+Ahora sigue la síntesis: elegir el procedimiento correcto y explicar la decisión completa con el vocabulario del problema.
+\end{regla}
+
+\clearpage
+\subsubsection*{Árbol final de selección rápida}
+
+\begin{center}
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize},
+  decision/.style={draw,diamond,aspect=2.4,align=center,text width=2.8cm,
+                   minimum width=4.3cm,minimum height=1.05cm,fill=yellow!10},
+  branch/.style={draw,rounded corners,align=center,text width=3.8cm,
+                 minimum width=4.1cm,minimum height=8mm,fill=softgray},
+  final/.style={draw,rounded corners,align=center,text width=4.35cm,
+                minimum width=4.65cm,minimum height=1.65cm},
+  arr/.style={-{Latex[length=1.8mm]},thick}]
+\node[decision] (inicio) at (0,0) {¿Qué estoy comparando?};
+\node[branch,fill=acceptblue!7] (una) at (-4.0,-2.25) {Una media con $\mu_0$};
+\node[decision] (dos) at (4.0,-2.25) {Dos medias: ¿apareadas?};
+
+\node[final,fill=acceptblue!7] (zsig) at (-4.0,-4.55)
+ {\textbf{$\sigma$ conocida: $Z$}\\
+  $\displaystyle z=\frac{\bar{x}-\mu_0}{\sigma/\sqrt n}$};
+\node[final,fill=acceptblue!7] (zs) at (-4.0,-6.85)
+ {\textbf{$\sigma$ desconocida, $n\ge30$: $Z$ con $s$}\\
+  $\displaystyle z=\frac{\bar{x}-\mu_0}{s/\sqrt n}$};
+\node[final,fill=altorange!8] (tuna) at (-4.0,-9.25)
+ {\textbf{$n<30$ y normalidad: $t$}\\
+  $\displaystyle t=\frac{\bar{x}-\mu_0}{s/\sqrt n}$};
+
+\node[final,fill=altorange!8] (par) at (1.55,-4.8)
+ {\textbf{Sí: diferencias $d_i$}\\
+  $\displaystyle t=\frac{\bar d-\mu_{d,0}}{s_d/\sqrt n}$};
+\node[decision] (ind) at (5.4,-5.0) {No: independientes. ¿Grandes?};
+\node[final,fill=acceptblue!7] (zdos) at (2.8,-8.0)
+ {\textbf{Sí: $Z$}\\
+  $\displaystyle z=\frac{(\bar{x}_1-\bar{x}_2)-\delta}
+  {\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}}$};
+\node[final,fill=purplebox!7] (tdos) at (6.2,-10.35)
+ {\textbf{Pequeñas, normales, igual varianza: $t$}\\
+  $\displaystyle t=\frac{(\bar{x}_1-\bar{x}_2)-\delta}
+  {s_p\sqrt{1/n_1+1/n_2}}$};
+
+\draw[arr](inicio)--node[above left]{una media}(una);
+\draw[arr](inicio)--node[above right]{dos medias}(dos);
+\coordinate (spine) at (-7.0,-2.25);
+\draw[thick] (una.west)--(spine);
+\draw[arr] (spine)|-(zsig.west);
+\draw[arr] (spine)|-(zs.west);
+\draw[arr] (spine)|-(tuna.west);
+\draw[arr](dos)--node[above left]{Sí}(par);
+\draw[arr](dos)--node[right]{No}(ind);
+\draw[arr](ind)--node[above left]{Sí}(zdos);
+\draw[arr](ind)--node[above right]{No}(tdos);
+\end{tikzpicture}
+\end{center}
+
+\begin{regla}
+El árbol selecciona el estadístico. Después todavía hay que fijar la cola con $H_1$, buscar el valor crítico, calcular, comparar, decidir e interpretar.
+\end{regla}
+
+\subsubsection*{Banco de preguntas interpretativas del profesor}
+
+\begin{preguntaoral}
+\textbf{¿Qué hago si el profesor me da un valor de $\bar{x}$?}\par
+\textbf{Respuesta corta:} primero comparo $\bar{x}$ con la frontera para decidir; después necesito saber cuál era la media real para clasificar el resultado.\par
+\textbf{Explicación completa:} la muestra determina si se rechaza $H_0$, pero el tipo de error depende de la realidad. Sin conocer si $H_0$ era verdadera o falsa puede tomarse una decisión, pero no afirmar qué error ocurrió.
+\end{preguntaoral}
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{p{4.4cm}X}
+\toprule
+Pregunta & Respuesta razonada\\
+\midrule
+$\bar{x}=20.40$ con frontera $20.75$ & No rechazar $H_0$. Falta conocer la media real para decidir si fue una decisión correcta o un Error Tipo II.\\
+$\bar{x}=20.90$ y $\mu=20$ & Rechazar $H_0$; como $H_0$ era verdadera, es Error Tipo I.\\
+$\bar{x}=20.50$ y $\mu=21$ & No rechazar $H_0$; como $H_0$ era falsa, es Error Tipo II.\\
+$\bar{x}=21.20$ y $\mu=21$ & Rechazar $H_0$ correctamente; el caso pertenece a la potencia.\\
+¿Qué pasa si aumenta $n$? & Disminuye el error estándar, las curvas se estrechan, suele disminuir $\beta$ y aumentar la potencia para una alternativa fija.\\
+¿Qué pasa si disminuye $\alpha$? & La región de rechazo se vuelve más exigente; disminuye el Error Tipo I pero, manteniendo lo demás fijo, puede aumentar $\beta$.\\
+¿Qué pasa si la media real se aleja de $\mu_0$? & El cambio se vuelve más fácil de detectar; disminuye $\beta$ y aumenta la potencia.\\
+\bottomrule
+\end{tabularx}
+\caption{Modelo de respuesta para preguntas de decisión, errores y cambios en los gráficos.}
+\end{table}
+
+\begin{oral}
+Para interpretar cualquier gráfico conviene hablar en este orden: \textbf{centro de la curva, frontera, lado de rechazo, posición del valor observado, decisión y tipo de resultado}. Una respuesta completa distingue siempre la \textbf{decisión de la muestra} de la \textbf{realidad poblacional}.
+\end{oral}
+
+\section*{Síntesis final para el examen oral}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{3.4cm}X}
+\toprule
+Pregunta que puede aparecer & Respuesta que debe estar clara \\
+\midrule
+¿Qué es una prueba de hipótesis? & Una regla de inferencia para contrastar una afirmación sobre un parámetro con evidencia muestral.\\
+¿Qué es $H_0$? & La hipótesis de partida que se somete a prueba. No rechazarla no demuestra que sea verdadera.\\
+¿Qué indica $H_a$? & Qué conclusión se busca y, mediante su signo, hacia qué cola se dirige la región crítica.\\
+¿Cómo recuerdo las tres colas? & Con la pintura: $\mu>20$ derecha, $\mu<20$ izquierda y $\mu\neq20$ bilateral. Los datos base son los mismos; cambia la pregunta.\\
+¿Qué es $\alpha$? & Probabilidad de Error Tipo I: rechazar $H_0$ siendo verdadera.\\
+¿Qué es $\beta$? & Probabilidad de Error Tipo II: no rechazar $H_0$ siendo falsa para una alternativa concreta.\\
+¿Qué es potencia? & $1-\beta$: probabilidad de detectar correctamente una alternativa real.\\
+¿Cuándo uso $t$? & En el criterio de la guía: muestra pequeña, $\sigma$ desconocida y población normal; se usan $\nu=n-1$ gl.\\
+¿Qué es una Curva C.O.? & La función $L(\mu)$ que muestra la probabilidad de no rechazo de $H_0$ para distintos valores reales del parámetro.\\
+¿Independientes o apareadas? & Independientes: grupos sin emparejamiento. Apareadas: cada unidad tiene dos mediciones y se analiza $d_i$.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{oral}
+Una exposición segura sigue siempre el mismo hilo: \textbf{defino el concepto, planteo $H_0$ y $H_a$, justifico una o dos colas, explico el nivel $\alpha$, elijo el estadístico, ubico el valor crítico, comparo el estadístico calculado y termino interpretando la decisión en el contexto del problema}. Si me preguntan por la calidad de la prueba, conecto $\beta$, potencia y Curvas C.O.
+\end{oral}
+
+\newpage
+\newgeometry{top=1.15cm,bottom=1.2cm,left=1.25cm,right=1.25cm}
+\pagestyle{plain}
+\section*{AYUDA MEMORIA -- CAPÍTULO 2}
+\addcontentsline{toc}{section}{Ayuda memoria -- Capítulo 2}
+\vspace{-3mm}\hrule\vspace{2mm}
+\footnotesize
+\setlength{\columnsep}{7mm}
+
+\begin{multicols}{2}
+\textbf{A. PROCEDIMIENTO GENERAL}
+\begin{enumerate}[leftmargin=1.4em,itemsep=0pt,topsep=2pt]
+\item ¿Qué quiero probar?
+\item Formular $H_0$ y $H_1$.
+\item Determinar cola mirando $H_1$.
+\item Elegir $\alpha$.
+\item Elegir $Z$ o $t$.
+\item Buscar valor crítico.
+\item Calcular estadístico.
+\item Comparar.
+\item Rechazar/no rechazar $H_0$.
+\item Interpretar en contexto.
+\end{enumerate}
+
+\textbf{B. $H_0$ / $H_1$ Y COLAS}
+\[
+H_1:\mu>\mu_0\Rightarrow\text{derecha},\quad
+H_1:\mu<\mu_0\Rightarrow\text{izquierda},
+\]
+\[
+H_1:\mu\neq\mu_0\Rightarrow\text{bilateral}.
+\]
+\begin{center}
+\begin{tikzpicture}[x=0.62cm,y=1.0cm]
+\begin{scope}[xshift=1.7cm]
+\draw[->] (-1.7,0)--(1.7,0);
+\fill[rejectred!38] plot[domain=.78:1.5,samples=35]
+ (\x,{.65*exp(-1.7*\x*\x)}) -- (1.5,0) -- (.78,0) -- cycle;
+\draw[acceptblue,thick] plot[domain=-1.5:1.5,samples=50]
+ (\x,{.65*exp(-1.7*\x*\x)});
+\node[font=\scriptsize] at (0,-.22) {Derecha};
+\end{scope}
+\begin{scope}[xshift=4.35cm]
+\draw[->] (-1.7,0)--(1.7,0);
+\fill[rejectred!38] plot[domain=-1.5:-.78,samples=35]
+ (\x,{.65*exp(-1.7*\x*\x)}) -- (-.78,0) -- (-1.5,0) -- cycle;
+\draw[acceptblue,thick] plot[domain=-1.5:1.5,samples=50]
+ (\x,{.65*exp(-1.7*\x*\x)});
+\node[font=\scriptsize] at (0,-.22) {Izquierda};
+\end{scope}
+\begin{scope}[xshift=7cm]
+\draw[->] (-1.7,0)--(1.7,0);
+\fill[rejectred!38] plot[domain=-1.5:-.92,samples=30]
+ (\x,{.65*exp(-1.7*\x*\x)}) -- (-.92,0) -- (-1.5,0) -- cycle;
+\fill[rejectred!38] plot[domain=.92:1.5,samples=30]
+ (\x,{.65*exp(-1.7*\x*\x)}) -- (1.5,0) -- (.92,0) -- cycle;
+\draw[acceptblue,thick] plot[domain=-1.5:1.5,samples=50]
+ (\x,{.65*exp(-1.7*\x*\x)});
+\node[font=\scriptsize] at (0,-.22) {Bilateral};
+\end{scope}
+\end{tikzpicture}
+\end{center}
+
+\textbf{C. ERROR TIPO I / II}
+\begin{center}
+\begin{tabular}{p{2.6cm}cc}
+\toprule
+ & $H_0$ verdad & $H_0$ falsa\\
+\midrule
+Rechazar $H_0$ & Error I $\alpha$ & Potencia $1-\beta$\\
+No rechazar $H_0$ & Correcto & Error II $\beta$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\[
+\alpha=P(\text{rechazar }H_0\mid H_0\text{ verdadera}),
+\]
+\[
+\beta=P(\text{no rechazar }H_0\mid H_0\text{ falsa}).
+\]
+\begin{center}
+\begin{tikzpicture}[x=.72cm,y=1.2cm]
+\draw[->](-3,0)--(4.8,0);
+\fill[altorange!24] plot[domain=-1:1.25,samples=45]
+ (\x,{.75*exp(-(\x-1.8)^2/2)}) -- (1.25,0) -- (-1,0) -- cycle;
+\fill[accentgreen!24] plot[domain=1.25:4.8,samples=50]
+ (\x,{.75*exp(-(\x-1.8)^2/2)}) -- (4.8,0) -- (1.25,0) -- cycle;
+\fill[rejectred!38] plot[domain=1.25:3,samples=40]
+ (\x,{.75*exp(-\x*\x/2)}) -- (3,0) -- (1.25,0) -- cycle;
+\draw[acceptblue,thick,domain=-3:3,samples=60] plot(\x,{.75*exp(-\x*\x/2)});
+\draw[altorange,thick,domain=-1:4.8,samples=60] plot(\x,{.75*exp(-(\x-1.8)^2/2)});
+\draw[dashed](1.25,0)--(1.25,.7);
+\node[acceptblue,font=\scriptsize] at(-.8,.62){$H_0$};
+\node[altorange,font=\scriptsize] at(2.6,.62){$H_1$};
+\node[rejectred!90!black,font=\scriptsize,align=center,fill=white,inner sep=.7pt] at(2.45,.08){$\alpha$\\$0.0304$};
+\node[altorange!90!black,font=\scriptsize,align=center,fill=white,inner sep=.7pt] at(.35,.13){$\beta$\\$0.2660$};
+\node[accentgreen!70!black,font=\scriptsize,align=center,fill=white,inner sep=.7pt] at(2.15,.35){$1-\beta$\\$0.7340$};
+\end{tikzpicture}
+\end{center}
+
+\columnbreak
+\textbf{D. UNA MEDIA}
+\[
+z=\frac{\bar{x}-\mu_0}{\sigma/\sqrt n},
+\qquad
+t=\frac{\bar{x}-\mu_0}{s/\sqrt n},\quad\nu=n-1.
+\]
+El estadístico mide cuántos errores estándar se aleja la muestra de $H_0$.
+
+\textbf{E. ELECCIÓN $Z/t$}
+\begin{center}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xl}
+\toprule
+Situación & Usar\\\midrule
+$\sigma$ conocida & $Z$\\
+$\sigma$ desconocida, $n\ge30$ & $Z$ con $s$ (guía)\\
+$\sigma$ desconocida, $n$ pequeño, normal & $t$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{F. VALORES CRÍTICOS USUALES}
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+$\alpha$ & Prueba & Crítico\\\midrule
+$0.05$ & una cola & $1.645$\\
+$0.05$ & dos colas & $\pm1.96$\\
+$0.01$ & una cola & $2.33$\\
+$0.01$ & dos colas & $\pm2.58$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{R: ÁREA Y ABSCISA}
+\begin{center}
+\scriptsize
+\begin{tabularx}{\linewidth}{>{\ttfamily}lX}
+qnorm(p) & normal: área $\to$ crítico\\
+pnorm(x) & normal: crítico $\to$ área\\
+qt(p,df) & Student: área $\to$ crítico\\
+pt(t,df) & Student: crítico $\to$ área\\
+\end{tabularx}
+\end{center}
+Derecha: $p=1-\alpha$; izquierda: $p=\alpha$; bilateral: $p=1-\alpha/2$ para el crítico positivo.
+
+\textbf{Decisión equivalente}
+\[
+z_{calc}\text{ vs. }z_{crit}
+\quad\Longleftrightarrow\quad
+\bar{x}\text{ vs. límites reales}.
+\]
+
+\begin{regla}
+Nunca decir ``aceptar $H_0$''. Usar \textbf{rechazar} o \textbf{no rechazar $H_0$}.
+\end{regla}
+\end{multicols}
+
+\newpage
+\noindent{\Large\bfseries AYUDA MEMORIA -- CAPÍTULO 2 (continuación)}\par
+\vspace{1mm}\hrule\vspace{2mm}
+\footnotesize
+\begin{multicols}{2}
+\textbf{G. CASO DE LA PINTURA}
+\[
+\mu_0=20,\quad\sigma=2.4,\quad n=36,
+\quad\sigma_{\bar{x}}=0.4.
+\]
+\begin{center}
+\begin{tabular}{ll}
+¿Más de $20$? & derecha\\
+¿Menos de $20$? & izquierda\\
+¿Cambió respecto de $20$? & bilateral
+\end{tabular}
+\end{center}
+Criterio original de la guía:
+\[
+\bar{x}>20.75,\qquad \alpha\approx0.0304,
+\]
+\[
+\beta_{\mu=21}\approx0.2660,\qquad 1-\beta\approx0.7340.
+\]
+\scriptsize
+\texttt{qnorm(0.95)} $\approx1.645$;\quad
+\texttt{pnorm(20.75,20,0.4,lower.tail=FALSE)} $\approx0.0304$;\quad
+\texttt{pnorm(20.75,21,0.4)} $\approx0.2660$.
+\footnotesize
+
+\textbf{H. CURVA C.O.}
+\[
+L(\mu)=P(\text{no rechazar }H_0\mid\mu),
+\qquad d=\frac{|\mu-\mu_0|}{\sigma}.
+\]
+\[
+d\uparrow\Rightarrow\beta\downarrow,\qquad
+n\uparrow\Rightarrow\beta\downarrow,\qquad
+1-\beta=\text{potencia}.
+\]
+\begin{center}
+\begin{tikzpicture}[x=1.2cm,y=1.5cm]
+\draw[->](0,0)--(4.4,0) node[right,font=\scriptsize]{$\mu$};
+\draw[->](0,0)--(0,1.2) node[above,font=\scriptsize]{$L(\mu)$};
+\draw[rejectred,thick,domain=0:4.2,samples=60]
+ plot(\x,{1/(1+exp(3*(\x-2.1)))});
+\draw[dashed](2.1,0)--(2.1,.5);
+\end{tikzpicture}
+\end{center}
+Pintura: para alternativas mayores, la curva de cola derecha disminuye.
+
+\textbf{I. DOS MEDIAS}
+\[
+H_0:\mu_1-\mu_2=\delta.
+\]
+Muestras grandes o varianzas conocidas:
+\[
+z=\frac{(\bar{x}_1-\bar{x}_2)-\delta}
+{\sqrt{\dfrac{\sigma_1^2}{n_1}+\dfrac{\sigma_2^2}{n_2}}}.
+\]
+Si $\sigma_1,\sigma_2$ son desconocidas y las muestras son grandes, usar $s_1,s_2$ según la guía.\\
+\textit{Recordatorio: fertilizante vs. control = dos medias independientes.}
+
+\columnbreak
+\textbf{J. $t$ BIMUESTRAL}
+\[
+s_p^2=\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2},
+\]
+\[
+t=\frac{(\bar{x}_1-\bar{x}_2)-\delta}
+{s_p\sqrt{\dfrac1{n_1}+\dfrac1{n_2}}},
+\qquad\nu=n_1+n_2-2.
+\]
+Dos muestras pequeñas, normales, independientes y con varianzas iguales:
+\[
+s_1^2,s_2^2\Rightarrow s_p^2\Rightarrow t.
+\]
+
+\textbf{K. APAREADAS}
+\[
+d_i=x_{\text{antes},i}-x_{\text{después},i},
+\]
+\[
+t=\frac{\bar d-\mu_{d,0}}{s_d/\sqrt n},
+\qquad\nu=n-1.
+\]
+\begin{errorfrecuente}
+Antes/después $\Rightarrow$ \textbf{no son independientes}. Calcular diferencias $d_i$ y probar sobre $\mu_d$.
+\end{errorfrecuente}
+
+\textbf{ÁRBOL FINAL DE ELECCIÓN}
+\begin{center}
+\begin{tabular}{c@{\qquad}c}
+\multicolumn{2}{c}{\fbox{¿Cada observación tiene pareja natural?}}\\[3pt]
+$\swarrow$ Sí & No $\searrow$\\[2pt]
+\fcolorbox{altorange}{altorange!8}{\strut Apareadas: usar $d_i$} &
+\fcolorbox{acceptblue}{acceptblue!7}{\strut Independientes: $\mu_1-\mu_2$}
+\end{tabular}
+\end{center}
+
+\textbf{Frases mínimas para el oral}
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt]
+\item Pintura: ``¿tarda más de $20$?'' $\Rightarrow$ derecha.
+\item Pintura: ``¿cambió?'' $\Rightarrow$ bilateral.
+\item Fertilizante vs. control $\Rightarrow$ independientes.
+\item Seguridad antes/después $\Rightarrow$ apareadas.
+\end{itemize}
+\end{multicols}
+
+\vfill
+\addcontentsline{toc}{section}{Fuentes de cátedra utilizadas}
+\scriptsize\noindent\textbf{Fuentes de cátedra:}
+\textit{Capitulo 2 - Pruebas de hipotesis} (material de estudio del usuario) y
+\textit{2-hipotesis.docx}, Cátedra Estadística Aplicada II, Universidad de Mendoza.
+\restoregeometry
+
+\end{document}
