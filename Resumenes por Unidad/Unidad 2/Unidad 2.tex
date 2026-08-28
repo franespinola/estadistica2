@@ -288,13 +288,13 @@ $z_{calc}$ y $t_{calc}$: estadísticos calculados que se comparan con el valor c
 \textbf{Población} & \textbf{Tamaño de muestra} & \textbf{$\sigma$ conocida} & \textbf{$\sigma$ desconocida}\\
 \midrule
 \rowcolor{white}
-Normal & Grande, $n\ge30$ & $Z$: usar $\sigma/\sqrt n$ & Según el criterio de la cátedra, $Z$ con $s/\sqrt n$\\
+Normalmente dist. & Grande, $n\ge30$ & $Z$: usar $\sigma/\sqrt n$ & Según el criterio de la cátedra, $Z$ con $s/\sqrt n$\\
 \rowcolor{grisclaro}
-Normal & Pequeña, $n<30$ & $Z$: usar $\sigma/\sqrt n$ & $t$ de Student con $s/\sqrt n$ y $\nu=n-1$\\
+Normalmente dist. & Pequeña, $n<30$ & $Z$: usar $\sigma/\sqrt n$ & $t$ de Student con $s/\sqrt n$ y $\nu=n-1$\\
 \rowcolor{white}
-No normal & Grande, $n\ge30$ & Aproximación $Z$ por TCL & Aproximación $Z$ con $s$ por TCL\\
+No normalmente dist. & Grande, $n\ge30$ & Aproximación $Z$ por TCL & Aproximación $Z$ con $s$ por TCL\\
 \rowcolor{grisclaro}
-No normal & Pequeña, $n<30$ & No aplicar automáticamente $Z$; el apunte original menciona cotas de Chebyshev & No aplicar automáticamente $t$; revisar otro método\\
+No normalmente dist. & Pequeña, $n<30$ & No aplicar automáticamente $Z$; el apunte original menciona cotas de Chebyshev & No aplicar automáticamente $t$; revisar otro método\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -309,7 +309,7 @@ Comenzar por la forma de la población; después revisar el tamaño muestral y, 
 
 \begin{center}
 \begin{tikzpicture}[x=1cm,y=1cm]
-\node[onemeanq] (normal) at (0,0) {¿La población es aproximadamente normal?};
+\node[onemeanq] (normal) at (0,0) {¿La población es normalmente distribuida?};
 
 \node[onemeanq] (nN) at (-6.2,-2.25) {¿La muestra es grande?\\$n\ge30$};
 \node[onemeanq] (nX) at (6.2,-2.25) {¿La muestra es grande?\\$n\ge30$};
@@ -392,7 +392,7 @@ Después se compara $z_{calc}$ con las abscisas críticas estándar. Por ejemplo
 
 \subsection{Método B: límites en unidades reales}
 
-Se conserva $\bar x$ en sus unidades originales y se trasladan los valores críticos a la escala del problema. Para una prueba bilateral:
+Se conserva $\bar x$ en sus unidades originales y se trasladan los valores críticos a la escala del problema (se desnormaliza). Para una prueba bilateral:
 \[
 LI=\mu_0-z_{\alpha/2}\frac{\sigma}{\sqrt n},
 \qquad
@@ -583,7 +583,7 @@ Apareadas & Una diferencia por cada pareja & Diferencias independientes y aproxi
 \thispagestyle{empty}
 \subsection{Árbol de decisión para comparar dos medias}
 
-El árbol ocupa una página completa para que puedan leerse las condiciones y las fórmulas. Primero se identifica si los datos están apareados; la rama independiente continúa con el tamaño muestral y las varianzas.
+Primero se identifica si los datos están apareados; la rama independiente continúa con el tamaño muestral y las varianzas.
 
 \begin{center}
 \resizebox{.86\linewidth}{!}{%

@@ -1,0 +1,774 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.8cm,bottom=1.8cm,left=2cm,right=2cm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,booktabs,tabularx,array,float,graphicx,xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem,fancyhdr,hyperref,microtype,ragged2e,tikz,lscape}
+\usetikzlibrary{arrows.meta,positioning,babel,shapes.geometric}
+\definecolor{azul}{HTML}{24557A}\definecolor{azulclaro}{HTML}{EAF3F9}
+\definecolor{verde}{HTML}{277A54}\definecolor{verdeclaro}{HTML}{EAF6EF}
+\definecolor{rojo}{HTML}{B33B3B}\definecolor{rojoclaro}{HTML}{FBEAEA}
+\definecolor{naranja}{HTML}{C46A1B}\definecolor{naranjaclaro}{HTML}{FFF3DD}
+\definecolor{gris}{HTML}{4E5962}\definecolor{grisclaro}{HTML}{F2F4F5}
+\hypersetup{colorlinks=true,linkcolor=azul,urlcolor=azul,pdftitle={Unidad 3 - Guia de exposicion oral}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4.5pt}\setlength{\emergencystretch}{2em}
+\setlist[enumerate]{leftmargin=1.9em,itemsep=2.5pt,topsep=3pt}
+\setlist[itemize]{leftmargin=1.5em,itemsep=2.5pt,topsep=3pt}
+\renewcommand{\arraystretch}{1.18}
+\pagestyle{fancy}\fancyhf{}\fancyfoot[C]{\textcolor{gris}{\thepage}}\renewcommand{\headrulewidth}{0pt}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcommand{\Hcero}{H_0}\newcommand{\Huno}{H_1}\newcommand{\phat}{\widehat p}
+\newtcolorbox{oral}[1][Guion oral]{enhanced,breakable,colback=azulclaro,colframe=azul,boxrule=.55pt,arc=1mm,title=#1,fonttitle=\bfseries,coltitle=azul}
+\newtcolorbox{formula}[1][Fórmula principal]{enhanced,breakable,colback=azulclaro,colframe=azul,boxrule=.55pt,arc=1mm,title=#1,fonttitle=\bfseries,coltitle=azul}
+\newtcolorbox{errorbox}[1][Errores frecuentes]{enhanced,breakable,colback=rojoclaro,colframe=rojo,boxrule=.45pt,arc=1mm,title=#1,fonttitle=\bfseries,coltitle=rojo}
+\newtcolorbox{comprobacion}[1][Comprobación]{enhanced,breakable,colback=verdeclaro,colframe=verde,boxrule=.45pt,arc=1mm,title=#1,fonttitle=\bfseries,coltitle=verde}
+\newtcolorbox{note}[1][Idea clave]{enhanced,breakable,colback=naranjaclaro,colframe=naranja,boxrule=.45pt,arc=1mm,title=#1,fonttitle=\bfseries,coltitle=naranja}
+\newcommand{\inicio}[1]{\textbf{1. Frase para comenzar.} ``#1''\par}
+\newcommand{\cierre}[1]{\textbf{21. Frase de cierre.} ``#1''\par}
+\tikzset{
+  decision/.style={diamond,aspect=2.15,draw=naranja,fill=naranjaclaro,very thick,
+    align=center,inner sep=1.5pt,font=\bfseries\scriptsize,text width=3.15cm},
+  resultado/.style={rounded corners=2mm,draw=azul,fill=azulclaro,very thick,
+    align=center,inner sep=5pt,font=\scriptsize,text width=3.35cm,minimum height=1.45cm},
+  advertencia/.style={rounded corners=2mm,draw=naranja,fill=naranjaclaro,very thick,
+    align=center,inner sep=5pt,font=\scriptsize,text width=3.35cm,minimum height=1.45cm},
+  rama/.style={-{Stealth[length=2.2mm]},draw=gris,thick},
+  etiqueta/.style={font=\bfseries\scriptsize,fill=white,inner sep=1pt}
+}
+\AfterEndEnvironment{landscape}{\pdfpageattr{/Rotate 0}}
+\begin{document}
+\begin{titlepage}\thispagestyle{empty}\centering\vspace*{2cm}
+{\color{azul}\rule{\textwidth}{1.2pt}}\\[1.2cm]
+{\fontsize{28}{33}\selectfont\bfseries\color{azul} Estadística II}\\[5mm]
+{\LARGE Unidad 3: guía completa de exposición oral}\\[4mm]
+{\large Varianza, proporciones y pruebas $\chi^2$}\\[1.1cm]
+\begin{tcolorbox}[width=.82\textwidth,colback=grisclaro,colframe=azul]
+\RaggedRight\textbf{Tema A: Varianza}\par
+Estimación puntual, rango, intervalos y prueba de hipótesis.\par\medskip
+\textbf{Tema B: Proporciones}\par
+Estimación, intervalos, pruebas, comparación de grupos, independencia y bondad de ajuste.
+\end{tcolorbox}\vfill{\color{azul}\rule{\textwidth}{1.2pt}}
+\end{titlepage}
+\pagenumbering{roman}\tableofcontents\clearpage\pagenumbering{arabic}
+
+\section{Cómo organizar una exposición oral}
+\begin{oral}[Orden universal]
+``Primero identifico el parámetro. Después explico qué se quiere estimar o comprobar y reviso las condiciones. Si corresponde, planteo las hipótesis. Escribo la fórmula, nombro y leo sus símbolos, sustituyo los datos y muestro todas las operaciones. Luego selecciono la distribución, la cola, el nivel de significación y los grados de libertad. Finalmente comparo, decido e interpreto dentro del contexto.''
+\end{oral}
+
+Cada tema de esta guía mantiene el siguiente orden: título; frase inicial; qué estudia; idea intuitiva; utilidad; ejemplo práctico; datos; objetivo; supuestos; conceptos previos; fórmula; símbolos; lectura oral; interpretación de la fórmula; gráfico; procedimiento; ejercicio; interpretación; errores; guion oral; cierre.
+
+\subsection{Cómo describir los gráficos}
+\begin{itemize}
+\item \textbf{Ejes:} el horizontal contiene valores del estadístico o de la variable; el vertical representa densidad o probabilidad relativa.
+\item \textbf{Curva:} la Normal es simétrica; $\chi^2$ solo toma valores positivos y suele tener cola derecha; Poisson describe conteos enteros.
+\item \textbf{Áreas:} representan probabilidades. Las colas críticas suman $\alpha$ y contienen los resultados incompatibles con $H_0$.
+\item \textbf{Decisión:} se ubica el estadístico calculado. Si cae en una región crítica, se rechaza $H_0$.
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[->] (0,0)--(7,0) node[right] {estadístico};
+\draw[azul,thick] plot[smooth] coordinates{(0.2,.05)(1,.5)(2,1.15)(3,1)(4,.65)(5,.32)(6,.12)(6.8,.03)};
+\fill[rojoclaro] (5.4,0)--plot[smooth] coordinates{(5.4,.23)(6,.12)(6.8,.03)}--(6.8,0)--cycle;
+\draw[rojo,dashed] (5.4,0)--(5.4,.23);
+\node[below=2pt,rojo] at (5.4,0) {$Q_{1-\alpha}$};
+\node[rojo] at (6.05,.55) {cola de rechazo};
+\end{tikzpicture}
+\end{center}
+
+\subsection{Convención única de cuantiles}
+\[
+Q_p(\nu)=\chi^2_{p,\nu},\qquad P(\chi^2_\nu\le Q_p(\nu))=p.
+\]
+Se lee: ``$Q_p$ es el valor que deja probabilidad acumulada $p$ a su izquierda en una $\chi^2$ con $\nu$ grados de libertad.''
+
+\clearpage
+\begin{landscape}\pdfpageattr{/Rotate 90}
+\subsection{Mapa general de decisión de la Unidad 3}
+Primero se identifica la pregunta estadística. Cada hoja remite al bloque donde se verifican las condiciones, se desarrolla la fórmula y se interpreta el resultado.
+
+\begin{center}
+\begin{tikzpicture}[node distance=1cm]
+\node[decision,text width=3.6cm] (raiz) at (0,5.3) {¿Qué pregunta debe responderse?};
+
+\node[decision] (disp) at (-9,2.8) {¿Se estudia la dispersión?};
+\node[decision] (una) at (-3,2.8) {¿Se estudia una sola proporción?};
+\node[decision] (grupos) at (3,2.8) {¿Se comparan grupos o variables?};
+\node[decision] (modelo) at (9,2.8) {¿Se contrasta una distribución teórica?};
+
+\node[resultado,text width=4cm] (rdisp) at (-9,-.1) {\textbf{Bloque Varianza}\\$s^2$, $s$, $R/d_2$, intervalo para $\sigma^2$ o $\sigma$, o prueba $\chi^2$.};
+\node[resultado,text width=4cm] (runa) at (-3,-.1) {\textbf{Una proporción}\\Estimación puntual, intervalo exacto o normal, tamaño muestral, fallas raras o prueba $Z$.};
+\node[resultado,text width=4cm] (rgrupos) at (3,-.1) {\textbf{Comparaciones}\\Dos proporciones, homogeneidad, tabla $r\times c$ o independencia.};
+\node[resultado,text width=4cm] (rmodelo) at (9,-.1) {\textbf{Bondad de ajuste}\\Calcular $P_i$, $E_i=nP_i$, agrupar y contrastar Poisson, Normal u otro modelo.};
+
+\draw[rama] (raiz)--node[etiqueta,pos=.55] {dispersión} (disp);
+\draw[rama] (raiz)--node[etiqueta,pos=.55] {una tasa} (una);
+\draw[rama] (raiz)--node[etiqueta,pos=.55] {comparar} (grupos);
+\draw[rama] (raiz)--node[etiqueta,pos=.55] {ajustar} (modelo);
+\draw[rama] (disp)--node[etiqueta] {sí} (rdisp);
+\draw[rama] (una)--node[etiqueta] {sí} (runa);
+\draw[rama] (grupos)--node[etiqueta] {sí} (rgrupos);
+\draw[rama] (modelo)--node[etiqueta] {sí} (rmodelo);
+\end{tikzpicture}
+\end{center}
+
+\begin{oral}[Lectura rápida del mapa]
+``Primero pregunto qué parámetro o relación se estudia. Si es dispersión, voy al bloque Varianza. Si es una tasa, uso los procedimientos para una proporción. Si aparecen grupos o dos variables cualitativas, distingo comparación, homogeneidad e independencia. Si se compara una tabla observada con probabilidades teóricas, corresponde bondad de ajuste.''
+\end{oral}
+\end{landscape}
+\clearpage
+
+\begin{landscape}\pdfpageattr{/Rotate 90}
+\section{Tema A: Varianza}
+\subsection{Árbol de decisión para Varianza}
+La primera decisión es distinguir si se necesita un valor, un intervalo o una prueba. Después se revisan normalidad, tamaño muestral y la información disponible.
+
+\begin{center}
+\begin{tikzpicture}
+\node[decision,text width=3.7cm] (objetivo) at (0,5.5) {¿Qué se quiere hacer con la dispersión?};
+\node[decision] (valor) at (-7,3) {¿Se pide un único valor?};
+\node[decision] (intervalo) at (0,3) {¿Se pide un conjunto de valores plausibles?};
+\node[decision] (prueba) at (7,3) {¿Se propone un valor $\sigma_0^2$?};
+
+\node[decision,text width=3cm] (rango) at (-8.6,.2) {¿Solo se dispone del rango y $n$?};
+\node[resultado] (puntual) at (-4.7,.2) {\textbf{Estimación puntual}\\$\widehat{\sigma^2}=s^2$, $\widehat\sigma=s$.};
+\node[resultado,text width=4cm] (ic) at (0,.2) {\textbf{Intervalo exacto}\\Población Normal, $\nu=n-1$ y cuantiles $\chi^2$. Para $\sigma$, tomar raíz de ambos extremos.};
+\node[resultado,text width=4cm] (test) at (7,.2) {\textbf{Prueba de una varianza}\\$T=(n-1)s^2/\sigma_0^2$. La cola la determina $H_1$.};
+
+\node[resultado] (rd2) at (-10.4,-2.7) {\textbf{Estimación por rango}\\$\widehat\sigma=R/d_2(n)$. Útil con subgrupos pequeños y Normalidad.};
+\node[advertencia] (norango) at (-6.1,-2.7) {Si hay todos los datos, preferir $s$ o $s^2$: utilizan la información completa.};
+\node[advertencia,text width=4cm] (noic) at (0,-2.7) {Si no puede sostenerse Normalidad, el intervalo $\chi^2$ exacto no debe aplicarse automáticamente.};
+\node[resultado,text width=4cm] (cola) at (7,-2.7) {$H_1:\sigma^2>\sigma_0^2$: derecha.\\$H_1:\sigma^2<\sigma_0^2$: izquierda.\\$H_1:\sigma^2\ne\sigma_0^2$: dos colas.};
+
+\draw[rama] (objetivo)--node[etiqueta] {estimar} (valor);
+\draw[rama] (objetivo)--node[etiqueta] {acotar} (intervalo);
+\draw[rama] (objetivo)--node[etiqueta] {contrastar} (prueba);
+\draw[rama] (valor)--node[etiqueta] {sí} (rango);
+\draw[rama] (rango)--node[etiqueta] {sí} (rd2);
+\draw[rama] (rango)--node[etiqueta] {no} (norango);
+\draw[rama] (valor)--node[etiqueta,pos=.25] {datos completos} (puntual);
+\draw[rama] (intervalo)--node[etiqueta] {Normal} (ic);
+\draw[rama] (intervalo)--node[etiqueta,pos=.75] {no Normal} (noic);
+\draw[rama] (prueba)--node[etiqueta] {sí} (test);
+\draw[rama] (test)--(cola);
+\end{tikzpicture}
+\end{center}
+
+\begin{oral}[Lectura rápida del árbol]
+``Si piden un valor puntual uso $s^2$ o $s$; si solo tengo extremos y subgrupos pequeños puedo usar $R/d_2$. Para un intervalo exacto o una prueba de varianza necesito Normalidad y uso $\chi^2$ con $n-1$ grados de libertad. En una prueba, el signo de $H_1$ determina la cola.''
+\end{oral}
+\end{landscape}
+\clearpage
+
+\subsection{Varianza y desviación estándar}
+\inicio{En este tema estudio cuánto se dispersan los datos alrededor de su media.}
+\textbf{2--6. Qué estudia, idea, utilidad y ejemplo.} La varianza poblacional $\sigma^2$ mide dispersión cuadrática; la desviación estándar $\sigma$ expresa esa dispersión en las unidades originales. Sirven para describir estabilidad, variabilidad o precisión. Por ejemplo, dos procesos pueden tener igual media pero diferente regularidad.\par
+\textbf{7--10. Datos, objetivo, supuestos y previos.} Se necesitan datos cuantitativos $x_1,\ldots,x_n$, una muestra representativa e independiente, y la media muestral $\bar x$. Se desea estimar la dispersión.\par
+\begin{formula}
+\[
+\bar x=\frac1n\sum_{i=1}^n x_i,\qquad
+s^2=\frac{\sum_{i=1}^n(x_i-\bar x)^2}{n-1},\qquad s=\sqrt{s^2}.
+\]
+\textbf{12. Símbolos:} $x_i$ dato; $\bar x$ media; $n$ tamaño; $s^2$ varianza muestral; $s$ desvío muestral. $s^2$ queda en unidades al cuadrado y $s$ en unidades originales.\par
+\textbf{13--14. Lectura e interpretación:} ``sumo los cuadrados de las diferencias entre cada dato y la media y divido por $n-1$''. Se eleva al cuadrado para evitar cancelaciones. Se divide por $n-1$ porque la media fue estimada con la muestra y queda un grado de libertad menos; así $s^2$ es insesgado para $\sigma^2$.
+\end{formula}
+\textbf{15. Gráfico.} En un diagrama de puntos, mayor separación horizontal respecto de la media implica mayor varianza.\par
+\textbf{16--17. Procedimiento y ejemplo.} Para $2,4,6$: $\bar x=(2+4+6)/3=4$; desviaciones $-2,0,2$; cuadrados $4,0,4$; suma $8$; $s^2=8/(3-1)=4$ y $s=\sqrt4=2$.\par
+\textbf{18. Interpretación:} la dispersión típica es $2$ unidades.\par
+\begin{errorbox}No confundir $s^2$ con $s$ ni decir que $s$ es exactamente insesgado para $\sigma$; su sesgo es pequeño en muestras grandes.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``La varianza resume la dispersión cuadrática y el desvío la expresa en las unidades originales. Calculo primero la media, luego las desviaciones, sus cuadrados y divido por $n-1$. Una varianza mayor indica datos más separados. Cierro interpretando $s$, porque conserva las unidades del problema.''\end{oral}
+\cierre{La media indica el centro; la desviación estándar indica cuánto se apartan normalmente los datos de ese centro.}
+
+\subsection{Estimación puntual de la varianza}
+\inicio{Como no conozco toda la población, utilizo una muestra para obtener una estimación puntual de su dispersión.}
+\textbf{2--10. Idea, utilidad, datos y condiciones.} El parámetro es $\sigma^2$ y el estimador es $S^2$. Se usa cuando se pide un único valor representativo, no un rango de confianza ni una decisión. Se requiere una muestra aleatoria independiente.\par
+\begin{formula}\[
+\widehat{\sigma^2}=s^2,\qquad \widehat\sigma=s.
+\]
+\textbf{Lectura:} ``sigma cuadrado se estima con ese cuadrado y sigma con ese''. $E(S^2)=\sigma^2$; en cambio, $S$ tiene un pequeño sesgo para $\sigma$.
+\end{formula}
+\textbf{15--18. Procedimiento, ejemplo e interpretación.} Con el ejemplo anterior, $s^2=4$ es la estimación puntual de $\sigma^2$ y $s=2$ estima $\sigma$. No se afirma que los parámetros sean exactamente esos valores.\par
+\begin{errorbox}Una estimación puntual no informa su precisión. Para expresar incertidumbre se necesita un intervalo de confianza.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``La estimación puntual reemplaza el parámetro desconocido por un estadístico muestral. Para la varianza uso $s^2$ y para el desvío uso $s$. Explico cómo fueron calculados y aclaro que son aproximaciones obtenidas con una muestra.''\end{oral}
+\cierre{La estimación puntual da el mejor valor único disponible, pero no muestra por sí sola cuánto puede variar.}
+
+\subsection{Estimación mediante el rango}
+\inicio{Cuando trabajo con subgrupos pequeños puedo estimar el desvío utilizando solamente los extremos.}
+\textbf{2--10. Idea, utilidad, datos y condiciones.} El rango es $R=x_{\max}-x_{\min}$. Bajo población Normal, $E(R)=d_2\sigma$. Es práctico en control de calidad con subgrupos pequeños; pierde eficiencia cuando $n$ crece. Se necesitan máximo, mínimo, $n$ y la constante $d_2(n)$.\par
+\begin{formula}\[
+\widehat\sigma_R=\frac{R}{d_2}.
+\]
+\textbf{Símbolos y lectura:} ``sigma estimado por rango es el máximo menos el mínimo dividido por $d_2$''. $d_2$ depende solo de $n$; $d_3$ describe variabilidad del rango y no reemplaza a $d_2$.
+\end{formula}
+\textbf{15. Gráfico.} En una recta de datos, $R$ es la distancia entre los dos extremos; no utiliza los valores interiores.\par
+\textbf{16--18. Ejemplo completo: carbón.} Datos: $8260,8130,8350,8070,8340$; $n=5$ y $d_2=2.326$. Se pide estimar $\sigma$. Normalidad es el supuesto del método.
+\begin{align*}
+R&=8350-8070=280,\\
+\widehat\sigma_R&=\frac{280}{2.326}=120.38.
+\end{align*}
+Comprobación con todos los datos: $\bar x=(8260+8130+8350+8070+8340)/5=8230$;
+\begin{align*}
+\sum(x_i-\bar x)^2&=30^2+(-100)^2+120^2+(-160)^2+110^2\\
+&=900+10000+14400+25600+12100=63000,\\
+s&=\sqrt{63000/4}=125.50.
+\end{align*}
+Las dos estimaciones son próximas y conservan las unidades de capacidad calorífica.\par
+\begin{errorbox}El tamaño es $n=5$, no $4$. El estimador correcto es $R/d_2$, no $R/d_3$.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``El rango usa la diferencia entre máximo y mínimo. En población Normal, su esperanza es $d_2\sigma$, por eso despejo sigma como $R/d_2$. Busco $d_2$ según $n$, sustituyo, calculo y aclaro que es útil sobre todo en subgrupos pequeños.''\end{oral}
+\cierre{El rango es rápido y útil en control de calidad, aunque aprovecha menos información que el desvío muestral.}
+
+\subsection{Intervalos de confianza para la varianza y el desvío}
+\inicio{Ahora no busco un único valor, sino un conjunto de valores plausibles para la dispersión poblacional.}
+\textbf{2--10. Idea, utilidad, datos y condiciones.} Si $X_1,\ldots,X_n$ son independientes y provienen de una población Normal, $(n-1)S^2/\sigma^2\sim\chi^2_{n-1}$. Se necesitan $n$, $s$, confianza $1-\alpha$ y cuantiles $\chi^2$.\par
+\begin{formula}\[
+\frac{(n-1)s^2}{Q_{1-\alpha/2}(\nu)}<\sigma^2<
+\frac{(n-1)s^2}{Q_{\alpha/2}(\nu)},\qquad \nu=n-1.
+\]
+Para $\sigma$ se toma raíz en los dos extremos.\par
+\textbf{Símbolos y lectura:} $\alpha$ es la probabilidad total fuera del intervalo; $\nu$ son grados de libertad. ``El límite inferior divide por el cuantil grande y el superior por el cuantil pequeño.'' La asimetría proviene de $\chi^2$.
+\end{formula}
+\textbf{15. Gráfico.} Bajo una curva $\chi^2$, queda área $\alpha/2$ en cada cola y $1-\alpha$ en el centro. Los cortes son $Q_{\alpha/2}$ y $Q_{1-\alpha/2}$.\par
+\textbf{16--18. Ejemplo completo: lámparas.} Datos: $n=20$, $s=100$ horas, confianza $95\%$. Se pide un IC para $\sigma$. Condición: muestra independiente de población Normal. $\alpha=.05$, $\alpha/2=.025$, $\nu=19$. De la tabla $\chi^2$ acumulada:
+\[
+Q_{.025}(19)=8.9065,\qquad Q_{.975}(19)=32.8523.
+\]
+\begin{align*}
+L_{\sigma^2}&=\frac{19(100)^2}{32.8523}=\frac{190000}{32.8523}=5783.46\ \text{h}^2,\\
+U_{\sigma^2}&=\frac{19(100)^2}{8.9065}=\frac{190000}{8.9065}=21332.77\ \text{h}^2,\\
+L_\sigma&=\sqrt{5783.46}=76.05\ \text{h},\\
+U_\sigma&=\sqrt{21332.77}=146.06\ \text{h}.
+\end{align*}
+Resultado: $76.05<\sigma<146.06$ horas. En muestreos repetidos, el procedimiento cubre a $\sigma$ aproximadamente el $95\%$ de las veces.\par
+\begin{errorbox}No intercambiar cuantiles, no usar $z$ en lugar de $\chi^2$ para el método exacto y no olvidar tomar raíces si piden $\sigma$.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``Para acotar la varianza uso la distribución chi-cuadrado, porque bajo normalidad el cociente $(n-1)S^2/\sigma^2$ sigue esa distribución. Calculo $n-1$ grados de libertad, separo alfa en dos colas, busco los cuantiles y formo los límites. Si piden el desvío, tomo raíz. Cierro interpretando la confianza como propiedad del procedimiento.''\end{oral}
+\cierre{El intervalo reconoce la incertidumbre muestral y ofrece valores plausibles para la dispersión.}
+
+\subsection{Aproximación normal para el desvío en muestras grandes}
+\inicio{Si la muestra es grande, también puedo aproximar la distribución de la desviación estándar mediante una Normal.}
+\textbf{2--10. Idea y condiciones.} Para $n$ grande, $S\approx N(\sigma,\sigma^2/(2n))$. Bajo normalidad, el intervalo exacto $\chi^2$ sigue siendo preferible.\par
+\begin{formula}\[
+\frac{s}{1+z_{1-\alpha/2}/\sqrt{2n}}<\sigma<
+\frac{s}{1-z_{1-\alpha/2}/\sqrt{2n}}.
+\]
+\textbf{Lectura:} ``divido $s$ por uno más y por uno menos el cuantil normal dividido por raíz de dos ene''. El denominador superior debe ser positivo.
+\end{formula}
+\textbf{Ejemplo: cables.} $n=100$, $s=180$ lb, $95\%$: $\sqrt{2n}=14.1421$ y $1.96/14.1421=.13859$.
+\[
+L=180/1.13859=158.09,\qquad U=180/.86141=208.96\ \text{lb}.
+\]
+\begin{oral}\textbf{20. Guion.} ``Esta es una aproximación asintótica. Calculo el factor normal, verifico que el denominador sea positivo y obtengo límites para sigma. Si puedo sostener normalidad, aclaro que el intervalo chi-cuadrado exacto es preferible.''\end{oral}
+\cierre{La aproximación normal simplifica muestras grandes, pero no reemplaza al método exacto cuando este es aplicable.}
+
+\subsection{Prueba de hipótesis para una varianza}
+\inicio{En esta prueba evalúo si la dispersión poblacional es compatible con un valor de referencia.}
+\textbf{2--10. Idea, utilidad, datos y condiciones.} Se necesita una muestra aleatoria independiente de una población Normal, $n$, $s$, $\sigma_0^2$, $\alpha$ y el signo de $H_1$.\par
+\begin{formula}\[
+T=\frac{(n-1)s^2}{\sigma_0^2}\sim\chi^2_{n-1}\quad\text{bajo }H_0.
+\]
+\textbf{Lectura:} ``T es ene menos uno por la varianza observada, dividido por la varianza propuesta''. Si $T$ es extremo según $H_1$, la muestra contradice $H_0$.
+\end{formula}
+\[
+\begin{array}{ll}
+H_1:\sigma^2>\sigma_0^2 & T>Q_{1-\alpha}(\nu),\\
+H_1:\sigma^2<\sigma_0^2 & T<Q_{\alpha}(\nu),\\
+H_1:\sigma^2\ne\sigma_0^2 & T<Q_{\alpha/2}(\nu)\ \text{o}\ T>Q_{1-\alpha/2}(\nu).
+\end{array}
+\]
+\textbf{15. Gráfico.} La cola derecha representa variabilidad excesiva; la izquierda, variabilidad demasiado baja; dos colas, cualquier cambio.\par
+\textbf{16--18. Ejemplo completo: bruñido.} $n=15$, $s=.64$ mil, $\sigma_0=.50$ mil, $\alpha=.05$. Se prueba $H_0:\sigma=.50$ contra $H_1:\sigma>.50$. Normalidad e independencia son los supuestos. $\nu=14$ y, por ser cola derecha, $Q_{.95}(14)=23.685$.
+\begin{align*}
+T&=\frac{(15-1)(.64)^2}{(.50)^2}
+=\frac{14(.4096)}{.25}=\frac{5.7344}{.25}=22.938.
+\end{align*}
+Como $22.938<23.685$ y $p\approx.061>.05$, \textbf{no se rechaza $H_0$}. No hay evidencia suficiente para afirmar que $\sigma>.50$ mil.\par
+\begin{errorbox}No elegir automáticamente cola derecha; la cola depende de $H_1$. No decir ``se acepta $H_0$'' ni concluir igualdad exacta.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``Planteo la varianza de referencia bajo $H_0$, identifico la dirección de $H_1$ y uso chi-cuadrado con $n-1$ grados de libertad. Calculo T, selecciono el valor crítico según la cola y comparo. La decisión es rechazar o no rechazar, y la interpretación habla de evidencia, no de certeza.''\end{oral}
+\cierre{La prueba responde si los datos contradicen el valor propuesto, no si ese valor quedó demostrado.}
+
+\subsection{Estimación puntual, intervalo y prueba: diferencias}
+\begin{table}[H]\centering
+\begin{tabularx}{\textwidth}{L{3cm}YYY}\toprule
+&\textbf{Estimación puntual}&\textbf{Intervalo}&\textbf{Prueba}\\\midrule
+Pregunta&¿Qué valor usar?&¿Qué valores son plausibles?&¿Los datos contradicen un valor?\\
+Resultado&$s^2$ o $s$&Dos límites&Rechazar/no rechazar $H_0$\\
+Distribución&No siempre necesaria&$\chi^2$ bajo normalidad&$\chi^2$ bajo normalidad\\\bottomrule
+\end{tabularx}\end{table}
+\begin{oral}\textbf{Guion del bloque.} ``Primero distingo la pregunta. Si piden un valor, estimo; si piden un rango, construyo un intervalo; si proponen un valor, hago una prueba. Los tres procedimientos usan la misma muestra, pero responden preguntas distintas.''\end{oral}
+
+\begin{landscape}\pdfpageattr{/Rotate 90}
+\section{Tema B: Proporciones}
+\subsection{Árbol de decisión para Proporciones}
+Se empieza contando cuántas muestras o poblaciones intervienen y distinguiendo estimación de prueba. La aproximación Normal se usa solo cuando los conteos esperados son suficientes.
+
+\begin{center}
+\begin{tikzpicture}
+\node[decision,text width=3.7cm] (estructura) at (0,5.6) {¿Cuántas muestras, grupos o variables intervienen?};
+\node[decision] (una) at (-7.8,3.1) {¿Una muestra y una proporción $p$?};
+\node[decision] (dos) at (0,3.1) {¿Dos grupos independientes?};
+\node[decision] (varias) at (7.8,3.1) {¿Varias poblaciones o dos variables cualitativas?};
+
+\node[resultado,text width=3.7cm] (estimar) at (-10.7,.1) {\textbf{Estimar $p$}\\Puntual: $\widehat p=x/n$. Intervalo: exacto si hay pocos éxitos o fracasos; Normal si ambos conteos son suficientes.};
+\node[resultado,text width=3.7cm] (probar) at (-6.5,.1) {\textbf{Probar $H_0:p=p_0$}\\Usar $p_0$ en el error estándar. Elegir cola con $H_1$ y comprobar $np_0$ y $n(1-p_0)$.};
+\node[resultado,text width=3.7cm] (raras) at (-2.3,.1) {\textbf{Fallas raras}\\Para $p$ pequeño y $n$ grande puede usarse la aproximación Poisson y una cota unilateral.};
+\node[resultado,text width=3.8cm] (comparar) at (2.4,.1) {\textbf{Comparar dos proporciones}\\Bajo $H_0:p_1=p_2$, calcular $\widehat p$ agrupada y el estadístico $Z$.};
+\node[resultado,text width=3.8cm] (homog) at (6.7,.1) {\textbf{Homogeneidad}\\Varios grupos independientes; $H_1$: al menos una proporción es diferente.};
+\node[resultado,text width=3.8cm] (indep) at (11,.1) {\textbf{Independencia}\\Una muestra, dos variables cualitativas y una tabla $r\times c$. Asociación no implica causalidad.};
+
+\node[advertencia,text width=4.5cm] (cond) at (-6.5,-2.8) {\textbf{Regla de aproximación}\\Intervalo: revisar $n\widehat p$ y $n(1-\widehat p)$. Prueba: revisar $np_0$ y $n(1-p_0)$. Si fallan, usar el método exacto.};
+\node[resultado,text width=4.5cm] (chi) at (8.7,-2.8) {\textbf{Pruebas $\chi^2$}\\Calcular $E_{ij}$ con los marginales, exigir esperados suficientes, sumar $(O-E)^2/E$ y usar los grados de libertad correctos.};
+
+\draw[rama] (estructura)--node[etiqueta] {una} (una);
+\draw[rama] (estructura)--node[etiqueta] {dos} (dos);
+\draw[rama] (estructura)--node[etiqueta] {varias} (varias);
+\draw[rama] (una)--node[etiqueta,pos=.65] {estimar} (estimar);
+\draw[rama] (una)--node[etiqueta] {probar} (probar);
+\draw[rama] (una)--node[etiqueta,pos=.65] {raras} (raras);
+\draw[rama] (dos)--node[etiqueta] {comparar} (comparar);
+\draw[rama] (varias)--node[etiqueta] {grupos} (homog);
+\draw[rama] (varias)--node[etiqueta] {variables} (indep);
+\draw[rama] (probar)--(cond);
+\draw[rama] (estimar)--(cond);
+\draw[rama] (homog)--(chi);
+\draw[rama] (indep)--(chi);
+\end{tikzpicture}
+\end{center}
+
+\begin{oral}[Lectura rápida del árbol]
+``Con una muestra puedo estimar o probar una proporción; antes de usar la Normal reviso éxitos y fracasos con el valor que corresponde. Con dos grupos comparo dos proporciones mediante una proporción agrupada bajo $H_0$. Con varios grupos uso homogeneidad; con una muestra clasificada por dos variables uso independencia.''
+\end{oral}
+\end{landscape}
+\clearpage
+
+\subsection{Modelo binomial y proporción muestral}
+\inicio{En este tema cada unidad se clasifica en dos resultados: éxito o fracaso.}
+\textbf{2--10. Idea, utilidad, datos y condiciones.} Se codifica éxito como $1$ y fracaso como $0$. Si hay $n$ ensayos independientes con probabilidad constante $p$, entonces $X$, el número de éxitos, es binomial. Se necesitan $x$ éxitos y $n-x$ fracasos.\par
+\begin{formula}\[
+X\sim\operatorname{Bin}(n,p),\quad E(X)=np,\quad \operatorname{Var}(X)=np(1-p),\quad \phat=\frac xn.
+\]
+\textbf{Símbolos y lectura:} $p$ es la proporción poblacional; $\phat$ la muestral. ``P sombrero es equis dividido ene''. $E(\phat)=p$ y $\operatorname{DE}(\phat)=\sqrt{p(1-p)/n}$.
+\end{formula}
+\textbf{15. Gráfico.} Una distribución binomial muestra barras en $x=0,1,\ldots,n$; el centro está cerca de $np$ y la dispersión aumenta con $np(1-p)$.\par
+\textbf{16--18. Ejemplo.} En $n=100$ entrevistados, $x=36$ conocen un incentivo. $\phat=36/100=.36$ y hay $64$ fracasos. La muestra estima una proporción poblacional cercana a $36\%$.\par
+\begin{errorbox}No confundir $p$, parámetro fijo desconocido, con $\phat$, estadístico que cambia entre muestras.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``El modelo binomial cuenta éxitos en ensayos independientes con probabilidad constante. La proporción muestral es éxitos sobre total y estima a $p$. Primero identifico qué se considera éxito, luego cuento $x$ y calculo $x/n$.''\end{oral}
+\cierre{La proporción muestral resume lo observado; la inferencia permite hablar de la población.}
+
+\subsection{Estimación puntual de una proporción}
+\inicio{Para estimar el porcentaje poblacional utilizo la proporción observada en la muestra.}
+\textbf{2--10. Objetivo y condiciones.} Se busca un valor único para $p$ con muestra binomial representativa e independiente.\par
+\begin{formula}\[\widehat p=x/n.\]
+\textbf{Lectura:} ``la proporción estimada es éxitos dividido por tamaño muestral''. Si $x$ aumenta con $n$ fijo, $\phat$ aumenta; si se repite el muestreo, $\phat$ cambia alrededor de $p$.
+\end{formula}
+\textbf{Ejemplo.} $x=136$, $n=400$: $\phat=136/400=.34=34\%$.\par
+\begin{oral}\textbf{20. Guion.} ``Defino el éxito, cuento cuántos aparecen y divido por el total. El resultado es una estimación puntual; no informa por sí solo el margen de error.''\end{oral}
+\cierre{Un porcentaje muestral es el punto de partida, no toda la inferencia.}
+
+\subsection{Intervalos de confianza para una proporción}
+\inicio{Ahora quiero acompañar la estimación de $p$ con un margen de incertidumbre.}
+\textbf{2--10. Idea, datos y condiciones.} Se requieren $x$, $n$, confianza $1-\alpha$ e independencia. Para el intervalo normal se comprueba $n\phat\ge5$ y $n(1-\phat)\ge5$.\par
+\begin{formula}\[
+\phat-z_{1-\alpha/2}\sqrt{\frac{\phat(1-\phat)}n}<p<
+\phat+z_{1-\alpha/2}\sqrt{\frac{\phat(1-\phat)}n}.
+\]
+\textbf{Lectura:} ``p sombrero más y menos z por el error estándar estimado''. En un intervalo se usa $\phat$ porque $p$ es desconocido y no se plantea un valor nulo.
+\end{formula}
+\textbf{15. Gráfico.} El centro es $\phat$ y los extremos están a un margen $E$. Mayor confianza produce mayor $z$ y un intervalo más ancho; mayor $n$ lo estrecha.\par
+\textbf{16--18. Ejemplo completo: incentivos.} $x=36$, $n=100$, confianza $95\%$, $z_{.975}=1.96$. Condiciones: $36\ge5$ y $64\ge5$.
+\begin{align*}
+\phat&=36/100=.36,\\
+\operatorname{EE}(\phat)&=\sqrt{.36(.64)/100}=\sqrt{.002304}=.048,\\
+E&=1.96(.048)=.09408,\\
+L&=.36-.09408=.26592,\\
+U&=.36+.09408=.45408.
+\end{align*}
+Resultado: $.2659<p<.4541$. El procedimiento tiene cobertura aproximada del $95\%$.\par
+\begin{errorbox}No decir que hay $95\%$ de probabilidad de que el parámetro fijo esté dentro. No usar Wald con éxitos o fracasos escasos.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``Calculo $\phat$, verifico suficientes éxitos y fracasos, obtengo el error estándar y el margen. Resto para el límite inferior y sumo para el superior. Interpreto el nivel de confianza como cobertura del método.''\end{oral}
+\cierre{El intervalo combina la estimación observada con su precisión muestral.}
+
+\subsection{Método binomial exacto o gráfico}
+\inicio{Cuando hay pocos éxitos o fracasos no confío en la aproximación Normal.}
+\textbf{2--10. Idea y condiciones.} El método exacto invierte probabilidades binomiales. Es adecuado para muestras pequeñas o proporciones cercanas a $0$ o $1$. La lectura gráfica aproxima los límites exactos mediante curvas rotuladas por $n$.\par
+\textbf{11--14. Fórmula y lectura.} Con $B(x;n,p)=P(X\le x)$, los límites se hallan resolviendo probabilidades de cola iguales a $\alpha/2$. La simetría $B(x;n,p)=1-B(n-x-1;n,1-p)$ permite trabajar con $p>.5$.\par
+\textbf{15. Cómo leer el gráfico.} El eje horizontal contiene $x/n$; el vertical contiene $p$. Se traza una vertical desde $\phat$, se intersectan las curvas del tamaño $n$ y se proyectan horizontales para leer los límites. Las curvas externas representan la confianza elegida.\par
+\begin{figure}[H]\centering
+\includegraphics[width=.66\textwidth]{\detokenize{Imagen tabla/tabla ejercicio n=100.png}}
+\caption{Lectura gráfica para $n=100$ y $x=36$.}
+\end{figure}
+\textbf{16--18. Procedimiento y ejemplo.} Con $n=100$ y $x=36$, se entra por $.36$ y se leen las dos cotas en las curvas de $n=100$. La lectura es aproximada; el cálculo exacto numérico es preferible.\par
+\begin{errorbox}El gráfico no convierte un método aproximado en exacto. Si los conteos son pequeños, no usar automáticamente el intervalo de Wald.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``Cuando la Normal no es adecuada, uso la binomial exacta. En el gráfico entro por $x/n$, busco las curvas del tamaño muestral y leo las cotas de $p$. Explico que la discreción vuelve conservadora la cobertura.''\end{oral}
+\cierre{La binomial exacta respeta la naturaleza discreta del número de éxitos.}
+
+\subsection{Aproximación Normal}
+\inicio{Con suficientes éxitos y fracasos, la distribución de la proporción muestral se aproxima a una Normal.}
+\textbf{2--10. Idea y condiciones.} $\phat\approx N(p,p(1-p)/n)$. Para intervalos se revisa con $\phat$; para pruebas, con $p_0$.\par
+\begin{formula}\[
+Z\approx\frac{\phat-p}{\sqrt{p(1-p)/n}}.
+\]
+\textbf{Lectura:} ``Z es la diferencia entre proporción observada y poblacional, dividida por su error estándar''. Valores $Z$ cercanos a cero son compatibles; valores extremos son inusuales.
+\end{formula}
+\textbf{15. Gráfico.} La Normal estándar es simétrica, centrada en cero y tiene áreas de cola determinadas por $z_\alpha$.\par
+\textbf{Ejemplo.} Con $p=.40$, $n=100$, el error estándar es $\sqrt{.4(.6)/100}=.04899$. Una $\phat=.50$ queda a $Z=(.50-.40)/.04899=2.041$ errores estándar.\par
+\begin{oral}\textbf{20. Guion.} ``La aproximación Normal transforma una diferencia de proporciones en una escala Z. Verifico conteos suficientes, calculo el error estándar y ubico Z sobre la curva estándar.''\end{oral}
+\cierre{La aproximación es útil porque convierte el problema binomial en una comparación sobre la escala Z.}
+
+\subsection{Margen de error y tamaño muestral}
+\inicio{Antes de recolectar datos puedo decidir cuántas unidades necesito para lograr una precisión deseada.}
+\textbf{2--10. Idea, datos y condiciones.} Se fijan $E$, confianza y un valor previo $p_0$. Si no hay información, se usa $.5$ porque maximiza $p(1-p)$.\par
+\begin{formula}\[
+E=z\sqrt{\frac{p(1-p)}n}\Rightarrow E^2=\frac{z^2p(1-p)}n
+\Rightarrow n=p(1-p)\left(\frac zE\right)^2.
+\]
+Como $p(1-p)=\tfrac14-(p-\tfrac12)^2\le\tfrac14$, el tamaño conservador es $n=\tfrac14(z/E)^2$.
+\end{formula}
+\textbf{15. Gráfico.} $p(1-p)$ es una parábola invertida, nula en $0$ y $1$, y máxima en $.5$.\par
+\begin{center}\begin{tikzpicture}[x=5cm,y=8cm]
+\draw[->](0,0)--(1.08,0)node[right]{$p$};\draw[->](0,0)--(0,.29)node[above]{$p(1-p)$};
+\draw[azul,thick,domain=0:1,samples=80]plot(\x,{\x*(1-\x)});
+\draw[dashed](.5,0)--(.5,.25);\node[above]at(.5,.25){$1/4$};
+\end{tikzpicture}\end{center}
+\textbf{16--18. Ejemplo completo.} Para $E=.04$, $95\%$, $z=1.96$ y sin información:
+\[
+n=\frac14(1.96/.04)^2=\frac14(49)^2=.25(2401)=600.25\Rightarrow601.
+\]
+Con $p_0=.127$: $n=.127(.873)(49)^2=266.20\Rightarrow267$. Siempre se redondea hacia arriba.\par
+\begin{errorbox}No redondear hacia abajo. Reducir $E$ a la mitad multiplica aproximadamente por cuatro el tamaño.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``Despejo $n$ a partir del margen de error. Si conozco una proporción previa la uso; si no, tomo $.5$, que produce el caso más exigente. Sustituyo el nivel de confianza y redondeo hacia arriba.''\end{oral}
+\cierre{El tamaño muestral equilibra confianza, precisión y recursos disponibles.}
+
+\subsection{Límite unilateral para fallas raras}
+\inicio{Cuando las fallas son muy poco frecuentes, interesa especialmente una cota superior para su probabilidad.}
+\textbf{2--10. Idea y condiciones.} Para $p$ pequeño y $n$ grande, la binomial se aproxima por Poisson. Con $x$ fallas, la cota superior unilateral usa $2(x+1)$ grados de libertad.\par
+\begin{formula}\[
+p<\frac{Q_{1-\alpha}(2(x+1))}{2n}.
+\]
+\textbf{Lectura:} ``la probabilidad de falla es menor que el cuantil chi-cuadrado dividido por dos ene''.
+\end{formula}
+\textbf{Ejemplo completo.} $x=4$, $n=2000$, confianza unilateral $99\%$: $\alpha=.01$, $\nu=2(4+1)=10$, $Q_{.99}(10)=23.209$.
+\[
+p<\frac{23.209}{2(2000)}=\frac{23.209}{4000}=.005802=0.5802\%.
+\]
+\begin{oral}\textbf{20. Guion.} ``Para fallas raras uso la aproximación Poisson y una cota unilateral. Calculo los grados de libertad con $2(x+1)$, busco el cuantil de cola derecha y divido por $2n$.''\end{oral}
+\cierre{Con la confianza elegida, la probabilidad de falla no supera la cota calculada.}
+
+\subsection{Prueba de hipótesis para una proporción}
+\inicio{En esta prueba comparo la proporción observada con un valor propuesto para la población.}
+\textbf{2--10. Idea, utilidad, datos y condiciones.} Se plantea $H_0:p=p_0$ frente a $p<p_0$, $p>p_0$ o $p\ne p_0$. Se necesitan $x,n,p_0,\alpha$ e independencia. Se verifica $np_0\ge5$ y $n(1-p_0)\ge5$.\par
+\begin{formula}\[
+Z=\frac{\phat-p_0}{\sqrt{p_0(1-p_0)/n}}
+=\frac{x-np_0}{\sqrt{np_0(1-p_0)}}.
+\]
+\textbf{Lectura:} ``Z mide cuántos errores estándar separan la proporción observada de $p_0$''. En el denominador se usa $p_0$ porque la distribución del estadístico se calcula suponiendo que $H_0$ es verdadera. En un intervalo se usa $\phat$ porque no se impone ningún $p_0$.
+\end{formula}
+\[
+\begin{array}{lll}H_1:p>p_0&\Rightarrow&Z>z_{1-\alpha},\\
+H_1:p<p_0&\Rightarrow&Z<-z_{1-\alpha},\\
+H_1:p\ne p_0&\Rightarrow&|Z|>z_{1-\alpha/2}.
+\end{array}
+\]
+\textbf{15. Gráfico.} La alternativa determina qué cola o colas se sombrean. El valor $p$ es el área tan extrema como el $Z$ observado.\par
+\textbf{16--18. Ejemplo completo: detonadores.} Funcionan $x=174$ de $n=200$; norma $p_0=.90$; $\alpha=.05$. Se prueba $H_0:p=.90$ contra $H_1:p<.90$. Condiciones: $np_0=180\ge5$ y $n(1-p_0)=20\ge5$.
+\begin{align*}
+\phat&=174/200=.87,\\
+Z&=\frac{174-200(.90)}{\sqrt{200(.90)(.10)}}
+=\frac{-6}{\sqrt{18}}=\frac{-6}{4.2426}=-1.414.
+\end{align*}
+Crítico izquierdo $-z_{.95}=-1.645$; $p=.0786$. Como $-1.414>-1.645$ y $p>.05$, \textbf{no se rechaza $H_0$}. No hay evidencia suficiente de que el porcentaje de funcionamiento sea menor que $90\%$.\par
+\begin{errorbox}No usar $\phat$ en el denominador de la prueba; no confundir no rechazo con demostración de igualdad.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``Planteo $H_0:p=p_0$, la alternativa y la cola. Verifico los conteos bajo $H_0$, calculo Z usando $p_0$ en el error estándar, comparo con el crítico o el valor $p$ y concluyo en el contexto.''\end{oral}
+\cierre{La prueba indica si la muestra aporta evidencia contra el porcentaje de referencia.}
+
+\subsection{Comparación de dos proporciones}
+\inicio{Ahora comparo la tasa de éxito de dos grupos independientes.}
+\textbf{2--10. Idea, datos y condiciones.} Se prueban $H_0:p_1=p_2$ y una alternativa bilateral o direccional. Se necesitan $x_1,n_1,x_2,n_2$ y esperados suficientes. Bajo $H_0$ se agrupan los éxitos.\par
+\begin{formula}\[
+\phat=\frac{x_1+x_2}{n_1+n_2},\qquad
+Z=\frac{\phat_1-\phat_2}{\sqrt{\phat(1-\phat)(1/n_1+1/n_2)}}.
+\]
+\textbf{Lectura:} ``la diferencia observada se divide por su error estándar agrupado''. Para contraste bilateral, $Z^2=\chi^2_1$.
+\end{formula}
+\textbf{Ejemplo completo: tractores.} Línea 1: $x_1=16,n_1=200$, $\phat_1=.08$. Línea 2: $x_2=14,n_2=400$, $\phat_2=.035$. Se prueba al $1\%$ $H_1:p_1>p_2$.
+\begin{align*}
+\phat&=(16+14)/(200+400)=30/600=.05,\\
+1/n_1+1/n_2&=.005+.0025=.0075,\\
+EE&=\sqrt{.05(.95)(.0075)}=\sqrt{.00035625}=.018875,\\
+Z&=(.08-.035)/.018875=.045/.018875=2.384.
+\end{align*}
+$z_{.99}=2.326$ y $p=.0086$. Como $2.384>2.326$, se rechaza $H_0$: hay evidencia de que la línea 2 tiene menor tasa de ajustes.\par
+\begin{oral}\textbf{20. Guion.} ``Calculo las dos proporciones y, bajo igualdad, una proporción agrupada. Con ella obtengo el error estándar, calculo Z y uso la dirección de la alternativa para elegir la cola.''\end{oral}
+\cierre{La comparación cuantifica si la diferencia observada es mayor que la esperable por azar.}
+
+\begin{landscape}\pdfpageattr{/Rotate 90}
+\subsection{Árbol de decisión para pruebas \texorpdfstring{$\chi^2$}{chi-cuadrado}}
+Estas pruebas comparten el estadístico de Pearson, pero responden preguntas diferentes. La estructura de los datos determina el procedimiento y los grados de libertad.
+
+\begin{center}
+\begin{tikzpicture}[scale=.84,transform shape]
+\node[decision,text width=3.8cm] (pregunta) at (0,5.5) {¿Qué se compara mediante frecuencias?};
+\node[decision] (grupos) at (-7.5,3) {¿La misma respuesta en varias poblaciones?};
+\node[decision] (variables) at (0,3) {¿Dos variables en una sola muestra?};
+\node[decision] (modelo) at (7.5,3) {¿Observados contra probabilidades teóricas?};
+
+\node[resultado,text width=4cm] (homog) at (-7.5,.1) {\textbf{Homogeneidad}\\$H_0$: todas las proporciones son iguales.\\$\nu=k-1$ para éxito/fracaso.};
+\node[resultado,text width=4cm] (indep) at (0,.1) {\textbf{Independencia}\\$H_0$: las variables son independientes.\\$\nu=(r-1)(c-1)$.};
+\node[decision,text width=3.2cm] (tipo) at (7.5,.1) {¿Qué naturaleza tiene la variable?};
+
+\node[resultado,text width=3.35cm] (pois) at (3.8,-2.3) {\textbf{Poisson}\\Conteos enteros por intervalo. Estimar $\lambda$ con la media si no es conocido.};
+\node[resultado,text width=3.35cm] (normal) at (7.5,-2.3) {\textbf{Normal}\\Variable cuantitativa continua. Estimar $\mu$ y $\sigma$ y usar límites reales.};
+\node[resultado,text width=3.35cm] (otro) at (11.2,-2.3) {\textbf{Otro modelo}\\Usar las probabilidades especificadas y descontar los parámetros estimados.};
+
+\node[advertencia,text width=5.2cm] (control1) at (-3.8,-3.1) {\textbf{Control común}\\$E_{ij}=n_{i\cdot}n_{\cdot j}/n$, esperados suficientes y $\sum O=\sum E=n$. La región crítica siempre está a la derecha.};
+\node[advertencia,text width=5.2cm] (control2) at (7.5,-4.65) {\textbf{Bondad de ajuste}\\$E_i=nP_i$, $\sum P_i=1$, clases exhaustivas y $\nu=k-m-1$ después de agrupar esperados menores que 5.};
+
+\draw[rama] (pregunta)--node[etiqueta] {poblaciones} (grupos);
+\draw[rama] (pregunta)--node[etiqueta] {variables} (variables);
+\draw[rama] (pregunta)--node[etiqueta] {modelo} (modelo);
+\draw[rama] (grupos)--node[etiqueta] {sí} (homog);
+\draw[rama] (variables)--node[etiqueta] {sí} (indep);
+\draw[rama] (modelo)--node[etiqueta] {sí} (tipo);
+\draw[rama] (homog)--(control1);
+\draw[rama] (indep)--(control1);
+\draw[rama] (tipo)--node[etiqueta] {conteo} (pois);
+\draw[rama] (tipo)--node[etiqueta] {continua} (normal);
+\draw[rama] (tipo)--node[etiqueta] {otra} (otro);
+\draw[rama] (pois)--(control2);
+\draw[rama] (normal)--(control2);
+\draw[rama] (otro)--(control2);
+\end{tikzpicture}
+\end{center}
+
+\begin{oral}[Lectura rápida del árbol]
+``Si comparo la misma respuesta entre poblaciones, uso homogeneidad. Si estudio dos variables en una muestra, uso independencia. Si comparo observados con un modelo, uso bondad de ajuste y elijo Poisson para conteos o Normal para una variable continua. En todos los casos calculo esperados, agrupo si son pequeños y compruebo los totales.''
+\end{oral}
+\end{landscape}
+\clearpage
+
+\subsection{Homogeneidad de varias proporciones}
+\inicio{La prueba de homogeneidad decide si varios grupos independientes comparten la misma proporción.}
+\textbf{2--10. Idea, datos y condiciones.} $H_0:p_1=\cdots=p_k$; $H_1:$ al menos una proporción es diferente. Se necesitan tablas de éxitos y fracasos, grupos independientes y esperados de al menos $5$.\par
+\begin{formula}\[
+\chi^2=\sum\frac{(O-E)^2}{E},\qquad \nu=k-1,
+\quad E_{ij}=\frac{(\text{total fila})(\text{total columna})}{n}.
+\]
+\textbf{Lectura:} ``sumo las discrepancias cuadráticas relativas entre observado y esperado''. La región crítica es de cola derecha.
+\end{formula}
+\textbf{15. Gráfico.} La curva $\chi^2$ comienza en cero; diferencias grandes desplazan el estadístico hacia la cola derecha.\par
+\textbf{16--18. Ejemplo completo: materiales.}
+\[
+O=\begin{array}{c|ccc|c}&A&B&C&\text{Total}\\\hline
+\text{Desmoronado}&41&27&22&90\\
+\text{Intacto}&79&53&78&210\\\hline
+\text{Total}&120&80&100&300
+\end{array}
+\]
+$H_0:p_A=p_B=p_C$, $\alpha=.05$. La proporción agrupada es $90/300=.30$. Esperados:
+\[
+E=\begin{pmatrix}120(.30)&80(.30)&100(.30)\\120(.70)&80(.70)&100(.70)\end{pmatrix}
+=\begin{pmatrix}36&24&30\\84&56&70\end{pmatrix}.
+\]
+\begin{align*}
+\chi^2={}&\frac{(41-36)^2}{36}+\frac{(27-24)^2}{24}+\frac{(22-30)^2}{30}\\
+&+\frac{(79-84)^2}{84}+\frac{(53-56)^2}{56}+\frac{(78-70)^2}{70}\\
+={}&.694+.375+2.133+.298+.161+.914=4.575.
+\end{align*}
+$\nu=3-1=2$, $Q_{.95}(2)=5.991$. Como $4.575<5.991$, no se rechaza $H_0$. No hay evidencia de diferencias entre las tasas. Se comprueba $\sum O=\sum E=300$.\par
+\begin{errorbox}No escribir $p_1\ne p_2\ne p_3$ como alternativa. Los grados de libertad son $k-1=2$, no $3$.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``Bajo homogeneidad calculo una proporción común, obtengo esperados por grupo y aplico Pearson. Uso $k-1$ grados de libertad y cola derecha. Si no rechazo, digo que no hay evidencia de diferencias, no que probé igualdad exacta.''\end{oral}
+\cierre{Homogeneidad compara una misma característica entre varias poblaciones o grupos.}
+
+\subsection{Tablas de contingencia \texorpdfstring{$r\times c$}{r por c}}
+\inicio{Una tabla de contingencia organiza conjuntamente dos variables cualitativas.}
+\textbf{2--10. Idea y datos.} Las filas representan categorías de una variable y las columnas de la otra. Cada celda contiene una frecuencia observada; los marginales son totales de filas y columnas. Sirve para explorar asociación dentro de una sola muestra.\par
+\begin{formula}\[
+E_{ij}=\frac{n_{i\cdot}n_{\cdot j}}n.
+\]
+\textbf{Lectura:} ``el esperado de la celda es total de fila por total de columna dividido por total general''. Bajo independencia, conserva los marginales.
+\end{formula}
+\textbf{15. Gráfico.} Un mosaico o barras apiladas muestran proporciones por categoría; patrones distintos sugieren asociación, pero la prueba formal usa $\chi^2$.\par
+\textbf{Ejemplo práctico.} Capacitación (deficiente, promedio, muy buena) por rendimiento (bajo, medio, alto).\par
+\begin{oral}\textbf{20. Guion.} ``Identifico las dos variables, sus categorías y el total. Explico que cada celda cruza una fila con una columna y que los esperados se calculan suponiendo independencia.''\end{oral}
+\cierre{La tabla organiza el problema; la prueba de independencia transforma el patrón en una decisión estadística.}
+
+\subsection{Prueba de independencia}
+\inicio{La prueba de independencia analiza si dos variables cualitativas están asociadas.}
+\textbf{2--10. Hipótesis y condiciones.} $H_0:$ las variables son independientes; $H_1:$ existe asociación. Observaciones independientes y esperados suficientes.\par
+\begin{formula}\[
+\chi^2=\sum_{i=1}^r\sum_{j=1}^c\frac{(O_{ij}-E_{ij})^2}{E_{ij}},\qquad
+\nu=(r-1)(c-1).
+\]
+\textbf{Lectura:} ``sumo las contribuciones de todas las celdas''. La prueba es de cola derecha.
+\end{formula}
+\textbf{16--18. Ejemplo completo: capacitación y rendimiento.}
+\[
+O=\begin{pmatrix}23&60&29\\28&79&60\\9&49&63\end{pmatrix},\quad
+E=\begin{pmatrix}16.80&52.64&42.56\\25.05&78.49&63.46\\18.15&56.87&45.98\end{pmatrix}.
+\]
+Por ejemplo, $E_{32}=121(188)/400=56.87$. Las nueve contribuciones son:
+\begin{align*}
+\chi^2={}&\frac{(23-16.80)^2}{16.80}+\frac{(60-52.64)^2}{52.64}+\frac{(29-42.56)^2}{42.56}\\
+&+\frac{(28-25.05)^2}{25.05}+\frac{(79-78.49)^2}{78.49}+\frac{(60-63.46)^2}{63.46}\\
+&+\frac{(9-18.15)^2}{18.15}+\frac{(49-56.87)^2}{56.87}+\frac{(63-45.98)^2}{45.98}\\
+={}&2.288+1.029+4.320+.347+.003+.189+4.613+1.089+6.300=20.179.
+\end{align*}
+$\alpha=.01$, $\nu=(3-1)(3-1)=4$, $Q_{.99}(4)=13.277$. Como $20.179>13.277$, se rechaza $H_0$: existe asociación. Se comprueba $\sum O=\sum E=400$. La asociación no demuestra causalidad.\par
+\begin{errorbox}No interpretar asociación como causa. Conservar precisión en los esperados durante el cálculo.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``Calculo cada esperado con los marginales, sumo las contribuciones de Pearson y uso $(r-1)(c-1)$ grados de libertad. Si rechazo independencia, concluyo asociación estadística, nunca causalidad automática.''\end{oral}
+\cierre{La prueba detecta asociación, pero el diseño del estudio determina si puede hablarse de causalidad.}
+
+\subsection{Bondad de ajuste}
+\inicio{La bondad de ajuste compara los datos con una distribución teórica propuesta.}
+\textbf{2--10. Idea, objetivo y condiciones.} $H_0:$ los datos siguen el modelo; $H_1:$ no lo siguen. Se necesitan categorías exhaustivas, $O_i$, probabilidades $P_i$, esperados $E_i=nP_i$ e independencia. Se agrupan esperados menores que $5$.\par
+\begin{formula}\[
+\chi^2=\sum_{i=1}^k\frac{(O_i-E_i)^2}{E_i},\qquad
+\nu=k-m-1,
+\]
+donde $m$ es el número de parámetros estimados con estos datos. La región crítica es de cola derecha.
+\end{formula}
+\textbf{15. Gráfico.} Barras observadas y esperadas permiten visualizar discrepancias; la suma de discrepancias relativas da $\chi^2$.\par
+\textbf{16. Procedimiento:} calcular $P_i$; comprobar $\sum P_i=1$; obtener $E_i$; comprobar $\sum E_i=\sum O_i=n$; agrupar; calcular $\chi^2$; contar $k$ final y restar $m+1$; comparar.\par
+\begin{errorbox}Solo se descuentan parámetros estimados con la misma muestra. No omitir la probabilidad de las colas abiertas.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``Propongo una distribución, calculo probabilidades y esperados, agrupo categorías pequeñas y aplico Pearson. Los grados de libertad dependen de las clases finales y de los parámetros estimados.''\end{oral}
+\cierre{Un no rechazo indica compatibilidad con el modelo, no prueba que sea exactamente verdadero.}
+
+\subsection{Ajuste a una distribución de Poisson}
+\inicio{Poisson modela la cantidad de sucesos que ocurren en un intervalo fijo.}
+\textbf{2--10. Idea, utilidad, datos y condiciones.} La variable es un conteo; los sucesos ocurren de manera aproximadamente independiente y con tasa estable. Se necesitan frecuencias por conteo y $\lambda$, dado o estimado.\par
+\begin{formula}\[
+P(X=x)=\frac{\lambda^x e^{-\lambda}}{x!},\qquad E_x=nP(X=x).
+\]
+\textbf{Símbolos y lectura:} $x$ conteo; $\lambda$ media de sucesos; $x!$ factorial. ``La probabilidad de equis es lambda a la equis por e a la menos lambda, dividido por equis factorial.'' Si $\lambda$ aumenta, el centro y la dispersión se desplazan hacia conteos mayores.
+\end{formula}
+\textbf{15. Gráfico.} Es un conjunto de barras en enteros no negativos. Para $\lambda$ pequeño está sesgada a la derecha; con $\lambda$ mayor se vuelve más simétrica.\par
+\textbf{16--18. Ejemplo completo.} En $n=402$ intervalos se observan:
+\[
+\begin{array}{c|rrrrrrrrrrrrrr}
+x&0&1&2&3&4&5&6&7&8&9&10&11&12&13\\\hline
+O_x&3&15&47&76&68&74&46&39&15&9&5&2&2&1
+\end{array}
+\]
+Se pide probar ajuste Poisson al $5\%$. Se estima un parámetro, $m=1$:
+\begin{align*}
+\widehat\lambda&=\frac{\sum xO_x}{402}\\
+&=\frac{0(3)+1(15)+2(47)+3(76)+4(68)+5(74)+6(46)+7(39)}{402}\\
+&\quad+\frac{8(15)+9(9)+10(5)+11(2)+12(2)+13(1)}{402}\\
+&=1838/402=4.5721.
+\end{align*}
+Ejemplo de probabilidad: $P(0)=4.5721^0e^{-4.5721}/0!=.01034$ y $E_0=402(.01034)=4.155<5$. Se agrupan $0$--$1$ y la cola $10+$:
+\[
+\begin{array}{c|rrrrrrrrrr}
+\text{Grupo}&0-1&2&3&4&5&6&7&8&9&10+\\\hline
+O_i&18&47&76&68&74&46&39&15&9&10\\
+E_i&23.152&43.429&66.188&75.655&69.181&52.718&34.433&19.679&9.997&7.568
+\end{array}
+\]
+\begin{comprobacion}$\sum O_i=402$, $\sum E_i=402$ y las probabilidades de las clases finales suman $1$.\end{comprobacion}
+\begin{align*}
+\chi^2={}&\frac{(18-23.152)^2}{23.152}+\frac{(47-43.429)^2}{43.429}+\frac{(76-66.188)^2}{66.188}\\
+&+\frac{(68-75.655)^2}{75.655}+\frac{(74-69.181)^2}{69.181}+\frac{(46-52.718)^2}{52.718}\\
+&+\frac{(39-34.433)^2}{34.433}+\frac{(15-19.679)^2}{19.679}+\frac{(9-9.997)^2}{9.997}+\frac{(10-7.568)^2}{7.568}\\
+={}&1.147+.294+1.455+.775+.336+.856+.606+1.113+.099+.782=7.461.
+\end{align*}
+$k=10$, $m=1$, $\nu=10-1-1=8$, $Q_{.95}(8)=15.507$. Como $7.461<15.507$ y $p\approx.488$, no se rechaza $H_0$. Los datos son compatibles con Poisson de media $4.57$.\par
+\begin{errorbox}No elegir $\lambda$ mirando solo una categoría. La cola final debe incluir toda la probabilidad restante y los grados de libertad deben reflejar si $\lambda$ fue estimado.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``Poisson describe conteos por intervalo. Estimo lambda con la media, calculo todas las probabilidades y esperados, agrupo clases pequeñas, compruebo el total y aplico chi-cuadrado. Como el estadístico queda a la izquierda del crítico, no rechazo el ajuste.''\end{oral}
+\cierre{El modelo Poisson es compatible con los datos al nivel elegido, aunque no queda demostrado como único modelo posible.}
+
+\subsection{Ajuste a una distribución Normal}
+\inicio{En este ajuste verifico si una variable cuantitativa agrupada es compatible con una distribución Normal.}
+\textbf{2--10. Idea, datos y condiciones.} Se estiman $\mu$ y $\sigma$, se convierten límites reales a valores $Z$, se calculan áreas normales y esperados. Las clases deben ser exhaustivas y los esperados finales suficientes.\par
+\begin{formula}\[
+Z=\frac{x-\bar x}s,\qquad P_i=\Phi(z_{\rm sup})-\Phi(z_{\rm inf}),\qquad E_i=nP_i.
+\]
+\textbf{Lectura:} ``Z expresa cuántos desvíos separan un límite de la media''. $\Phi$ es el área acumulada Normal estándar.
+\end{formula}
+\textbf{15. Gráfico.} La curva Normal es simétrica; cada clase corresponde a un área entre límites reales. Las clases extremas deben quedar abiertas hasta $-\infty$ y $+\infty$ para que las áreas sumen uno.\par
+\textbf{16--18. Ejemplo completo.} Datos agrupados, $n=50$:
+\[
+\begin{array}{c|rrrrrr}
+\text{Intervalo}&1.5-1.7&1.8-2.0&2.1-2.3&2.4-2.6&2.7-2.9&3.0-3.2\\
+O_i&3&12&14&9&7&5\\
+c_i&1.6&1.9&2.2&2.5&2.8&3.1
+\end{array}
+\]
+Se prueba Normal al $5\%$; se estiman $m=2$ parámetros.
+\begin{align*}
+\bar x&=\frac{1.6(3)+1.9(12)+2.2(14)+2.5(9)+2.8(7)+3.1(5)}{50}\\
+&=116/50=2.32,\\
+\sum O_i(c_i-\bar x)^2&=3(1.6-2.32)^2+12(1.9-2.32)^2+\cdots+5(3.1-2.32)^2=8.82,\\
+s&=\sqrt{8.82/(50-1)}=.4243.
+\end{align*}
+Límites reales: $(-\infty,1.75],(1.75,2.05],\ldots,(2.95,\infty)$. Valores tipificados:
+\[
+z_{1.75}=-1.344, z_{2.05}=-.636, z_{2.35}=.071, z_{2.65}=.778, z_{2.95}=1.485.
+\]
+\[
+\begin{array}{c|rrr}
+\text{Clase}&P_i&E_i=50P_i&O_i\\\hline
+(-\infty,1.75]&.0896&4.478&3\\
+(1.75,2.05]&.1727&8.635&12\\
+(2.05,2.35]&.2659&13.296&14\\
+(2.35,2.65]&.2535&12.674&9\\
+(2.65,2.95]&.1496&7.478&7\\
+(2.95,\infty)&.0688&3.439&5\\\hline
+\text{Total}&1.0000&50.000&50
+\end{array}
+\]
+Se agrupan las dos iniciales y las dos finales: $O=(15,14,9,12)$ y $E=(13.113,13.296,12.674,10.917)$.
+\begin{align*}
+\chi^2&=\frac{(15-13.113)^2}{13.113}+\frac{(14-13.296)^2}{13.296}
++\frac{(9-12.674)^2}{12.674}+\frac{(12-10.917)^2}{10.917}\\
+&=.272+.037+1.065+.107=1.481.
+\end{align*}
+$k=4$, $m=2$, $\nu=4-2-1=1$, $Q_{.95}(1)=3.841$. Como $1.481<3.841$ y $p\approx.224$, no se rechaza $H_0$. Los datos son compatibles con $N(2.32,.4243^2)$.\par
+\begin{comprobacion}$\sum P_i=1$ y $\sum E_i=\sum O_i=50$.\end{comprobacion}
+\begin{errorbox}No usar límites aparentes en lugar de límites reales; no olvidar colas abiertas; después de agrupar, recalcular $k$ y los grados de libertad.\end{errorbox}
+\begin{oral}\textbf{20. Guion.} ``Estimo media y desvío, transformo cada límite real a Z, leo áreas normales y obtengo esperados. Agrupo extremos pequeños, compruebo probabilidades y totales, y aplico chi-cuadrado descontando los dos parámetros estimados.''\end{oral}
+\cierre{El no rechazo indica que las diferencias respecto de la Normal son compatibles con variación muestral.}
+
+\section{Cuadro comparativo de procedimientos}
+\small
+\begin{table}[H]\centering
+\begin{tabularx}{\textwidth}{L{3.1cm}Y L{3.2cm}L{2cm}}\toprule
+\textbf{Procedimiento}&\textbf{Pregunta y datos}&\textbf{Estadístico o fórmula}&\textbf{Grados de libertad}\\\midrule
+IC para varianza&¿Qué valores son plausibles? $n,s$, Normal&Límites con $Q_{.025}$ y $Q_{.975}$&$n-1$\\
+Prueba de varianza&¿Coincide con $\sigma_0^2$?&$(n-1)s^2/\sigma_0^2$&$n-1$\\
+IC para proporción&¿Qué valores son plausibles para $p$?&$\phat\pm z\sqrt{\phat(1-\phat)/n}$&No corresponde\\
+Prueba de proporción&¿Coincide con $p_0$?&$(\phat-p_0)/\sqrt{p_0(1-p_0)/n}$&Normal estándar\\
+Dos proporciones&¿Difieren dos grupos?&$Z$ con proporción agrupada&Normal estándar\\
+Homogeneidad&¿Son iguales varias proporciones?&$\sum(O-E)^2/E$&$k-1$\\
+Independencia&¿Se asocian dos variables?&$\sum(O-E)^2/E$&$(r-1)(c-1)$\\
+Bondad de ajuste&¿Los datos siguen un modelo?&$\sum(O-E)^2/E$&$k-m-1$\\\bottomrule
+\end{tabularx}\end{table}\normalsize
+
+\section{Fórmulas esenciales}
+\begin{align*}
+s^2&=\frac{\sum(x_i-\bar x)^2}{n-1},&\widehat\sigma_R&=R/d_2,\\
+IC(\sigma^2)&=\left(\frac{(n-1)s^2}{Q_{1-\alpha/2}},\frac{(n-1)s^2}{Q_{\alpha/2}}\right),&T_{\sigma^2}&=\frac{(n-1)s^2}{\sigma_0^2},\\
+\phat&=x/n,&IC(p)&=\phat\pm z\sqrt{\phat(1-\phat)/n},\\
+n&=p_0(1-p_0)(z/E)^2,&Z_p&=\frac{\phat-p_0}{\sqrt{p_0(1-p_0)/n}},\\
+E_{ij}&=\frac{n_{i\cdot}n_{\cdot j}}n,&\chi^2&=\sum\frac{(O-E)^2}E.
+\end{align*}
+
+\section{Errores frecuentes para evitar en el examen}
+\begin{enumerate}
+\item Comenzar con una fórmula sin nombrar parámetro, objetivo ni condiciones.
+\item Omitir sustituciones, operaciones intermedias, unidades o comprobaciones.
+\item Confundir $s^2$ con $s$, $d_2$ con $d_3$, $p$ con $\phat$, o $p_0$ con $\phat$.
+\item Elegir la cola antes de leer $H_1$.
+\item Usar ``se acepta $H_0$'' en lugar de ``no se rechaza $H_0$''.
+\item Aplicar la Normal con éxitos o fracasos insuficientes.
+\item Mantener categorías con $E_i<5$ o perder probabilidad en las colas.
+\item Olvidar restar parámetros estimados en bondad de ajuste.
+\item Confundir homogeneidad, independencia y bondad de ajuste.
+\item Afirmar causalidad a partir de una asociación estadística.
+\end{enumerate}
+\begin{oral}[Cierre universal]
+``Al nivel de significación elegido, comparo el estadístico con el valor crítico o el valor $p$. Con esa evidencia rechazo o no rechazo $H_0$ y traduzco la decisión al problema. La conclusión queda limitada al diseño, la muestra y los supuestos utilizados.''
+\end{oral}
+\end{document}

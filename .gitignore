@@ -22,3 +22,5 @@
 *.xdv
 
 pdf viejos/
+tmp/
+.tmp/
