@@ -22,5 +22,6 @@
         "$ErrorActionPreference = 'Stop'; $texPath = '%DOC%'; $projectDir = Split-Path -Parent $texPath; $tmpDir = Join-Path $projectDir 'tmp'; $pdfName = [System.IO.Path]::GetFileNameWithoutExtension($texPath) + '.pdf'; if (Test-Path -LiteralPath $tmpDir) { Remove-Item -LiteralPath $tmpDir -Recurse -Force }; New-Item -ItemType Directory -Path $tmpDir -Force | Out-Null; try { & latexmk -pdf -synctex=0 -interaction=nonstopmode -file-line-error ('-outdir=' + $tmpDir) $texPath; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; $builtPdf = Join-Path $tmpDir $pdfName; if (-not (Test-Path -LiteralPath $builtPdf)) { throw 'latexmk terminó correctamente, pero no produjo el PDF esperado.' }; Copy-Item -LiteralPath $builtPdf -Destination (Join-Path $projectDir $pdfName) -Force } finally { if (Test-Path -LiteralPath $tmpDir) { Remove-Item -LiteralPath $tmpDir -Recurse -Force } }"
       ]
     }
-  ]
+  ],
+  "python-envs.defaultEnvManager": "ms-python.python:system"
 }
