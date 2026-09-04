@@ -1,0 +1,103 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.widgets import Slider, Button
+
+# ==========================================
+# 1. DATOS Y CÁLCULOS INICIALES
+# ==========================================
+x = np.array([1, 2, 3, 4, 5])
+y = np.array([2.1, 3.9, 6.2, 7.8, 10.1])
+
+b_opt, a_opt = np.polyfit(x, y, 1)
+
+def calcular_sce(a, b):
+    return np.sum((y - (a + b * x))**2)
+
+sce_opt = calcular_sce(a_opt, b_opt)
+
+# ==========================================
+# 2. CONFIGURACIÓN DE LA FIGURA Y SUBPLOTS
+# ==========================================
+# Se aumentó ligeramente la altura de la ventana (figsize) para dar más respiro
+fig = plt.figure(figsize=(12, 7))
+
+# Ajuste global de los márgenes para separar el título general y dejar espacio abajo
+fig.subplots_adjust(top=0.82, bottom=0.25, wspace=0.25)
+
+# Título principal elevado (y=0.95)
+fig.suptitle('Superficie de Error de una Regresión Lineal\n(El paraboloide elíptico es una función cuadrática y estrictamente convexa)', 
+             fontsize=14, y=0.95)
+
+# Subplot 2D
+ax1 = fig.add_subplot(121)
+ax1.set_title('Datos observados y Recta Ajustada\n', fontsize=12)
+ax1.set_xlabel('X')
+ax1.set_ylabel('Y')
+ax1.grid(True, linestyle='--', alpha=0.6)
+
+puntos_obs = ax1.scatter(x, y, color='black', zorder=5, label='Datos $(x_i, y_i)$')
+recta_ajustada, = ax1.plot(x, a_opt + b_opt * x, color='blue', label='Recta $\hat{y} = a + bx$')
+residuos = ax1.vlines(x, y, a_opt + b_opt * x, color='red', linestyle='--', label='Residuos $e_i$')
+ax1.legend()
+
+# Subplot 3D
+ax2 = fig.add_subplot(122, projection='3d')
+ax2.set_title('Superficie del Error (SCE)', fontsize=12)
+ax2.set_xlabel('Ordenada al origen (a)')
+ax2.set_ylabel('Pendiente (b)')
+ax2.set_zlabel('SCE')
+
+a_vals = np.linspace(a_opt - 3, a_opt + 3, 40)
+b_vals = np.linspace(b_opt - 2, b_opt + 2, 40)
+A, B = np.meshgrid(a_vals, b_vals)
+Z = np.zeros_like(A)
+for i in range(len(x)):
+    Z += (y[i] - (A + B * x[i]))**2
+
+superficie = ax2.plot_surface(A, B, Z, cmap='viridis', alpha=0.6, edgecolor='none')
+minimo_global = ax2.scatter(a_opt, b_opt, sce_opt, color='gold', s=100, marker='*', zorder=10, label='Mínimo Global')
+punto_movil = ax2.scatter(a_opt, b_opt, sce_opt, color='red', s=60, zorder=10, label='Punto Actual')
+ax2.legend()
+
+# ==========================================
+# 3. CONTROLES DESLIZANTES Y BOTÓN
+# ==========================================
+# Se redujo el ancho (de 0.65 a 0.50) para que los valores no se superpongan con el botón
+ax_a = plt.axes([0.15, 0.12, 0.50, 0.03])
+ax_b = plt.axes([0.15, 0.06, 0.50, 0.03])
+
+slider_a = Slider(ax_a, 'Ordenada (a)', a_opt - 3, a_opt + 3, valinit=a_opt + 1.5)
+slider_b = Slider(ax_b, 'Pendiente (b)', b_opt - 2, b_opt + 2, valinit=b_opt - 1)
+
+def update(val):
+    a_actual = slider_a.val
+    b_actual = slider_b.val
+    
+    y_estimado = a_actual + b_actual * x
+    recta_ajustada.set_ydata(y_estimado)
+    
+    segmentos = [[[x[i], y[i]], [x[i], y_estimado[i]]] for i in range(len(x))]
+    residuos.set_segments(segmentos)
+    
+    sce_actual = calcular_sce(a_actual, b_actual)
+    punto_movil._offsets3d = ([a_actual], [b_actual], [sce_actual])
+    
+    ax1.set_title(f'Datos observados y Recta Ajustada\nSCE Actual = {sce_actual:.2f}', fontsize=12)
+    fig.canvas.draw_idle()
+
+slider_a.on_changed(update)
+slider_b.on_changed(update)
+
+# El botón ahora está ubicado más a la derecha (0.78) en el espacio libre
+ax_boton = plt.axes([0.78, 0.06, 0.15, 0.09])
+boton_optimo = Button(ax_boton, 'Mostrar\nMejor Ajuste', color='lightgreen', hovercolor='palegreen')
+
+def reset_to_optimal(event):
+    slider_a.set_val(a_opt)
+    slider_b.set_val(b_opt)
+
+boton_optimo.on_clicked(reset_to_optimal)
+
+update(None)
+
+plt.show()

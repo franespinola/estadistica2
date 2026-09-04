@@ -198,6 +198,8 @@
 
 \textbf{Hipótesis nula ($\Hcero$).} Es el punto de partida y se asume temporalmente para confrontarla con los datos. Contiene la igualdad: $=$, $\le$ o $\ge$.
 
+\textbf{Hipótesis nula simple.} Fija un único valor del parámetro, por ejemplo $\Hcero:\mu=20$. En cambio, una \textbf{hipótesis compuesta} admite un conjunto de valores, como $\Hcero:\mu\le20$ o $\Hcero:\mu\ge20$. Esta distinción no cambia la regla práctica de la unidad: la igualdad siempre queda dentro de $\Hcero$.
+
 \textbf{Hipótesis alternativa ($H_a$ o $\Huno$).} Expresa lo que se concluirá si existe evidencia suficiente para rechazar $\Hcero$. Se formula con $<$, $>$ o $\ne$.
 
 \begin{regla}
@@ -231,6 +233,10 @@ Los valores más usuales son $\alpha=0.05$ y $\alpha=0.01$. En una prueba bilate
 \begin{idea}
 Antes de calcular debe decidirse: qué parámetro se estudia, qué quiere demostrar el problema, qué cola corresponde, qué valor de $\alpha$ se usará y con qué distribución se trabajará.
 \end{idea}
+
+\begin{advertencia}[La decisión no debe ser arbitraria]
+El nivel de significancia y el criterio de rechazo deben fijarse \textbf{antes} de observar el resultado final. Elegir después una frontera que favorezca la conclusión deseada deja a la decisión sin una justificación estadística válida.
+\end{advertencia}
 
 % =============================================================================
 \section{Procedimiento para una prueba de hipótesis}
@@ -407,6 +413,20 @@ Para una prueba unilateral se utiliza solamente el límite del lado de rechazo:
 
 \textbf{R, comando esencial:} \texttt{qnorm()} también permite obtener el límite en unidades reales indicando $\mu_0$ como media y $\sigma/\sqrt n$ como desviación estándar. El código se reúne en el anexo.
 
+\subsection{Medidas originales y medidas estandarizadas}
+
+Una medida \textbf{original o absoluta} conserva las unidades del problema, por ejemplo centímetros, minutos o kilogramos. Una medida \textbf{estandarizada} expresa la distancia a la media en cantidad de desviaciones estándar y, por ello, no tiene unidades:
+\[
+Z=\frac{X-\mu}{\sigma}.
+\]
+Para una media muestral, la dispersión relevante no es $\sigma$, sino su error estándar:
+\[
+\sigma_{\bar X}=\frac{\sigma}{\sqrt n},
+\qquad
+Z=\frac{\bar X-\mu}{\sigma/\sqrt n}.
+\]
+Los límites pueden calcularse directamente en unidades originales con \texttt{qnorm(p, mean, sd)} o en escala estándar y luego desnormalizarse. Ambos procedimientos producen la misma decisión.
+
 % =============================================================================
 \section{Errores tipo I y II}
 
@@ -426,6 +446,23 @@ Para una prueba unilateral se utiliza solamente el límite del lado de rechazo:
 
 \begin{advertencia}[Interpretación correcta]
 El \textbf{Error Tipo I} ocurre cuando se rechaza $\Hcero$ aunque sea verdadera. El \textbf{Error Tipo II} ocurre cuando no se rechaza $\Hcero$ aunque sea falsa. Si la decisión coincide con la realidad poblacional, no se comete ninguno de estos errores.
+\end{advertencia}
+
+\[
+\alpha=P(\text{rechazar }\Hcero\mid\Hcero\text{ verdadera}),
+\]
+\[
+\beta=P(\text{no rechazar }\Hcero\mid\Hcero\text{ falsa}),
+\qquad
+\text{potencia}=1-\beta.
+\]
+
+\begin{idea}[Falso positivo y falso negativo]
+El Error Tipo I puede interpretarse como un \textbf{falso positivo}: por ejemplo, un test indica enfermedad cuando la persona está sana. El Error Tipo II es un \textbf{falso negativo}: el test no detecta una enfermedad que realmente existe. La potencia mide la probabilidad de detectar el efecto cuando este es real.
+\end{idea}
+
+\begin{advertencia}[Compromiso entre los errores]
+Con el tamaño muestral y el modelo fijos, disminuir $\alpha$ desplaza la frontera para hacer más difícil el rechazo y suele aumentar $\beta$. Para reducir ambos errores sin cambiar la diferencia que se desea detectar, normalmente es necesario aumentar el tamaño de la muestra.
 \end{advertencia}
 
 % =============================================================================
@@ -502,6 +539,14 @@ Si la media real coincide con $\mu_0$, la probabilidad de no rechazo vale $1-\al
 \includegraphics[width=.86\textwidth]{imagenes colas/bilateral2.png}
 \caption{Descomposición de los errores para una prueba bilateral.}
 \end{figure}
+
+\subsection{Efecto del tamaño muestral}
+
+Como $\sigma_{\bar X}=\sigma/\sqrt n$, al aumentar $n$ disminuyen el error estándar y la dispersión de la distribución de $\bar X$: la campana se hace más estrecha y los intervalos de confianza resultan más ajustados. Manteniendo fijos $\alpha$, el modelo y una alternativa concreta, la separación entre $\mu_0$ y esa alternativa se vuelve más fácil de detectar; por lo tanto, $\beta$ disminuye y la potencia $1-\beta$ aumenta.
+
+\begin{regla}
+Una muestra mayor no garantiza por sí sola un estudio correcto, pero sí aporta mayor precisión y capacidad de detección cuando el diseño, la independencia y el modelo estadístico son adecuados.
+\end{regla}
 
 % =============================================================================
 \section{Hipótesis relativas a dos medias}
@@ -867,6 +912,19 @@ t=\frac{(\bar x_1-\bar x_2)-\delta}
 \nu=n_1+n_2-2.
 \]
 
+Sustituyendo $s_p^2$ en el denominador y reuniendo los factores se obtiene la forma expandida utilizada en el apunte:
+\[
+\boxed{
+t=
+\frac{(\bar x_1-\bar x_2)-\delta}
+{\sqrt{(n_1-1)s_1^2+(n_2-1)s_2^2}}
+\sqrt{\frac{n_1n_2(n_1+n_2-2)}{n_1+n_2}}
+},
+\qquad
+\nu=n_1+n_2-2.
+\]
+Las dos expresiones son algebraicamente equivalentes: la primera separa la desviación combinada $s_p$ y el error estándar, mientras que la segunda reemplaza $s_p$ por su fórmula y muestra todo el cálculo en una sola expresión.
+
 \begin{idea}[Significado de los símbolos nuevos]
 $s_p^2$ es la varianza muestral combinada, $s_p$ es la desviación estándar combinada y $\nu$ representa los grados de libertad de la distribución $t$. La combinación solo tiene sentido si es razonable suponer una varianza poblacional común.
 \end{idea}
@@ -874,6 +932,46 @@ $s_p^2$ es la varianza muestral combinada, $s_p$ es la desviación estándar com
 \begin{regla}[Cómo leer la prueba $t$ bimuestral]
 Se lee: ``diferencia entre las medias muestrales, menos la diferencia propuesta en $\Hcero$, dividido por el error estándar estimado con la desviación combinada''. Los grados de libertad se suman como $(n_1-1)+(n_2-1)=n_1+n_2-2$.
 \end{regla}
+
+\begin{table}[H]
+\centering
+\caption{Regiones de rechazo para la prueba $t$ bimuestral combinada.}
+\small
+\begin{tabularx}{.92\textwidth}{YY}
+\toprule
+\rowcolor{azulclaro}
+\textbf{Hipótesis alternativa} & \textbf{Rechazar $\Hcero$ si}\\
+\midrule
+$\Huno:\mu_1-\mu_2>\delta$ & $t_{calc}>t_{\alpha,\nu}$\\
+\rowcolor{grisclaro}
+$\Huno:\mu_1-\mu_2<\delta$ & $t_{calc}<-t_{\alpha,\nu}$\\
+$\Huno:\mu_1-\mu_2\ne\delta$ & $|t_{calc}|>t_{\alpha/2,\nu}$\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Aquí $t_{\alpha,\nu}$ es el valor crítico positivo que deja probabilidad $\alpha$ en la cola derecha de una distribución $t$ con $\nu$ grados de libertad. En una prueba bilateral se reparte el nivel total como $\alpha/2$ en cada cola.
+
+\begin{advertencia}[Condiciones que deben verificarse]
+La prueba $t$ combinada requiere muestras aleatorias \textbf{independientes}, poblaciones aproximadamente normales cuando las muestras son pequeñas y una varianza poblacional común razonable. No debe aplicarse a mediciones ``antes y después'': en ese caso se forman diferencias dentro de cada pareja y se utiliza la prueba $t$ apareada.
+\end{advertencia}
+
+\begin{table}[H]
+\centering
+\caption{Comparación entre las pruebas para dos medias desarrolladas en la unidad.}
+\small
+\begin{tabularx}{\textwidth}{L{2.7cm}YYL{2.7cm}}
+\toprule
+\rowcolor{azulclaro}
+\textbf{Prueba} & \textbf{Estructura de los datos} & \textbf{Información o supuestos} & \textbf{Grados de libertad}\\
+\midrule
+$Z$ de dos medias & Dos muestras independientes & $\sigma_1,\sigma_2$ conocidas, o aproximación de la guía para muestras grandes & No corresponde\\
+\rowcolor{grisclaro}
+$t$ bimuestral combinada & Dos muestras independientes & Muestras pequeñas, normalidad y varianzas desconocidas pero iguales & $n_1+n_2-2$\\
+$t$ apareada & Observaciones vinculadas por pares & Se analiza una sola muestra de diferencias $d_i$ & $n-1$\\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{Ejemplo III: fertilizante y producción de trigo}
 
@@ -903,7 +1001,13 @@ t=\frac{0.280-0.264}
 {0.02102\sqrt{1/12+1/12}}
 \approx1.864.
 \]
-\item Como $1.864>1.717$, se rechaza $\Hcero$.
+El error estándar estimado es
+\[
+\EE(\bar X_1-\bar X_2)
+=0.02102\sqrt{1/12+1/12}
+\approx0.00858.
+\]
+\item Como $1.864>1.717$, el estadístico cae en la región crítica y se rechaza $\Hcero$.
 \end{enumerate}
 
 \begin{advertencia}[Diferencia numérica con el apunte]
@@ -1164,13 +1268,16 @@ P(X\leq x_p)=p.
 \]
 \begin{rscript}
 qnorm(0.05, mean = 0, sd = 1)   \# cola izquierda\par
-qnorm(0.95, mean = 0, sd = 1)   \# cola derecha
+qnorm(0.95, mean = 0, sd = 1)   \# cola derecha\par
+qnorm(0.025, mean = 0, sd = 1)  \# bilateral: límite izquierdo\par
+qnorm(0.975, mean = 0, sd = 1)  \# bilateral: límite derecho
 \end{rscript}
 \begin{rverdict}
 \textbf{Resultado:}
 $\operatorname{qnorm}(0.05,0,1)=-1.644854\approx-1.645$ y
 $\operatorname{qnorm}(0.95,0,1)=1.644854\approx1.645$.
 Por ejemplo, $P(Z\leq-1.645)=0.05$.
+Para $\alpha=0.05$ bilateral, los cuantiles son aproximadamente $-1.96$ y $1.96$.
 \end{rverdict}
 \textbf{Lectura de los parámetros:}
 $p$ es el área acumulada desde $-\infty$; \texttt{mean} es la media; y \texttt{sd} es la desviación estándar.
@@ -1203,6 +1310,14 @@ $\operatorname{qt}(0.95,9)=1.833113\approx1.833$.
 \end{rverdict}
 \textbf{Lectura de los parámetros:}
 $p$ es el área acumulada y \texttt{df} son los grados de libertad. En esta unidad se usa $\nu=n_1+n_2-2$ para la $t$ combinada y $\nu=n-1$ para la $t$ apareada.
+\medskip
+
+\textbf{Comprobación completa de la $t$ bimuestral.} Si se dispone de los datos originales de ambos grupos, R puede calcular la prueba combinada con:
+\begin{rscript}
+t.test(grupo1, grupo2, alternative = "greater",\par
+       mu = 0, var.equal = TRUE)
+\end{rscript}
+El argumento \texttt{mu = 0} fija $\delta=0$, \texttt{alternative = "greater"} representa $\Huno:\mu_1-\mu_2>0$ y \texttt{var.equal = TRUE} solicita la estimación combinada $s_p^2$. Esta instrucción no sustituye la verificación previa de independencia, normalidad e igualdad de varianzas.
 \end{rcheat}
 
 \rsubentry{Densidad de la distribución normal: dnorm()}
@@ -1223,8 +1338,43 @@ $\operatorname{dnorm}(77,77,2)=0.1994711$. Este número es una \textbf{densidad}
 $x$ es la abscisa evaluada; \texttt{mean} es la media; y \texttt{sd} es la desviación estándar. Se utiliza \texttt{dnorm()} para construir los gráficos, no para obtener el área acumulada ni el valor crítico.
 \end{rcheat}
 
+\rsubentry{Probabilidad acumulada normal: pnorm()}
+\begin{rcheat}{\thesubsection\quad Cálculo en R con \texttt{pnorm()}}
+\textbf{Qué recibe y qué devuelve.} La función \texttt{pnorm(x, mean, sd)} devuelve el área acumulada a la izquierda de $x$:
+\[
+\operatorname{pnorm}(x,\mu,\sigma)
+=P(X\le x)
+=\Phi\!\left(\frac{x-\mu}{\sigma}\right).
+\]
+\begin{rscript}
+pnorm(80, mean = 77, sd = 10/sqrt(25))
+\end{rscript}
 \begin{rverdict}
-\textbf{Regla rápida:} \texttt{qnorm()} devuelve un límite normal; \texttt{qt()} devuelve un límite Student; \texttt{dnorm()} devuelve la altura de la curva. Ninguna de estas funciones reemplaza la fórmula de $z_{calc}$ o $t_{calc}$.
+El resultado es $P(\bar X\le80)$ bajo el modelo indicado. Para una cola derecha se usa el complemento
+\[
+P(X>x)=1-P(X\le x).
+\]
+En R se calcula como \texttt{1-pnorm(x, mean, sd)}. En una prueba bilateral deben combinarse las dos colas de acuerdo con la alternativa.
+\end{rverdict}
+\end{rcheat}
+
+\rsubentry{Generación de observaciones normales: rnorm()}
+\begin{rcheat}{\thesubsection\quad Simulación en R con \texttt{rnorm()}}
+\textbf{Qué recibe y qué devuelve.} La función \texttt{rnorm(n, mean, sd)} genera $n$ observaciones aleatorias independientes de una distribución normal con la media y el desvío indicados:
+\[
+X_1,\ldots,X_n\overset{\mathrm{iid}}{\sim}N(\mu,\sigma^2).
+\]
+\begin{rscript}
+set.seed(123)\par
+rnorm(5, mean = 170, sd = 10)
+\end{rscript}
+\begin{rverdict}
+Se usa para simulación y práctica. No calcula cuantiles, probabilidades ni estadísticos de prueba; \texttt{set.seed()} permite reproducir la misma muestra simulada.
+\end{rverdict}
+\end{rcheat}
+
+\begin{rverdict}
+\textbf{Regla rápida:} \texttt{qnorm()} devuelve un cuantil normal; \texttt{qt()} devuelve un cuantil Student; \texttt{pnorm()} devuelve probabilidad acumulada; \texttt{dnorm()} devuelve altura o densidad; y \texttt{rnorm()} genera observaciones normales. Ninguna reemplaza la elección razonada de la prueba ni la interpretación de $z_{calc}$ o $t_{calc}$.
 \end{rverdict}
 \endgroup
 

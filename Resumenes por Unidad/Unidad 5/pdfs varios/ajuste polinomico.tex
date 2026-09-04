@@ -1,0 +1,56 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+
+\begin{document}
+
+\vspace{0.4cm}
+\noindent \textbf{Derivada respecto a $\mathbf{b_0}$:} \\
+Para esta derivada, el término clave dentro del corchete es $-b_0$. Su derivada respecto a $b_0$ es $-1$.
+\[
+\resizebox{\textwidth}{!}{$\displaystyle
+\frac{\partial S}{\partial b_0} = \sum_{i=1}^n \underbrace{2}_{\text{Baja el exponente}} \cdot \underbrace{\left[ y_i - (b_0 + b_1 x_i + b_2 x_i^2 + \dots + b_p x_i^p) \right]}_{\text{Lo de adentro intacto}} \cdot \underbrace{(-1)}_{\text{Derivada respecto a } b_0} = 0
+$}
+\]
+
+\vspace{0.4cm}
+\noindent \textbf{Derivada respecto a $\mathbf{b_1}$:} \\
+Para esta derivada, el término clave dentro del corchete es $-b_1 x_i$. Su derivada respecto a $b_1$ es $-x_i$.
+\[
+\resizebox{\textwidth}{!}{$\displaystyle
+\frac{\partial S}{\partial b_1} = \sum_{i=1}^n \underbrace{2}_{\text{Baja el exponente}} \cdot \underbrace{\left[ y_i - (b_0 + b_1 x_i + b_2 x_i^2 + \dots + b_p x_i^p) \right]}_{\text{Lo de adentro intacto}} \cdot \underbrace{(-x_i)}_{\text{Derivada respecto a } b_1} = 0
+$}
+\]
+
+\vspace{0.4cm}
+\noindent \textbf{Derivada respecto a $\mathbf{b_2}$:} \\
+El término clave adentro del corchete es $-b_2 x_i^2$. Su derivada respecto a $b_2$ es $-x_i^2$.
+\[
+\resizebox{\textwidth}{!}{$\displaystyle
+\frac{\partial S}{\partial b_2} = \sum_{i=1}^n \underbrace{2}_{\text{Baja el exponente}} \cdot \underbrace{\left[ y_i - (b_0 + b_1 x_i + b_2 x_i^2 + \dots + b_p x_i^p) \right]}_{\text{Lo de adentro intacto}} \cdot \underbrace{(-x_i^2)}_{\text{Derivada respecto a } b_2} = 0
+$}
+\]
+
+\vspace{0.4cm}
+\noindent \textbf{Derivada respecto a $\mathbf{b_3}$:} \\
+Para $b_3$, el término clave es $-b_3 x_i^3$. Su derivada respecto a $b_3$ es $-x_i^3$.
+\[
+\resizebox{\textwidth}{!}{$\displaystyle
+\frac{\partial S}{\partial b_3} = \sum_{i=1}^n \underbrace{2}_{\text{Baja el exponente}} \cdot \underbrace{\left[ y_i - (b_0 + b_1 x_i + b_2 x_i^2 + \dots + b_p x_i^p) \right]}_{\text{Lo de adentro intacto}} \cdot \underbrace{(-x_i^3)}_{\text{Derivada respecto a } b_3} = 0
+$}
+\]
+
+\vspace{0.4cm}
+\noindent \textbf{Derivada general respecto a $\mathbf{b_k}$ (El Patrón):} \\
+Para cualquier coeficiente en la posición $k$, el término clave es $-b_k x_i^k$. Su derivada respecto a $b_k$ será siempre $-x_i^k$.
+\[
+\resizebox{\textwidth}{!}{$\displaystyle
+\frac{\partial S}{\partial b_k} = \sum_{i=1}^n \underbrace{2}_{\text{Baja el exponente}} \cdot \underbrace{\left[ y_i - (b_0 + b_1 x_i + b_2 x_i^2 + \dots + b_p x_i^p) \right]}_{\text{Lo de adentro intacto}} \cdot \underbrace{(-x_i^k)}_{\text{Derivada respecto a } b_k} = 0
+$}
+\]
+
+\end{document}

@@ -1,0 +1,748 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{left=1in,right=1in,top=1in,bottom=1in}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\graphicspath{{imagen graficos/}}
+
+% Configuración de colores académicos de la cátedra
+\definecolor{primaryBlue}{HTML}{1e3d59}
+\definecolor{accentCoral}{HTML}{ff6e40}
+\definecolor{lightCream}{HTML}{faf7f2}
+\definecolor{darkGrey}{HTML}{333333}
+
+% Estilo de tcolorbox para paneles destacados
+\newtcolorbox{importanteBox}[1]{
+  colback=lightCream,
+  colframe=primaryBlue,
+  fonttitle=\bfseries\color{white},
+  title=#1,
+  arc=4pt,
+  boxrule=1.5pt
+}
+
+\newtcolorbox{alertaBox}[1]{
+  colback=lightCream,
+  colframe=accentCoral,
+  fonttitle=\bfseries\color{white},
+  title=#1,
+  arc=4pt,
+  boxrule=1.5pt
+}
+
+% Configuración de cabeceras y pies de página
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\fontsize{9}{11}\selectfont\color{primaryBlue}\bfseries CAPÍTULO 5 --- AJUSTE DE CURVAS}
+\fancyhead[R]{\fontsize{9}{11}\selectfont\color{primaryBlue}\bfseries EXAMEN FINAL ORAL}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\footrulewidth}{0pt}
+\addtolength{\headheight}{12pt}
+
+% Quitar indentación por defecto y dar espaciado entre párrafos
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primaryBlue,
+    filecolor=accentCoral,      
+    urlcolor=primaryBlue,
+}
+
+% Títulos manuales en español
+\renewcommand{\contentsname}{Índice General}
+
+\begin{document}
+
+% ==========================================
+% PORTADA ACADÉMICA
+% ==========================================
+\begin{titlepage}
+    \centering
+    \vspace*{1.5cm}
+    {\Huge\bfseries\color{primaryBlue} CAPÍTULO 5 --- AJUSTE DE CURVAS}\\[0.5cm]
+    {\Large\bfseries\color{accentCoral} Guía Integral de Exposición Teórico-Práctica}\\[1.5cm]
+    
+    \begin{tcolorbox}[colback=lightCream, colframe=primaryBlue, arc=4pt, width=0.85\textwidth, halign=center]
+        \centering\vspace{3pt}
+        \fontsize{11}{14}\selectfont\color{darkGrey}
+        Esta guía de estudio y exposición unifica la \textbf{teoría matemática rigurosa} con la \textbf{práctica de la cátedra}, insertando cada supuesto, fórmula y deducción justo en el desarrollo de los ejercicios oficiales. Desarrollada para la preparación del examen final oral de \textbf{Estadística II}.
+        \vspace{3pt}
+    \end{tcolorbox}
+    
+    \vspace{2cm}
+    \includegraphics[width=0.45\textwidth]{tension.png}
+    \vfill
+    
+    {\large\bfseries\color{primaryBlue} Universidad de Mendoza}\\[0.2cm]
+    {\large\bfseries\color{darkGrey} Facultad de Ingeniería}\\[0.4cm]
+    \fontsize{10}{12}\selectfont\color{darkGrey}\today
+\end{titlepage}
+
+\newpage
+
+% ==========================================
+% ÍNDICE Y CÓMO USAR LA GUÍA
+% ==========================================
+\tableofcontents
+\newpage
+
+\section{¿Cómo usar esta guía para el examen final oral?}
+Esta guía de exposición fue diseñada específicamente respondiendo al principio pedagógico de la cátedra: \textbf{la teoría no existe aislada de la práctica, sino que es su fundamento directo}.
+
+En el examen final oral, el tribunal no desea escuchar definiciones abstractas de memoria ni ver números calculados de forma aislada. Su objetivo es evaluar si comprendes el \textbf{``porqué''} detrás de cada paso matemático y estadístico. Por ello, en esta guía, cada concepto teórico (como los residuos, la convexidad de las funciones cuadráticas, los supuestos clásicos, los grados de libertad o los riesgos de sobreajuste) se introduce y desarrolla \textbf{justo dentro del procedimiento de resolución de los ejercicios prácticos de las fuentes oficiales}.
+
+\begin{importanteBox}{Consejo clave de exposición oral}
+Al defender tu examen, utiliza los ejemplos numéricos de las fuentes como tu hilo conductor. Mientras escribes las matrices y resuelves las sumatorias, ve explicando los supuestos estadísticos y las justificaciones teóricas de cada paso. Esta unificación teórica-práctica demostrará al tribunal un dominio conceptual sobresaliente y un criterio profesional sólido.
+\end{importanteBox}
+
+\section{Temario Oficial del Capítulo 5}
+\begin{itemize}
+    \item \textbf{TEMA A: REGRESIÓN SIMPLE}
+    \begin{itemize}
+        \item 5-A-1 Método de los mínimos cuadrados.
+        \item 5-A-2 Inferencias basadas en mínimos cuadrados.
+        \item 5-A-3 Regresión curvilínea (Exponencial, Potencial y Recíproco).
+    \end{itemize}
+    \item \textbf{TEMA B: REGRESIÓN POLINÓMICA Y MÚLTIPLE}
+    \begin{itemize}
+        \item 5-B-1 Ajuste de un polinomio (Grado $p$ y riesgos de sobreajuste).
+        \item 5-B-2 Método de la varianza residual (Criterio de selección del grado óptimo).
+        \item 5-B-3 Correlación lineal (Pearson, propiedades y correlación vs. causalidad).
+    \end{itemize}
+\end{itemize}
+
+\newpage
+
+% ==========================================
+% TEMA A: REGRESIÓN SIMPLE
+% ==========================================
+\section{Desarrollo Integrado de Temas, Ejemplos y Gráficos}
+
+\subsection{TEMA A: REGRESIÓN SIMPLE}
+
+\subsubsection{5-A-1 Método de los mínimos cuadrados}
+El objetivo es encontrar la recta $\hat{y}_i = a + b x_i$ que mejor representa la tendencia media de una nube de puntos observados.
+
+\paragraph{Fundamento Teórico e Integración Práctica:}
+Dada una muestra de $n$ pares de observaciones $(x_i, y_i)$, el valor real observado difiere del valor estimado sobre la recta mediante un error o residuo de ajuste, definido formalmente como:
+\begin{equation}
+    e_i = y_i - \hat{y}_i = y_i - (a + b x_i)
+\end{equation}
+Para determinar los coeficientes de ajuste $a$ (ordenada al origen) y $b$ (pendiente), debemos definir un criterio de optimización.
+
+El diagrama de dispersión es una herramienta inicial fundamental y muy recomendable para identificar tendencias, curvaturas, valores atípicos y seleccionar un modelo.
+
+\begin{alertaBox}{Pregunta del Tribunal: ¿Por qué elevar los errores al cuadrado?}
+\textbf{1. Evitar la cancelación de signos:} Si utilizáramos una suma simple de errores ($\sum e_i$), los desvíos positivos (puntos por encima de la recta) se compensarían mutuamente con los desvíos negativos (puntos por debajo), arrojando un error acumulado nulo o insignificante incluso para rectas con un ajuste pésimo. \\
+\textbf{2. Convexidad y derivabilidad matemática:} Si intentáramos anular los signos mediante el valor absoluto ($\sum |e_i|$), aparecería un ``punto anguloso'' en el origen y no se podría aplicar directamente el procedimiento de derivadas ordinarias y ecuaciones normales. Los mínimos cuadrados, en cambio, producen una función diferenciable respecto de los parámetros y permiten obtener una solución analítica mediante las ecuaciones normales. También existen métodos basados en errores absolutos, pero utilizan otros procedimientos de resolución. La \textbf{Suma de Cuadrados de Error (SCE)}:
+\begin{equation}
+    SCE = \sum_{i=1}^n e_i^2 = \sum_{i=1}^n [y_i - (a + b x_i)]^2
+\end{equation}
+es una \textbf{función cuadrática estrictamente convexa} respecto a los parámetros $a$ y $b$, siempre que exista variabilidad en los valores de $X$ ($\sum (x_i-\bar{x})^2>0$). Bajo esa condición, existe un \textbf{único mínimo global}; si todos los valores de $X$ fueran iguales, la pendiente no podría estimarse correctamente.
+\end{alertaBox}
+
+\paragraph{Deducción Matemática desde Cero (Ecuaciones Normales):}
+Para hallar el par $(a,b)$ que minimiza la SCE, calculamos las derivadas parciales respecto a cada coeficiente e igualamos a cero (condición de primer orden para extremos relativos):
+\begin{align}
+    \frac{\partial SCE}{\partial a} &= \frac{\partial}{\partial a} \sum_{i=1}^n [y_i - a - b x_i]^2 = -2 \sum_{i=1}^n [y_i - a - b x_i] = 0 \\
+    \frac{\partial SCE}{\partial b} &= \frac{\partial}{\partial b} \sum_{i=1}^n [y_i - a - b x_i]^2 = -2 \sum_{i=1}^n x_i [y_i - a - b x_i] = 0
+\end{align}
+Al dividir por $-2$ y distribuir el operador sumatorio, obtenemos el sistema de \textbf{Ecuaciones Normales de Mínimos Cuadrados}:
+\begin{align}
+    \sum_{i=1}^n y_i &= a \cdot n + b \cdot \sum_{i=1}^n x_i \\
+    \sum_{i=1}^n (x_i \cdot y_i) &= a \cdot \sum_{i=1}^n x_i + b \cdot \sum_{i=1}^n x_i^2
+\end{align}
+En notación matricial, este sistema lineal se expresa de manera simétrica como:
+\begin{equation}
+    \begin{bmatrix} n & \sum x_i \\ \sum x_i & \sum x_i^2 \end{bmatrix} \begin{bmatrix} a \\ b \end{bmatrix} = \begin{bmatrix} \sum y_i \\ \sum (x_i \cdot y_i) \end{bmatrix}
+\end{equation}
+
+Aplicando la \textbf{Regla de Cramer} por determinantes para un sistema lineal $2 \times 2$, resolvemos de manera analítica y exacta:
+\begin{align}
+    \Delta &= n \cdot \sum_{i=1}^n x_i^2 - \left(\sum_{i=1}^n x_i\right)^2 \\
+    \Delta_a &= \sum_{i=1}^n y_i \cdot \sum_{i=1}^n x_i^2 - \sum_{i=1}^n (x_i \cdot y_i) \cdot \sum_{i=1}^n x_i \\
+    \Delta_b &= n \cdot \sum_{i=1}^n (x_i \cdot y_i) - \sum_{i=1}^n x_i \cdot \sum_{i=1}^n y_i
+\end{align}
+Los coeficientes de la recta corresponden a:
+\begin{equation}
+    a = \frac{\Delta_a}{\Delta}, \quad b = \frac{\Delta_b}{\Delta}
+\end{equation}
+
+\paragraph{Ejercitación Práctica Oficial: Tensión Arterial vs. Edad (Resumen de clase, Diapositivas 29-30)}
+Un médico analiza la relación existente entre la edad del paciente ($X$ en años) y su tensión arterial ($Y$ en mmHg) recopilando datos de $n = 14$ personas:
+\begin{itemize}
+    \item \textbf{Edad ($X$):} $17, 18, 20, 22, 25, 29, 33, 35, 38, 40, 42, 45, 47, 50$
+    \item \textbf{Tensión ($Y$):} $114, 134, 116, 130, 125, 130, 144, 148, 150, 153, 124, 135, 156, 142$
+\end{itemize}
+
+\textbf{Paso 1: Cálculo manual de sumatorias básicas:}
+\begin{align*}
+    n &= 14 \\
+    \sum x_i &= 17+18+\dots+50 = 461 \\
+    \sum y_i &= 114+134+\dots+142 = 1901 \\
+    \sum x_i^2 &= 17^2+18^2+\dots+50^2 = 16819 \\
+    \sum (x_i \cdot y_i) &= 17(114)+18(134)+\dots+50(142) = 63892
+\end{align*}
+
+\textbf{Paso 2: Resolución Analítica Exacta (Método A):}
+Sustituyendo las sumatorias obtenidas en los determinantes del sistema:
+\begin{align}
+    \Delta &= 14 \cdot (16819) - 461^2 = 235466 - 212521 = 22945 \\
+    \Delta_a &= 1901 \cdot (16819) - 63892 \cdot 461 = 31972919 - 29454212 = 2518707 \\
+    \Delta_b &= 14 \cdot (63892) - 461 \cdot 1901 = 894488 - 876361 = 18127
+\end{align}
+Cálculo final de coeficientes:
+\begin{align}
+    a &= \frac{2518707}{22945} \approx 109.7715 \implies \mathbf{a = 109.771} \\
+    b &= \frac{18127}{22945} \approx 0.78999 \implies \mathbf{b = 0.790}
+\end{align}
+Estableciendo la \textbf{ecuación predictora exacta}: $\mathbf{\hat{y} = 109.771 + 0.790x}$.
+
+\textbf{Paso 3: Resolución por Redondeo de las Diapositivas de la Cátedra (Método B):}
+En la diapositiva 30 de clase, se presentan sumatorias simplificadas por notación científica y redondeo: $\sum x_i^2 \approx 16820$ y $\sum (x_i y_i) \approx 63890$. Sustituyendo dichos redondeos en las ecuaciones:
+\begin{align}
+    \Delta &= 14 \cdot (16820) - 461^2 = 235480 - 212521 = 22959 \\
+    \Delta_a &= 1901 \cdot (16820) - 63890 \cdot 461 = 31974820 - 29453290 = 2521530 \\
+    \Delta_b &= 14 \cdot (63890) - 461 \cdot 1901 = 894460 - 876361 = 18099
+\end{align}
+Cálculo final de coeficientes:
+\begin{align}
+    a &= \frac{2521530}{22959} \approx 109.8275 \implies \mathbf{a = 109.828} \\
+    b &= \frac{18099}{22959} \approx 0.78827 \implies \mathbf{b = 0.788}
+\end{align}
+Estableciendo la \textbf{ecuación predictora aproximada}: $\mathbf{\hat{y} = 109.828 + 0.788x}$.
+
+\paragraph{Predicción e Interpretación para $x_0 = 36$ años:}
+Deseamos estimar la tensión arterial para un individuo de 36 años utilizando ambas ecuaciones:
+\begin{align}
+    \text{Exacto (Método A): } \hat{y}_{36} &= 109.771 + 0.790 \cdot (36) = \mathbf{138.21 \text{ mmHg}} \\
+    \text{Redondeo (Método B): } \hat{y}_{36} &= 109.828 + 0.788 \cdot (36) = \mathbf{138.21 \text{ mmHg}}
+\end{align}
+\textit{Interpretación Física de Coeficientes:}
+\begin{itemize}
+    \item La ordenada al origen $a \approx 109.771$ mmHg es el valor esperado de tensión para una persona de 0 años. Esta interpretación es de utilidad estrictamente abstracta y matemática, ya que la edad 0 queda fuera del dominio experimental estudiado.
+    \item La pendiente $b \approx 0.790$ mmHg/año significa que por cada año que cumple una persona, se proyecta un incremento promedio constante en su tensión de $0.79$ mmHg.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{tension.png}
+    \caption{Ajuste Lineal por Mínimos Cuadrados para Tensión Arterial vs. Edad.}
+    \label{fig:edad_presion}
+\end{figure}
+
+\paragraph{Guión para Exposición en el Examen Oral:}
+\begin{tcolorbox}[colback=lightCream, colframe=primaryBlue, arc=4pt]
+\fontsize{10}{12}\selectfont
+\textit{``Profesores, el método de mínimos cuadrados es un procedimiento de ajuste que minimiza la suma de cuadrados de error (SCE) de desvíos verticales. Es indispensable fundamentar la elección matemática de elevar al cuadrado: por un lado, elimina la cancelación de signos opuestos en la suma, lo cual ocurriría con una suma simple de errores. Por otro lado, frente al valor absoluto, nos entrega una función cuadrática estrictamente convexa y continua en todo su dominio, lo cual garantiza la existencia de un único mínimo analíticamente derivable a través de ecuaciones normales lineales. En el ejemplo desarrollado de tensión arterial vs edad, utilizando los datos exactos del apunte calculamos una recta predictora de $\hat{y} = 109.771 + 0.790x$. Esto nos permite predecir para una persona de 36 años una tensión estimada de $138.21$ mmHg.''}
+\end{tcolorbox}
+
+\newpage
+
+% ==========================================
+% TEMA A-2: INFERENCIAS
+% ==========================================
+\subsubsection{5-A-2 Inferencias basadas en mínimos cuadrados}
+Los estimadores muestrales $a$ y $b$ varían de una muestra a otra. Para asegurar que la relación lineal observada en la muestra representa una característica real de la población (y no un simple artificio del azar de muestreo), debemos realizar inferencia estadística.
+
+\paragraph{Supuestos Clásicos del Modelo Lineal:}
+Para que las pruebas de hipótesis e intervalos de confianza tengan validez teórica, asumimos que los errores aleatorios $\epsilon_i$ cumplen las siguientes propiedades:
+\begin{enumerate}
+    \item \textbf{Media Nula:} El valor esperado de los errores es cero: $E(\epsilon_i) = 0$.
+    \item \textbf{Normalidad:} Los errores se distribuyen siguiendo una distribución normal para cada nivel de $X$.
+    \item \textbf{Homocedasticidad:} La varianza de los errores es constante en todos los niveles: $Var(\epsilon_i) = \sigma^2$.
+    \item \textbf{Independencia:} No existe correlación o covarianza entre los errores de observaciones distintas: $Cov(\epsilon_i, \epsilon_j) = 0$ para $i \neq j$.
+\end{enumerate}
+
+\paragraph{Formulación e Integración Matemática desde Cero:}
+Utilizaremos las sumas de cuadrados de desvíos multiplicadas por $n$ que define y utiliza la cátedra:
+\begin{align}
+    S_{xx} &= \sum (x_i-\bar{x})^2 = \sum x_i^2 - \frac{(\sum x_i)^2}{n} \\
+    S_{yy} &= \sum (y_i-\bar{y})^2 = \sum y_i^2 - \frac{(\sum y_i)^2}{n} \\
+    S_{xy} &= \sum (x_i-\bar{x})(y_i-\bar{y}) = \sum (x_i y_i) - \frac{(\sum x_i)(\sum y_i)}{n}
+\end{align}
+
+\begin{importanteBox}{La Varianza del Error ($s_e^2$)}
+La varianza residual muestral, denotada como $s_e^2$, es un estimador insesgado de la varianza poblacional de los errores ($\sigma^2$). Su cálculo se define como:
+\begin{equation}
+    s_e^2 = \frac{\sum e_i^2}{n-2} = \frac{S_{yy} - b \cdot S_{xy}}{n-2}
+\end{equation}
+\textbf{¿Por qué el denominador es $(n-2)$?} El denominador representa los \textbf{grados de libertad} del estimador. Inicialmente contamos con $n$ grados de libertad en las observaciones. Al estimar los coeficientes $a$ y $b$ de la recta lineal, se pierden exactamente 2 grados de libertad. El error estándar de estimación es $s_e = \sqrt{s_e^2}$.
+\end{importanteBox}
+
+Una vez calculada la dispersión de los datos alrededor de la recta ($s_e$), podemos definir la variabilidad del estimador de la pendiente ($s_b$):
+\begin{equation}
+    s_b = \frac{s_e}{\sqrt{\sum (x_i - \bar{x})^2}} = \frac{s_e}{\sqrt{S_{xx}}}
+\end{equation}
+
+\paragraph{Prueba de Hipótesis sobre la Existencia de Relación Lineal ($\beta = 0$):}
+Si la verdadera pendiente poblacional $\beta$ es igual a cero, la variable explicativa $X$ no aporta ninguna información útil para predecir $Y$. Formulemos las hipótesis:
+\begin{align*}
+    H_0 &: \beta = 0 \quad \text{(No existe relación lineal significativa)} \\
+    H_1 &: \beta \neq 0 \quad \text{(Existe relación lineal significativa entre las variables)}
+\end{align*}
+Bajo la hipótesis nula, el estadístico de prueba $t$ sigue una distribución $t$-Student con $n-2$ grados de libertad:
+\begin{equation}
+    t = \frac{b - 0}{s_b} \sim t_{(n-2)}
+\end{equation}
+
+\paragraph{Intervalos de Confianza y Predicción:}
+\begin{itemize}
+    \item \textbf{Intervalo de Confianza para la Pendiente $\beta$:}
+    \begin{equation}
+        b - t_{\alpha/2, n-2} \cdot s_b \le \beta \le b + t_{\alpha/2, n-2} \cdot s_b
+    \end{equation}
+    \item \textbf{Intervalo de Confianza para la Respuesta Media $\mu_{y|x_0}$:}
+    \begin{equation}
+        \hat{y}_{x_0} \pm t_{\alpha/2, n-2} \cdot s_e \sqrt{\frac{1}{n} + \frac{(x_0 - \bar{x})^2}{\sum (x_i - \bar{x})^2}}
+    \end{equation}
+    \item \textbf{Intervalo de Predicción para un Valor Individual Futuro $y_0$:}
+    \begin{equation}
+        \hat{y}_{x_0} \pm t_{\alpha/2, n-2} \cdot s_e \sqrt{1 + \frac{1}{n} + \frac{(x_0 - \bar{x})^2}{\sum (x_i - \bar{x})^2}}
+    \end{equation}
+    \textbf{Sutileza Teórica:} El intervalo de predicción individual añade el valor ``$1$'' bajo el radical. Esto se debe a que un punto futuro incorpora dos fuentes de incertidumbre: el error en estimar la posición media de la recta (representado por $\frac{1}{n} + \dots$) y la variación aleatoria propia del individuo respecto a la recta (representado por $\sigma^2 \approx s_e^2$). Por lo tanto, el intervalo de predicción individual es siempre más amplio que el de la media.
+\end{itemize}
+
+\paragraph{Ejercitación Práctica Oficial: Velocidad del Aire y Coeficiente de Evaporación (Diapositivas 11-13)}
+Se desea modelar el coeficiente de evaporación de una sustancia soluble ($Y$) a partir de la velocidad de una corriente de aire ($X$ en m/s) utilizando $n=10$ observaciones:
+\begin{itemize}
+    \item \textbf{Aire ($X$):} $20, 60, 100, 140, 180, 220, 260, 300, 340, 380$
+    \item \textbf{Evaporación ($Y$):} $0.18, 0.37, 0.35, 0.78, 0.56, 0.75, 1.18, 1.36, 1.17, 1.65$
+\end{itemize}
+
+\textbf{Paso 1: Cálculo exacto de sumatorias:}
+\begin{align*}
+    n &= 10, \quad \bar{x} = 200, \quad \bar{y} = 0.835 \\
+    \sum x_i &= 2000, \quad \sum y_i = 8.35 \\
+    \sum x_i^2 &= 532000, \quad \sum y_i^2 = 9.1097, \quad \sum (x_i y_i) = 2175.4
+\end{align*}
+
+\textbf{Paso 2: Sumas de desvíos de la cátedra:}
+\begin{align}
+    S_{xx} &= 532000 - \frac{2000^2}{10} = 132000 \\
+    S_{xy} &= 2175.4 - \frac{2000(8.35)}{10} = 505.4 \\
+    S_{yy} &= 9.1097 - \frac{8.35^2}{10} = 2.13745
+\end{align}
+
+\textbf{Paso 3: Estimación de la Pendiente y la Ordenada al Origen:}
+\begin{align}
+    b &= \frac{S_{xy}}{S_{xx}} = \frac{505.4}{132000} \approx \mathbf{0.003829} \\
+    a &= \bar{y} - b \bar{x} = 0.835 - 0.00382879(200) \approx \mathbf{0.06924}
+\end{align}
+La recta estimada es: $\mathbf{\hat{y} = 0.069 + 0.003829x}$.
+
+\textbf{Paso 4: Error estándar de estimación y del estimador de la pendiente:}
+Sustituyendo en la fórmula del error:
+\begin{align}
+    SCE &= S_{yy} - b \cdot S_{xy} = 2.13745 - 0.00382879 \cdot 505.4 \approx 0.20238 \\
+    s_e^2 &= \frac{SCE}{n-2} = \frac{0.20238}{8} = 0.02530 \\ 
+    s_e &= \sqrt{0.02530} \approx \mathbf{0.15905} \\
+    s_b &= \frac{0.15905}{\sqrt{132000}} \approx \mathbf{0.000438}
+\end{align}
+
+\textbf{Paso 5: Contraste de Hipótesis y Decisiones:}
+Calculamos el estadístico de prueba:
+\begin{equation}
+    t = \frac{0.00382879}{0.00043778} \approx \mathbf{8.75}
+\end{equation}
+Con un nivel de significación de $\alpha = 0.05$ y $8$ grados de libertad, el valor crítico de tabla es $t_{0.025, 8} = 2.306$. Como $|t_{calc}| = 8.75 > 2.306$, se rechaza $H_0: \beta=0$. La conclusión estadística se mantiene, aunque los cálculos numéricos originales estaban equivocados: hay evidencia de una relación lineal estadísticamente significativa entre la velocidad del aire y la evaporación. Esto no demuestra por sí solo una relación causal.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{evaporacion.png}
+    \caption{Recta de Ajuste y Banda de Predicción del 95\% para Coeficiente de Evaporación.}
+    \label{fig:aire_evaporacion}
+\end{figure}
+
+\begin{importanteBox}{Diferencia entre los intervalos para x0 = 190}
+Las fuentes desarrollan tanto el intervalo de confianza para la respuesta media como el intervalo de predicción para una observación individual. No deben confundirse: el primero estima la media de $Y$ para una velocidad fija y el segundo incorpora además la variabilidad de una observación futura.
+\begin{align*}
+    \hat{y}_{190} &= 0.069242 + 0.00382879 \cdot (190) \approx \mathbf{0.7967}
+\end{align*}
+\end{importanteBox}
+
+\textbf{Cálculo analítico real de los Intervalos de Confianza para $x_0 = 190$:}
+Sustituyendo los valores analíticos calculados:
+\begin{itemize}
+    \item \textbf{Intervalo para el Coeficiente de Evaporación Medio $\mu_{y|190}$:}
+    \begin{align}
+        E_{\text{mean}} &= 2.306 \cdot 0.15905 \sqrt{\frac{1}{10} + \frac{(190 - 200)^2}{132000}} \approx 0.1164 \\
+        IC_{95\%\text{ para la media}} &= [0.7967 - 0.1164, 0.7967 + 0.1164] \approx \mathbf{[0.6803, 0.9131]}
+    \end{align}
+    \item \textbf{Intervalo de Predicción de un Punto Individual $y_0$ para un experimento futuro:}
+    \begin{align}
+        E_{\text{pred}} &= 2.306 \cdot 0.15905 \sqrt{1 + \frac{1}{10} + \frac{(190 - 200)^2}{132000}} \approx 0.3848 \\
+        IP_{95\%\text{ individual}} &= [0.7967 - 0.3848, 0.7967 + 0.3848] \approx \mathbf{[0.4119, 1.1815]}
+    \end{align}
+\end{itemize}
+
+\newpage
+
+% ==========================================
+% TEMA A-3: REGRESIÓN CURVILÍNEA
+% ==========================================
+\subsubsection{5-A-3 Regresión curvilínea}
+Cuando el diagrama de dispersión muestra que los datos no se adaptan razonablemente a un comportamiento lineal, debemos considerar un modelo curvilíneo. Cada modelo requiere una transformación específica para aplicar mínimos cuadrados en un espacio intermedio.
+
+\paragraph{Ecuaciones y Transformaciones Utilizadas por la Cátedra:}
+\begin{enumerate}
+    \item \textbf{Modelo Exponencial de la Cátedra:} $y = \alpha \cdot \beta^x$.
+    Para linealizarlo, se considera $\ln(Y)$ respecto de $X$ (la cátedra desarrolla equivalentemente $\log_{10}(Y)$ respecto de $X$):
+    \begin{equation}
+        \log_{10}(y) = \log_{10}(\alpha) + x \cdot \log_{10}(\beta)
+    \end{equation}
+    Donde, renombrando las variables, se tiene la recta equivalente:
+    \begin{equation}
+        Y' = a' + b' x, \quad \text{con } Y' = \log_{10}(y), \ a' = \log_{10}(\alpha), \ b' = \log_{10}(\beta)
+    \end{equation}
+    Para recuperar los parámetros originales una vez ajustada la recta, aplicamos la inversa del logaritmo:
+    \begin{equation}
+        \alpha = 10^{a'}, \quad \beta = 10^{b'}
+    \end{equation}
+    
+    \item \textbf{Modelo Potencial:} $y = \alpha \cdot x^\beta$.
+    Para linealizarlo, se considera $\ln(Y)$ respecto de $\ln(X)$ (en el desarrollo de la cátedra se usa base 10):
+    \begin{equation}
+        \log_{10}(y) = \log_{10}(\alpha) + \beta \cdot \log_{10}(x) \implies Y' = a' + \beta X'
+    \end{equation}
+    Donde $Y' = \log_{10}(y)$ y $X' = \log_{10}(x)$. Revertimos mediante $\alpha = 10^{a'}$.
+    
+    \item \textbf{Modelo Recíproco:} $y = \frac{1}{\alpha + \beta x}$.
+    Tomando el inverso aditivo de ambos miembros de la ecuación:
+    \begin{equation}
+        \frac{1}{y} = \alpha + \beta x \implies Y' = \alpha + \beta x
+    \end{equation}
+    Donde $Y' = 1/y$. La transformación correspondiente depende de la ecuación del modelo; en este caso se ajusta $1/y$ respecto de $x$ y luego se vuelve a la escala original.
+\end{enumerate}
+
+\paragraph{Ejercitación Práctica Oficial: Neumáticos Radiales y Desgaste (Diapositivas 14-16)}
+Se desea modelar el porcentaje útil de neumático ($Y$) en función de la distancia recorrida ($X$ en miles de millas) utilizando $n = 8$ observaciones:
+\begin{itemize}
+    \item \textbf{Millas ($X$):} $1, 2, 5, 10, 20, 30, 40, 50$
+    \item \textbf{Útil ($Y$):} $98.2, 91.7, 81.3, 64.0, 36.4, 32.6, 17.1, 11.3$
+\end{itemize}
+
+\textbf{Paso 1: Transformar las observaciones mediante logaritmo decimal ($Y' = \log_{10} y$):}
+\begin{align*}
+    Y' &= [\log_{10}(98.2), \log_{10}(91.7), \dots, \log_{10}(11.3)] \\
+    &= [1.9921, 1.9624, 1.9101, 1.8062, 1.5611, 1.5132, 1.2330, 1.0531]
+\end{align*}
+
+\textbf{Paso 2: Sumatorias sobre las variables transformadas $(x_i, y'_i)$:}
+\begin{align*}
+    n &= 8, \quad \sum x_i = 158, \quad \sum y'_i = 13.031 \\
+    \sum x_i^2 &= 5530, \quad \sum (x_i \cdot y'_i) = 212.121
+\end{align*}
+
+\textbf{Paso 3: Ecuaciones normales del modelo linealizado:}
+\begin{align}
+    13.031 &= 8 \cdot a' + 158 \cdot b' \\
+    212.121 &= 158 \cdot a' + 5530 \cdot b'
+\end{align}
+Utilizando determinantes analíticos para resolver:
+\begin{align}
+    \Delta &= 8(5530) - 158^2 = 19276 \\
+    \Delta_{a'} &= 13.031(5530) - 212.121(158) = 38546.31 \\
+    \Delta_{b'} &= 8(212.121) - 158(13.031) = -361.93
+\end{align}
+Obteniendo los estimadores transformados:
+\begin{align}
+    a' &= \frac{38546.31}{19276} \approx 1.9997 \\
+    b' &= \frac{-361.93}{19276} \approx -0.018776
+\end{align}
+
+\textbf{Paso 4: Reversión de la transformación logarítmica:}
+\begin{align}
+    \alpha &= 10^{a'} = 10^{1.9997} \approx \mathbf{100.0} \\
+    \beta &= 10^{b'} = 10^{-0.018776} \approx \mathbf{0.9572}
+\end{align}
+Estableciendo la \textbf{curva de regresión ajustada}: $\mathbf{\hat{y} = 100 \cdot (0.9572)^x}$.
+
+\textbf{Paso 5: Predicción a las 25 mil millas ($x_0 = 25$):}
+\begin{equation}
+    \hat{y}_{25} = 100 \cdot (0.9572)^{25} \approx \mathbf{33.5\%}
+\end{equation}
+
+\begin{alertaBox}{Error de interpretación crítica en el apunte de la Cátedra}
+La diapositiva 16 oficial concluye: \textit{``El 33.5\% de los neumáticos durará menos de 25 mil millas''}. \\
+\textbf{Esto es conceptualmente incorrecto.} La variable $Y$ mide el porcentaje útil \textbf{restante} del neumático. Si para $x_0 = 25$ la curva estima $\hat{y} = 33.5\%$, significa que a las 25 mil millas todavía le queda, en promedio, un $33.5\%$ de vida útil. Por lo tanto, el $33.5\%$ restante representa a los neumáticos que durarán \textbf{más} de 25 mil millas. El $66.5\%$ restante corresponde al desgaste consumido (los neumáticos que sí duraron menos de 25 mil millas). Menciona este detalle en el oral para demostrar tu capacidad de análisis crítico.
+\end{alertaBox}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{exponencial.png}
+    \caption{Curva Exponencial en Escala Original y su Recta Linealizada en Escala Logarítmica.}
+    \label{fig:neumaticos}
+\end{figure}
+
+\newpage
+
+% ==========================================
+% TEMA B: POLINÓMICAS Y MÚLTIPLE
+% ==========================================
+\subsection{TEMA B: REGRESIÓN MULTIPLE Y POLINÓMICA}
+
+\subsubsection{5-B-1 Ajuste de un polinomio}
+El ajuste de un polinomio de grado $p$ se utiliza cuando la nube de puntos muestra una tendencia no monótona que asciende y desciende, presentando valles y crestas.
+
+\paragraph{Fundamento Teórico e Integración Práctica:}
+La ecuación predictora polinómica general de grado $p$ es:
+\begin{equation}
+    \hat{y}_i = b_0 + b_1 x_i + b_2 x_i^2 + \dots + b_p x_i^p
+\end{equation}
+Para un polinomio cuadrático ($p = 2$), planteamos la suma de cuadrados de error:
+\begin{equation}
+    SCE = \sum_{i=1}^n [y_i - (b_0 + b_1 x_i + b_2 x_i^2)]^2
+\end{equation}
+Derivando parcialmente respecto a $b_0$, $b_1$ y $b_2$, e igualando a cero las ecuaciones resultantes, obtenemos el sistema de \textbf{Ecuaciones Normales Matriciales} para el caso parabólico:
+\begin{equation}
+    \begin{bmatrix}
+        n & \sum x_i & \sum x_i^2 \\
+        \sum x_i & \sum x_i^2 & \sum x_i^3 \\
+        \sum x_i^2 & \sum x_i^3 & \sum x_i^4
+    \end{bmatrix}
+    \begin{bmatrix}
+        b_0 \\ b_1 \\ b_2
+    \end{bmatrix} =
+    \begin{bmatrix}
+        \sum y_i \\
+        \sum (x_i y_i) \\
+        \sum (x_i^2 y_i)
+    \end{bmatrix}
+\end{equation}
+
+\begin{alertaBox}{Pregunta Frecuente: ¿Qué es el riesgo de sobreajuste (Overfitting)?}
+Existe la tentación de pensar que cuanto mayor sea el grado del polinomio $p$, mejor será el ajuste de la curva. Sin embargo, si tenemos $n$ observaciones y ajustamos un polinomio de grado $p = n-1$, la curva resultante pasará con precisión matemática absoluta por encima de cada uno de los puntos observados, logrando un $SCE = 0$. \\
+Este modelo es en realidad un \textbf{pésimo descriptor del comportamiento general}, dado que habrá ``memorizado'' el ruido aleatorio del experimento y las variaciones locales de la muestra, perdiendo toda capacidad predictora frente a nuevas observaciones. Para equilibrar precisión y simplicidad, debemos penalizar la incorporación de grados de libertad utilizando la varianza residual.
+\end{alertaBox}
+
+\paragraph{Ejercitación Práctica Oficial: Aditivo Químico y Tiempo de Secado (Diapositivas 18-19)}
+Un investigador estudia el efecto de la cantidad de aditivo químico ($X$ en gramos) en el tiempo de secado de un barniz ($Y$ en segundos) utilizando $n = 9$ muestras:
+\begin{itemize}
+    \item \textbf{Aditivo ($X$):} $0, 1, 2, 3, 4, 5, 6, 7, 8$
+    \item \textbf{Secado ($Y$):} $12.0, 10.5, 10.0, 8.0, 7.0, 8.0, 7.5, 8.5, 9.0$
+\end{itemize}
+
+\textbf{Paso 1: Cálculo exacto de sumatorias de potencias y productos:}
+\begin{align*}
+    n &= 9 \\
+    \sum x_i &= 36, \quad \sum x_i^2 = 204, \quad \sum x_i^3 = 1296, \quad \sum x_i^4 = 8772 \\
+    \sum y_i &= 80.5, \quad \sum (x_i y_i) = 299.0, \quad \sum (x_i^2 y_i) = 1697.0
+\end{align*}
+
+\textbf{Paso 2: Reemplazo en el sistema matricial simétrico:}
+\begin{equation}
+    \begin{bmatrix}
+        9 & 36 & 204 \\
+        36 & 204 & 1296 \\
+        204 & 1296 & 8772
+    \end{bmatrix}
+    \begin{bmatrix}
+        b_0 \\ b_1 \\ b_2
+    \end{bmatrix} =
+    \begin{bmatrix}
+        80.5 \\ 299.0 \\ 1697.0
+    \end{bmatrix}
+\end{equation}
+
+\textbf{Paso 3: Resolución analítica por álgebra matricial:}
+Resolviendo el sistema se determinan los coeficientes exactos del polinomio cuadrático:
+\begin{equation}
+    \mathbf{b_0 = 12.185, \quad b_1 = -1.847, \quad b_2 = 0.183}
+\end{equation}
+La ecuación cuadrática final es: $\mathbf{\hat{y} = 12.185 - 1.847x + 0.183x^2}$.
+
+\textbf{Paso 4: Predicción para un nivel de aditivo de $x_0 = 6.5$ gr:}
+\begin{equation}
+    \hat{y}_{6.5} = 12.185 - 1.847(6.5) + 0.183(6.5)^2 = 12.185 - 12.0055 + 7.7318 \approx \mathbf{7.91 \text{ segundos}}
+\end{equation}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{secado.png}
+    \caption{Curva Cuadrática Ajustada para Tiempo de Secado vs. Aditivo.}
+    \label{fig:secado_barniz}
+\end{figure}
+
+\newpage
+
+% ==========================================
+% TEMA B-2: VARIANZA RESIDUAL
+% ==========================================
+\subsubsection{5-B-2 Método de la varianza residual}
+La varianza residual es el criterio utilizado por la cátedra para comparar ajustes y seleccionar el grado de polinomio más conveniente para una muestra de datos.
+
+\paragraph{Fundamento Teórico e Integración Práctica:}
+La varianza residual ($s^2$) mide la variabilidad de las observaciones muestrales respecto a la curva de regresión polinómica, penalizando al modelo por cada coeficiente estimado mediante sus grados de libertad:
+\begin{equation}
+    s^2 = \frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{n - p - 1} = \frac{SCE}{n - (p + 1)}
+\end{equation}
+Donde:
+\begin{itemize}
+    \item $p$: Grado del polinomio ajustado.
+    \item $p + 1$: Número de parámetros o coeficientes estimados ($b_0, b_1, \dots, b_p$).
+    \item $n - p - 1$: Grados de libertad del error.
+\end{itemize}
+
+\paragraph{El Criterio de Selección del Grado Óptimo (Criterio del Salto de la Cátedra):}
+A medida que aumentamos el grado del polinomio $p$, la suma de cuadrados de error ($SCE$) disminuye obligatoriamente. Sin embargo, al mismo tiempo, disminuyen los grados de libertad en el denominador. \\
+Si al pasar de un grado $p$ a un grado $p+1$, el error no se reduce drásticamente, el denominador provocará que la varianza residual $s^2$ se mantenga constante o incluso \textbf{aumente}. \\
+Según el \textbf{criterio utilizado por la cátedra}, se elige el grado asociado al último salto decreciente significativo de la varianza residual. No se presenta este salto como un criterio estadístico universal. Añadir grados después de ese punto puede ser innecesario y aumentar el riesgo de sobreajuste.
+
+\paragraph{Ejercitación Práctica Oficial: Selección del Polinomio Industrial (Diapositivas 20-21)}
+Dada una muestra de $n = 10$ mediciones industriales, se evalúa el ajuste de polinomios de grados sucesivos obteniéndose los siguientes resultados reales:
+
+\begin{table}[htbp]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{ccccc}
+        \toprule
+        \textbf{Grado ($p$)} & \textbf{SCE Muestral} & \textbf{Grados de Libertad ($n-p-1$)} & \textbf{Varianza Residual ($s^2$)} & \textbf{¿Se justifica?} \\
+        \midrule
+        1 (Lineal) & 57.655 & 8 & \textbf{7.207} & Modelo Base \\
+        2 (Cuadrático) & 53.059 & 7 & \textbf{7.580} & No, la varianza aumentó \\
+        3 (Cúbico) & 6.124 & 6 & \textbf{1.021} & \textbf{Sí, salto decreciente masivo} \\
+        4 (Cuártico) & 4.959 & 5 & \textbf{0.992} & No, reducción insignificante \\
+        \bottomrule
+    \end{tabular}%
+    }
+    \caption{Selección de Grado Óptimo de Polinomio según Varianza Residual.}
+    \label{tab:varianza_residual}
+\end{table}
+
+\textbf{Análisis de Selección y Toma de Decisión:}
+\begin{enumerate}
+    \item Al pasar de lineal ($p=1$) a cuadrático ($p=2$), la varianza residual de los errores se incrementa de $7.207$ a $7.580$; según el criterio de la cátedra, no se justifica incorporar ese grado.
+    \item Al pasar de cuadrático ($p=2$) a cúbico ($p=3$), la varianza residual se reduce de forma drástica, cayendo de $7.580$ a $1.021$ (una disminución absoluta de $6.559$). Esto justifica de manera robusta el uso del polinomio de grado 3.
+    \item Al pasar de cúbico ($p=3$) a cuártico ($p=4$), la disminución es insignificante (apenas $0.029$). No compensa perder un grado de libertad adicional.
+    \item \textbf{Decisión según la tabla:} Se selecciona el \textbf{polinomio de grado 3}, porque allí aparece el salto principal y, después de ese grado, la reducción de la varianza residual es mínima ($1.021$ a $0.992$).
+\end{enumerate}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{residual_variance.png}
+    \caption{Curva del Criterio del Salto decreciente para Selección de Grado.}
+    \label{fig:varianza_res_plot}
+\end{figure}
+
+\newpage
+
+% ==========================================
+% TEMA B-3: CORRELACIÓN
+% ==========================================
+\subsubsection{5-B-3 Correlación lineal}
+A diferencia de la regresión, donde se especifica una variable explicativa $X$ y una variable explicada o respuesta $Y$, la correlación mide la intensidad de la asociación lineal conjunta entre dos variables cuantitativas aleatorias. En regresión, $X$ se considera explicativa y $Y$ respuesta, pero la regresión por sí sola no demuestra que $X$ cause cambios en $Y$ ni que exista una relación causal en un único sentido. La causalidad requiere fundamentos teóricos o un diseño experimental adecuado.
+
+\paragraph{Fundamento Teórico e Integración Práctica:}
+El \textbf{coeficiente de correlación de Pearson ($r$)} se calcula como la relación existente entre la covarianza de las variables y el producto de sus desviaciones estándar:
+\begin{equation}
+    r = \frac{S_{xy}}{\sqrt{S_{xx} \cdot S_{yy}}}
+\end{equation}
+Propiedades matemáticas fundamentales:
+\begin{itemize}
+    \item El valor de $r$ está estrictamente acotado en el intervalo $[-1, 1]$.
+    \item Si $r = 1$ o $r = -1$, existe una correlación lineal perfecta positiva o negativa. Todos los puntos se encuentran exactamente sobre la recta estimada.
+    \item Si $r = 0$, indica ausencia total de asociación lineal. Sin embargo, no significa que las variables sean independientes; podrían estar asociadas de forma no lineal (por ejemplo, cuadrática perfecta).
+\end{itemize}
+
+\begin{alertaBox}{Sutileza Examen Oral: Diferencia Crítica entre Coeficiente $r$ y Pendiente $\beta$}
+Es un error sumamente frecuente en los exámenes confundir ambos conceptos. Indícale al docente las tres diferencias esenciales: \\
+\textbf{1. Dimensionalidad:} El coeficiente de correlación $r$ es una medida \textbf{adimensional} (sin unidades), mientras que la pendiente $\beta$ posee unidades físicas definidas como la relación de unidades (unidades de $Y$ dividido unidades de $X$). \\
+\textbf{2. Simetría:} El coeficiente $r$ es simétrico ($r_{xy} = r_{yx}$); da exactamente el mismo resultado correlacionar $X$ con $Y$ que $Y$ con $X$. En contraste, la pendiente es direccional y asimétrica. \\
+\textbf{3. Magnitud física:} Un coeficiente de correlación muy elevado ($r \approx 1$) no implica una pendiente grande. La pendiente indica la inclinación física, mientras que la correlación mide la cercanía de los puntos a la recta de ajuste.
+\end{alertaBox}
+
+\paragraph{Ilustración de Asociación vs. Causalidad:}
+El hecho de que dos variables posean una correlación lineal muy elevada no implica bajo ninguna circunstancia la existencia de una relación de causa-efecto entre ellas.
+Un ejemplo clásico es el aumento de las ventas de helados en verano y el aumento del reporte de ataques de tiburones en las playas. Existe una correlación lineal casi perfecta ($r \approx 0.98$) entre ambas variables. Sin embargo, comer helado no provoca ataques de tiburones, sino que ambas variables responden a una variable oculta que las impulsa de forma simultánea: la temperatura ambiental del verano.
+
+\newpage
+
+% ==========================================
+% CUADROS COMPARATIVOS
+% ==========================================
+\section{Cuadros Comparativos de la Unidad 5}
+
+\begin{table}[htbp]
+    \centering
+    \fontsize{9}{12}\selectfont
+    \begin{tabular}{llll}
+        \toprule
+        \textbf{Modelo de Ajuste} & \textbf{Ecuación de Ajuste} & \textbf{Transformación Utilizada} & \textbf{Grados de Libertad del Error} \\
+        \midrule
+        Regresión Lineal Simple & $\hat{y} = a + b \cdot x$ & Ninguna (Original) & $n - 2$ \\
+        Modelo Exponencial & $\hat{y} = \alpha \cdot \beta^x$ & $Y' = \log_{10}(y)$ & $n - 2$ \\
+        Modelo Potencial & $\hat{y} = \alpha \cdot x^\beta$ & $Y' = \log_{10}(y), \ X' = \log_{10}(x)$ & $n - 2$ \\
+        Modelo Recíproco & $\hat{y} = \frac{1}{\alpha + \beta x}$ & $Y' = 1/y$ & $n - 2$ \\
+        Polinomio Cuadrático & $\hat{y} = b_0 + b_1 x + b_2 x^2$ & Ninguna (Multilineal) & $n - 3$ \\
+        Polinomio de Grado $p$ & $\hat{y} = b_0 + \sum b_j x^j$ & Ninguna (Matricial) & $n - p - 1$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{Comparativa General de Modelos de Regresión y sus Grados de Libertad.}
+    \label{tab:comparativa_modelos}
+\end{table}
+
+\begin{table}[htbp]
+    \centering
+    \fontsize{10}{13}\selectfont
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Comportamiento en el Diagrama} & \textbf{Acción / Modelo Recomendado} \\
+        \midrule
+        Tendencia lineal homogénea ascendente o descendente & Regresión Lineal Simple (Mínimos Cuadrados) \\
+        Tendencia con tasa de cambio creciente o decreciente constante & Modelo Curvilíneo (Exponencial o Potencial) \\
+        Datos con un máximo o mínimo claro (curva convexa/cóncava) & Polinomio de Grado 2 (Cuadrático) \\
+        Comportamiento cíclico o con múltiples crestas/valles & Polinomio de Grado $p \ge 3$ \\
+        Variables aleatorias simétricas con cercanía lineal mutua & Coeficiente de Correlación de Pearson ($r$) \\
+        \bottomrule
+    \end{tabular}
+    \caption{Matriz de Selección de Modelos basada en el Diagrama de Dispersión.}
+    \label{tab:seleccion_modelos}
+\end{table}
+
+\newpage
+
+% ==========================================
+% ERRORES CORREGIDOS (TABLA EXIGIDA)
+% ==========================================
+\section{Registro de Errores Corregidos frente a versiones anteriores}
+A continuación, y respondiendo a los criterios de rigor y consistencia con las fuentes originales de la cátedra, se presenta la tabla integral de errores subsanados en esta edición de la guía:
+
+\begin{table}[htbp]
+    \centering
+    \fontsize{8.5}{11.5}\selectfont
+    \begin{tabular}{lp{3.5cm}p{4.2cm}p{4cm}}
+        \toprule
+        \textbf{Tema / Sección} & \textbf{Contenido Original Erróneo} & \textbf{Corrección Realizada} & \textbf{Justificación Estadística / Fuente} \\
+        \midrule
+        5-A-2 Fórmulas & Uso inconsistente de sumas escaladas & $S_{xx}=\sum(x_i-\bar{x})^2$, y análogamente $S_{yy}$ y $S_{xy}$ & Se emplean sumas centradas, coherentes con $b=S_{xy}/S_{xx}$. \\
+        \midrule
+        5-A-2 Sumatorias & $\sum x_i^2 = 540000$ (Error de cálculo) & $\sum x_i^2 = 532000$ & Suma manual correcta de la velocidad de corriente de aire. \\
+        \midrule
+        5-A-2 Recta & $\hat{y} = 0.113 + 0.00361x$ (Ecuación incorrecta) & $\hat{y} = 0.06924 + 0.003829x$ & Coeficientes recalculados desde los datos originales. \\
+        \midrule
+        5-A-2 Error $s_e$ & $s = 0.2003$ & $s_e = 0.15905$ & Resultado recalculado con $SCE=0.20238$ y $8$ grados de libertad. \\
+        \midrule
+        5-A-3 Modelo Exponencial & Uso de $y = \alpha e^{\beta x}$ con transformación $Y' = \ln(y)$ & Uso de $y = \alpha \beta^x$ con transformación $Y' = \log_{10}(y)$ & Uso estándar de logaritmos decimales base 10 definido en la Diapositiva 14. \\
+        \midrule
+        5-B-1 Secado de Barniz & $b_0 = 12.147, b_1 = -1.836$, $b_2 = 0.187$ y pred $6.5 = 8.11$ s & $b_0 = 12.185, b_1 = -1.847$, $b_2 = 0.183$ y pred $6.5 = 7.91$ s & Resolución exacta del sistema matricial simétrico para $p=2$ (Diapositiva 19). \\
+        \midrule
+        5-B-2 Varianza Residual & Tabla con valores inventados para el proceso industrial ($1.250$, etc.) & Reemplazo por valores reales: lineal $7.207$, cuad $7.580$, cúbico $1.021$ y cuártico $0.992$ & Recalculado con base en las sumatorias y grados de libertad correctos (Diapositiva 21). Justifica el grado 3. \\
+        \bottomrule
+    \end{tabular}
+    \caption{Tabla de Errores Corregidos e Integración de Fuentes.}
+    \label{tab:errores_corregidos}
+\end{table}
+
+\end{document}

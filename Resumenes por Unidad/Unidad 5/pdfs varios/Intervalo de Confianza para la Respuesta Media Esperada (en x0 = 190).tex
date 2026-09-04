@@ -1,0 +1,82 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+\begin{document}
+
+\begin{center}
+    \Large \textbf{Intervalo de Confianza para la Respuesta Media Esperada (en $x_0 = 190$)} \\[0.5cm]
+    \normalsize \textbf{Estadística Aplicada Resumen de Estudio} \\
+    \textbf{Roberto Francisco Espinola} \\
+    \textbf{Septiembre 2026}
+\end{center}
+
+\vspace{0.5cm}
+
+\subsection*{1. Estructura Teórica del Intervalo}
+El intervalo de confianza para la media poblacional ($\mu_y$) dado un valor específico de la variable independiente ($x_0$) se construye a partir de un \textbf{estimador puntual} evaluado en la recta ($\hat{y}_0$) y un \textbf{Margen de Error ($E$)}. La estructura analítica es:
+
+\[
+\underbrace{\hat{y}_0}_{\text{Estimador puntual}} - \underbrace{t_{\alpha/2, n-2} \cdot s_e \cdot \sqrt{\frac{1}{n} + \frac{n(x_0 - \bar{x})^2}{S_{xx}}}}_{E \text{ (Margen de Error)}} < \mu_y < \underbrace{\hat{y}_0}_{\text{Estimador puntual}} + \underbrace{t_{\alpha/2, n-2} \cdot s_e \cdot \sqrt{\frac{1}{n} + \frac{n(x_0 - \bar{x})^2}{S_{xx}}}}_{E \text{ (Margen de Error)}}
+\]
+
+\subsection*{2. Datos del Problema}
+Extraemos los siguientes valores calculados previamente para construir nuestra estimación:
+\begin{itemize}
+    \item \textbf{Punto a predecir:} $x_0 = 190$
+    \item \textbf{Media muestral de X:} $\bar{x} = 200$
+    \item \textbf{Tamaño de la muestra:} $n = 10$
+    \item \textbf{Suma de cuadrados de X:} $S_{xx} = 1,320,000$
+    \item \textbf{Estimador Puntual en $x_0$:} $\hat{y}_0 = a + b \cdot x_0 = 0.069242 + 0.003829 \cdot 190 = 0.7967$
+    \item \textbf{Valor crítico t:} $t_{0.025, 8} = 2.306$
+    \item \textbf{Error Estándar de Estimación:} $s_e = 0.159052$
+\end{itemize}
+
+\subsubsection*{Cálculo del Margen de Error (E)}
+Calculamos la amplitud del margen de error sustituyendo los datos en la fórmula de la raíz:
+
+\[
+E = 2.306 \cdot 0.159052 \cdot \sqrt{\frac{1}{10} + \frac{10(190 - 200)^2}{1,320,000}}
+\]
+\[
+E = 0.36677 \cdot \sqrt{0.1 + \frac{10(-10)^2}{1,320,000}}
+\]
+\[
+E = 0.36677 \cdot \sqrt{0.1 + \frac{1000}{1,320,000}} = 0.36677 \cdot \sqrt{0.100757} \approx \textbf{0.1164}
+\]
+
+\subsection*{3. Reemplazo Completo y Cálculo de los Extremos}
+Sustituyendo los valores numéricos consolidados en la estructura, la inecuación queda configurada de la siguiente manera:
+
+\[
+\resizebox{\textwidth}{!}{$\displaystyle
+\underbrace{0.7967}_{\hat{y}_0} - \underbrace{\left( 2.306 \cdot 0.159052 \cdot \sqrt{\frac{1}{10} + \frac{10(190 - 200)^2}{1,320,000}} \right)}_{E \approx 0.1164} < \mu_y < \underbrace{0.7967}_{\hat{y}_0} + \underbrace{\left( 2.306 \cdot 0.159052 \cdot \sqrt{\frac{1}{10} + \frac{10(190 - 200)^2}{1,320,000}} \right)}_{E \approx 0.1164}
+$}
+\]
+
+\vspace{0.3cm}
+Resolviendo la resta en el lado izquierdo y la suma en el lado derecho, obtenemos los límites:
+\begin{itemize}
+    \item \textbf{Extremo Inferior:} $0.7967 - 0.1164 = 0.6803$
+    \item \textbf{Extremo Superior:} $0.7967 + 0.1164 = 0.9131$
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent \textbf{Conclusión del Intervalo:}
+\[
+\mathbf{0.6803 < \mu_y < 0.9131}
+\]
+
+Podemos afirmar, con un 95\% de confianza, que si fijamos la velocidad del aire en la turbina exactamente a $190 \text{ cm/seg}$, el verdadero valor promedio poblacional del coeficiente de evaporación se encontrará entre $0.6803 \text{ y } 0.9131 \text{ mm}^2\text{/seg}$.
+
+\vspace{0.5cm}
+\noindent \textcolor{blue}{\textbf{Nota de análisis estadístico (Tip para el final oral):}} \\
+Observa el numerador dentro de la raíz: $(x_0 - \bar{x})^2$. En este caso, el valor que queremos predecir ($190$) está muy cerca de la media muestral ($\bar{x} = 200$). Al ser pequeña esa diferencia (sólo 10 unidades), el término que suma variabilidad es minúsculo, manteniendo nuestro Margen de Error ($E$) angosto. Si te preguntan en el examen, esto demuestra matemáticamente la regla de oro de la regresión: \textit{las predicciones del modelo son más precisas y confiables cuanto más cerca nos encontramos del centro de los datos originales}.
+
+\end{document}

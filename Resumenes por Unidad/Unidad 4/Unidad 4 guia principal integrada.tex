@@ -1,0 +1,1824 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{a4paper,top=1.8cm,bottom=1.8cm,left=2cm,right=2cm,headheight=15pt}
+\raggedbottom
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\intextsep}{10pt plus 2pt minus 2pt}
+\setlength{\emergencystretch}{3em}
+\usepackage{hyperref}
+\hypersetup{
+    hypertexnames=false,
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+    pdftitle={Estadistica II - Guia Completa de Estudio: Capitulo 4 - Pruebas No Parametricas},
+    pdfauthor={Gemini Notebook}
+}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{lscape}
+\usepackage{tikz}
+\usepackage{enumitem,microtype,ragged2e}
+\usetikzlibrary{arrows.meta,shapes.geometric,positioning,babel}
+\makeatletter
+\def\fps@figure{H}
+\makeatother
+
+\definecolor{azul}{HTML}{24557A}\definecolor{azulclaro}{HTML}{EAF3F9}
+\definecolor{verde}{HTML}{277A54}\definecolor{verdeclaro}{HTML}{EAF6EF}
+\definecolor{rojo}{HTML}{B33B3B}\definecolor{rojoclaro}{HTML}{FBEAEA}
+\definecolor{naranja}{HTML}{C46A1B}\definecolor{naranjaclaro}{HTML}{FFF3DD}
+\definecolor{gris}{HTML}{4E5962}\definecolor{grisclaro}{HTML}{F2F4F5}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4.5pt}
+\setlist[enumerate]{leftmargin=1.9em,itemsep=2.5pt,topsep=3pt}
+\setlist[itemize]{leftmargin=1.5em,itemsep=2.5pt,topsep=3pt}
+\renewcommand{\arraystretch}{1.18}
+
+% Configuración de encabezados y pies de página
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\textcolor{gris}{\thepage}}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Estilos de cuadros de texto (tcolorbox)
+\newtcolorbox{importante}[1][]{
+    enhanced,breakable,colback=rojoclaro,
+    colframe=rojo,boxrule=.45pt,arc=1mm,coltitle=rojo,
+    fonttitle=\bfseries,
+    title=Advertencia / error frecuente,
+    #1
+}
+
+\newtcolorbox{guion}[1][]{
+    enhanced,breakable,colback=azulclaro,
+    colframe=azul,boxrule=.55pt,arc=1mm,coltitle=azul,
+    fonttitle=\bfseries,
+    title=Guion oral breve,
+    #1
+}
+
+\newtcolorbox{consejo}[1][]{
+    enhanced,breakable,colback=verdeclaro,
+    colframe=verde,boxrule=.45pt,arc=1mm,coltitle=verde,
+    fonttitle=\bfseries,
+    title=Decisión importante,
+    #1
+}
+\newtcolorbox{formula}[1][Fórmula principal]{enhanced,breakable,colback=azulclaro,colframe=azul,boxrule=.55pt,arc=1mm,title=#1,fonttitle=\bfseries,coltitle=azul}
+\newtcolorbox{idea}[1][Idea clave]{enhanced,breakable,colback=naranjaclaro,colframe=naranja,boxrule=.45pt,arc=1mm,title=#1,fonttitle=\bfseries,coltitle=naranja}
+\newcommand{\inicio}[1]{\textbf{Frase para comenzar.} ``#1''\par}
+\newcommand{\cierre}[1]{\textbf{Frase de cierre.} ``#1''\par}
+\tikzset{decision/.style={diamond,aspect=2.1,draw=naranja,fill=naranjaclaro,very thick,align=center,inner sep=1.5pt,font=\bfseries\scriptsize,text width=3.1cm},resultado/.style={rounded corners=2mm,draw=azul,fill=azulclaro,very thick,align=center,inner sep=5pt,font=\scriptsize,text width=3.4cm,minimum height=1.25cm},rama/.style={-{Stealth[length=2.2mm]},draw=gris,thick},etiqueta/.style={font=\bfseries\scriptsize,fill=white,inner sep=1pt}}
+
+\begin{document}
+\pagenumbering{gobble}
+
+% -------------------------------------------------------------
+% PORTADA
+% -------------------------------------------------------------
+\begin{titlepage}
+\thispagestyle{empty}\centering\vspace*{2cm}
+{\color{azul}\rule{\textwidth}{1.2pt}}\\[1.2cm]
+{\fontsize{28}{33}\selectfont\bfseries\color{azul} Estadística II}\\[5mm]
+{\LARGE Unidad 4: guía completa de exposición oral}\\[4mm]
+{\large Pruebas no paramétricas}\\[1.1cm]
+\begin{tcolorbox}[width=.82\textwidth,colback=grisclaro,colframe=azul]
+\RaggedRight\textbf{Tema A: Localización}\par
+Prueba del signo, Mann--Whitney y Kruskal--Wallis.\par\medskip
+\textbf{Tema B: Orden y ajuste}\par
+Prueba de corridas y Kolmogorov--Smirnov.
+\end{tcolorbox}\vfill
+{\color{azul}\rule{\textwidth}{1.2pt}}
+\end{titlepage}
+\clearpage
+\pagenumbering{roman}
+
+% -------------------------------------------------------------
+% ÍNDICE Y TEMARIO
+% -------------------------------------------------------------
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\section{Mapa general de decisión de la Unidad 4}
+\begin{center}
+\begin{tikzpicture}[node distance=8mm and 7mm,scale=.82,transform shape]
+\node[decision] (q) {¿Qué pregunta se desea responder?};
+\node[resultado,below left=18mm and 43mm of q] (s) {\textbf{Una mediana o pares}\\Prueba del signo.};
+\node[resultado,below left=18mm and 3mm of q] (r) {\textbf{Comparar grupos independientes}\\Mann--Whitney: dos; Kruskal--Wallis: tres o más.};
+\node[resultado,below right=18mm and 3mm of q] (c) {\textbf{Aleatoriedad temporal}\\Prueba de corridas.};
+\node[resultado,below right=18mm and 43mm of q] (k) {\textbf{Bondad de ajuste continua}\\Kolmogorov--Smirnov.};
+\draw[rama] (q)--node[etiqueta] {localización} (s);
+\draw[rama] (q)--node[etiqueta] {grupos} (r);
+\draw[rama] (q)--node[etiqueta] {secuencia} (c);
+\draw[rama] (q)--node[etiqueta] {distribución} (k);
+\end{tikzpicture}
+\end{center}
+\begin{guion}[title=Lectura rápida del mapa]
+``Primero identifico la estructura del problema. Para una mediana o diferencias apareadas uso signos; para grupos independientes uso rangos; para una secuencia temporal cuento corridas; y para comparar una distribución empírica con una distribución continua especificada uso Kolmogorov--Smirnov.''
+\end{guion}
+
+\section{Temario Oficial del Capítulo 4}
+De acuerdo con el programa académico de la cátedra de \textbf{Estadística Aplicada II} de la Universidad de Mendoza, el contenido correspondiente al Capítulo 4 es el siguiente:
+
+\begin{tcolorbox}[colback=gray!5!white,colframe=gray!50!black,title=Estructura Programática]
+    \textbf{CAPÍTULO 4: PRUEBAS NO PARAMÉTRICAS}
+    \begin{itemize}
+        \item \textbf{Tema A: Tests}
+        \begin{itemize}
+            \item \textbf{4-A-1:} Prueba del signo (Unimuestral y de muestras apareadas).
+            \item \textbf{4-A-2:} Prueba de suma de rangos: Wilcoxon y Kruskal-Wallis.
+            \item \textbf{4-A-3:} Pruebas de aleatoriedad.
+            \item \textbf{4-A-4:} Pruebas de Kolmogorov-Smirnov.
+        \end{itemize}
+    \end{itemize}
+\end{tcolorbox}
+
+\section{Introducción: Pruebas Paramétricas vs. No Paramétricas}
+Muchos procedimientos paramétricos se formulan bajo determinados modelos poblacionales y condiciones, entre ellas la normalidad en varios contrastes clásicos. Cuando esos supuestos son razonables, suelen aprovechar eficientemente la información cuantitativa. Si se incumplen de manera importante o las variables son ordinales, conviene evaluar métodos alternativos en lugar de aplicar automáticamente el procedimiento paramétrico.
+
+Como alternativa, se desarrollaron los \textbf{métodos no paramétricos o de distribución libre}. Estos métodos no hacen suposiciones estrictas sobre la forma funcional de la distribución de la población y se basan, por lo general, en el \textbf{orden, clasificación (rangos) o signos} de los datos observados.
+
+\begin{subsection}{Ventajas de las Pruebas No Paramétricas}
+    \begin{enumerate}
+        \item \textbf{Flexibilidad:} Permiten realizar inferencias exactas sobre los parámetros poblacionales sin necesidad de asumir normalidad.
+        \item \textbf{Robustez ante outliers:} No se ven severamente afectadas por valores atípicos extremos, dado que se basan en rangos u ordenamientos y no en promedios aritméticos.
+        \item \textbf{Escala de medición débil:} Son aplicables a datos ordinales o de intervalos pequeños (como encuestas de satisfacción).
+        \item \textbf{Muestras pequeñas:} Algunos métodos no paramétricos disponen de distribuciones exactas y resultan especialmente útiles cuando la muestra es pequeña y no puede sostenerse un modelo paramétrico.
+    \end{enumerate}
+\end{subsection}
+
+\begin{subsection}{Desventajas de las Pruebas No Paramétricas}
+    \begin{enumerate}
+        \item \textbf{Pérdida de eficiencia:} Al no utilizar los valores numéricos exactos sino su orden o signo, no aprovechan toda la información disponible de la muestra. En situaciones donde sí se cumplen los supuestos paramétricos, las pruebas no paramétricas requerirán un tamaño de muestra \textbf{mayor} para lograr la misma potencia que la prueba $t$ correspondiente.
+        \item \textbf{Demanda elevada de información para su potencia:} Se requiere una muestra de tamaño considerable para compensar la menor eficiencia del estimador.
+    \end{enumerate}
+\end{subsection}
+
+\begin{subsection}{El Concepto de Eficiencia}
+    La eficiencia de una prueba se evalúa en función del tamaño muestral requerido para alcanzar el mismo nivel de precisión y potencia que un método patrón (de referencia del $100\%$).
+    \begin{itemize}
+        \item \textbf{La media vs. la mediana:} Al estimar el centro de una población normal, la media muestral $\bar{X}$ posee una eficiencia del $100\%$. El uso de la mediana muestral $\tilde{X}$ como estimador alternativo resulta menos eficiente pero es \textbf{más robusto} ante la asimetría de la distribución o presencia de valores atípicos.
+
+        \begin{figure}[htbp]
+        \centering
+        \begin{tikzpicture}[scale=0.62, >=stealth]
+            % 1. Left skew (Asimetría Negativa)
+            \begin{scope}[shift={(0,0)}]
+                \draw[->] (-0.5,0) -- (4,0) node[right] {\small $X$};
+                \draw[->] (0,-0.2) -- (0,3) node[above] {\small $f(x)$};
+                \draw[thick, red!80!black, smooth] (0.2,0.05) to[out=5, in=195] (1.5,0.4) to[out=15, in=175] (2.8,2.2) to[out=-5, in=110] (3.5,0);
+                \node[font=\scriptsize\bfseries] at (1.8,-1.05) {Asimetría negativa};
+                % dashed lines for Mode, Median, Mean
+                \draw[dashed, gray] (2.8,2.2) -- (2.8,0);
+                \draw[dashed, gray] (2.4,1.8) -- (2.4,0);
+                \draw[dashed, gray] (1.9,1.1) -- (1.9,0);
+                \node[font=\tiny] at (2.35,-0.35) {Media $<$ Me $<$ Mo};
+            \end{scope}
+
+            % 2. Normal Distribution (Simétrica)
+            \begin{scope}[shift={(5.8,0)}]
+                \draw[->] (-0.5,0) -- (4,0) node[right] {\small $X$};
+                \draw[->] (0,-0.2) -- (0,3) node[above] {\small $f(x)$};
+                \draw[thick, black, smooth] (0.2,0.05) to[out=5, in=180] (2,2.2) to[out=0, in=175] (3.8,0.05);
+                \node[font=\scriptsize\bfseries] at (2,-1.05) {Simétrica (normal)};
+                \draw[dashed, gray] (2,2.2) -- (2,0);
+                \node[font=\tiny] at (2,-0.35) {Mo = Me = Media};
+            \end{scope}
+
+            % 3. Right skew (Asimetría Positiva)
+            \begin{scope}[shift={(11.6,0)}]
+                \draw[->] (-0.5,0) -- (4,0) node[right] {\small $X$};
+                \draw[->] (0,-0.2) -- (0,3) node[above] {\small $f(x)$};
+                \draw[thick, blue!80!black, smooth] (0.5,0) to[out=70, in=185] (1.2,2.2) to[out=-5, in=165] (2.5,0.4) to[out=-15, in=175] (3.8,0.05);
+                \node[font=\scriptsize\bfseries] at (2.2,-1.05) {Asimetría positiva};
+                \draw[dashed, gray] (1.2,2.2) -- (1.2,0);
+                \draw[dashed, gray] (1.6,1.8) -- (1.6,0);
+                \draw[dashed, gray] (2.1,1.1) -- (2.1,0);
+                \node[font=\tiny] at (1.65,-0.35) {Mo $<$ Me $<$ Media};
+            \end{scope}
+        \end{tikzpicture}
+        \caption{Formas de distribución y localización relativa de las medidas de tendencia central.}
+        \label{fig:asimetria}
+        \end{figure}
+
+        \begin{tcolorbox}[colback=blue!2!white,colframe=blue!30!black,title=Análisis Gráfico y Exposición Oral de Asimetría]
+            \small
+            \textbf{Qué representa el gráfico:} Muestra la posición relativa de la media, mediana y moda según el sesgo de la distribución.
+            \begin{itemize}
+                \item \textbf{Ejes:} El eje horizontal ($X$) representa el valor de la variable analizada. El eje vertical ($f(x)$) representa la densidad de probabilidad.
+                \item \textbf{Curvas y áreas:} La curva simétrica representa una población normal donde coinciden la media, mediana y moda. Las curvas asimétricas muestran colas más largas a la izquierda (asimetría negativa) o a la derecha (asimetría positiva). En esta última, común en salarios y precios, el grupo pequeño de valores astronómicos ``arrastra'' la media hacia la cola, mientras que la mediana se queda protegiendo la representatividad de la mayoría central de la muestra.
+                \item \textbf{Guion de Exposición Oral:} \textit{``Profesores, en esta gráfica observamos el impacto de la asimetría sobre los estimadores de localización. En una curva perfectamente normal o simétrica, la media, la mediana y la moda coinciden en el centro. Sin embargo, en distribuciones con asimetría positiva (cola a la derecha), la media aritmética se ve fuertemente arrastrada por los valores extremos de la cola, perdiendo robustez (es lo que llamamos el Efecto Bill Gates). La mediana, en cambio, permanece estable en el centro de la densidad de población, dividiendo la masa probabilística exactamente al 50\%. Esto justifica técnicamente por qué en estadística no paramétrica elegimos la mediana como la voz de la razón para describir la centralidad.''}
+            \end{itemize}
+        \end{tcolorbox}
+        \item \textbf{Eficiencia del rango:} Al estimar la desviación estándar $\sigma$ de una población normal, la eficiencia del rango decrece notablemente al aumentar el tamaño muestral: es del $100\%$ para $n=2$, baja al $96\%$ para $n=5$, y cae hasta el $81\%$ para $n=15$.
+    \end{itemize}
+\end{subsection}
+
+\newpage
+\section{Desarrollo Completo por Temas}
+
+% -------------------------------------------------------------
+% TEMA A-1: PRUEBA DEL SIGNO
+% -------------------------------------------------------------
+\subsection{Tema A-1: Prueba del Signo (Sign Test)}
+
+\subsubsection{Árbol de decisión: prueba del signo}
+\begin{center}\begin{tikzpicture}[node distance=8mm and 12mm]
+\node[decision] (q) {¿Los datos son una muestra o pares?};
+\node[resultado,below left=13mm and 13mm of q] (u) {\textbf{Una muestra}\\Comparar cada dato con la mediana hipotética $m_0$.};
+\node[resultado,below right=13mm and 13mm of q] (p) {\textbf{Pares}\\Calcular cada diferencia y conservar su signo.};
+\node[resultado,below=12mm of u] (b) {$X=$ número de signos positivos; eliminar empates; usar $X\sim B(n,.5)$.};
+\node[resultado,below=12mm of p] (h) {La dirección de $H_1$ determina cola derecha, izquierda o bilateral.};
+\draw[rama](q)--node[etiqueta]{una}(u);\draw[rama](q)--node[etiqueta]{pares}(p);\draw[rama](u)--(b);\draw[rama](p)--(h);
+\end{tikzpicture}\end{center}
+
+\inicio{Voy a decidir si una mediana o la mediana de unas diferencias es compatible con un valor de referencia.}
+\begin{idea}[Ejemplo inicial guiado]
+En el ejercicio del octanaje se comparan 15 mediciones con $98.0$. Cada valor mayor recibe $+$, cada valor menor recibe $-$ y el empate se omite. Quedan $n=14$ observaciones útiles y $x=12$ signos positivos. La teoría que sigue explica por qué este conteo se compara con una binomial de probabilidad $0.5$.
+\end{idea}
+
+\begin{importante}
+La prueba del signo para una mediana no requiere simetría. Si la distribución es continua y $H_0:\tilde\mu=\mu_0$, entonces $P(X_i>\mu_0)=P(X_i<\mu_0)=1/2$ por la definición de mediana. La simetría es una condición adicional que puede ser necesaria para interpretar la prueba de rangos con signo de Wilcoxon como prueba de una mediana.
+\end{importante}
+
+\subsubsection{1. Qué estudia y para qué sirve}
+Estudia la hipótesis de localización central (mediana $\tilde{\mu}$) en una sola muestra o en dos muestras relacionadas (apareadas). Sirve para evaluar si la mediana poblacional es igual a un valor hipotético $\mu_0$ o si existe una diferencia significativa entre dos mediciones asociadas (antes y después), sin requerir que los datos sigan una distribución normal.
+
+\subsubsection{2. Explicación intuitiva y definición formal}
+\textbf{Explicación intuitiva:} Si $\mu_0$ es la mediana de una distribución continua, la probabilidad de obtener un valor superior y la de obtener uno inferior son ambas $0.5$, aunque la distribución sea asimétrica. Reemplazamos cada valor por un signo $(+)$ si es mayor que $\mu_0$, o $(-)$ si es menor. Bajo $H_0$, la cantidad de signos positivos se comporta como el número de caras en $n$ lanzamientos de una moneda justa.
+
+\textbf{Definición formal:} Sea $X_1, X_2, \dots, X_N$ una muestra aleatoria independiente tomada de una población continua con mediana $\tilde{\mu}$. Se desea probar:
+\[ H_0: \tilde{\mu} = \mu_0 \quad (\text{o lo que equivale a } p = 0.5) \]
+\[ H_1: \tilde{\mu} > \mu_0 \quad (\text{o bien } \tilde{\mu} < \mu_0, \text{ o } \tilde{\mu} \neq \mu_0) \]
+El estadístico de prueba $X$ es la cantidad de signos positivos obtenidos al realizar la comparación $X_i - \mu_0$. Bajo $H_0$, la variable $X$ sigue una distribución binomial:
+\[ X \sim \text{Binomial}\left(n, p = \frac{1}{2}\right) \]
+donde $n$ es el número de observaciones distintas de $\mu_0$.
+
+\subsubsection{3. Conceptos previos}
+Mediana poblacional, variable de Bernoulli, distribución binomial, nivel de significancia y $p$-valor.
+
+\subsubsection{4. Tipo de datos y variables}
+Variables cuantitativas continuas u ordinales.
+
+\subsubsection{5. Supuestos y condiciones de aplicación}
+\begin{enumerate}
+    \item La muestra es aleatoria e independiente.
+    \item La población de origen es continua, o bien los empates se tratan explícitamente. Para contrastar una mediana no se requiere simetría: bajo $H_0$, la mediana divide la probabilidad por mitades y por eso $p=0.5$.
+\end{enumerate}
+
+\subsubsection{6. Fórmulas principales}
+La probabilidad de obtener exactamente $k$ éxitos en una distribución binomial está dada por:
+\[ P(X = k) = \binom{n}{k} \left(\frac{1}{2}\right)^n = \frac{n!}{k!(n-k)!} \left(\frac{1}{2}\right)^n \]
+Para una prueba unilateral de cola derecha (se sospecha que la mediana real excede a $\mu_0$), el $p$-valor es la probabilidad de obtener $x$ o más éxitos:
+\[ p\text{-valor} = P(X \ge x) = \sum_{k=x}^{n} \binom{n}{k} \left(\frac{1}{2}\right)^n \]
+
+\subsubsection{7. Significado de todos los símbolos}
+\begin{itemize}
+    \item $n$: número de observaciones efectivas (se excluyen los valores idénticos a $\mu_0$).
+    \item $x$: número de signos positivos observados en la muestra.
+    \item $k$: Índice de la sumatoria que toma valores de $x$ a $n$.
+    \item $p$: probabilidad de éxito bajo $H_0$ ($p = 0.5$).
+    \item $\binom{n}{k}$: coeficiente binomial que representa las combinaciones de $n$ elementos tomados de a $k$.
+\end{itemize}
+
+\subsubsection{8. Lectura oral e interpretación de cada fórmula}
+Para la fórmula del $p$-valor $\sum_{k=x}^{n} \binom{n}{k} \left(\frac{1}{2}\right)^n$:
+\begin{quote}
+    \textit{``La probabilidad de obtener $x$ o más signos positivos es igual a la sumatoria, desde $k$ igual a $x$ hasta $n$, del coeficiente binomial $n$ sobre $k$, multiplicado por un medio elevado a la $n$''}.
+\end{quote}
+\textbf{Interpretación:} Representa la probabilidad acumulada de obtener un número de signos positivos tan extremo o más extremo que el observado ($x$), bajo el supuesto de que los signos positivos y negativos son equiprobables por puro azar.
+
+\subsubsection{9. Procedimiento general paso a paso}
+\begin{enumerate}
+    \item Establecer la hipótesis nula $H_0$ y la alternativa $H_1$.
+    \item Seleccionar el nivel de significación $\alpha$.
+    \item Comparar cada observación $x_i$ con el valor $\mu_0$:
+    \begin{itemize}
+        \item Si $x_i > \mu_0 \rightarrow$ asignar signo $(+)$.
+        \item Si $x_i < \mu_0 \rightarrow$ asignar signo $(-)$.
+        \item Si $x_i = \mu_0 \rightarrow$ se omite y se reduce el tamaño muestral de $N$ a $n$.
+    \end{itemize}
+    \item Contar el número de signos positivos, el cual constituye nuestro estadístico $x$.
+    \item Calcular el $p$-valor sumando las probabilidades binomiales correspondientes desde $k=x$ hasta $n$ con $p=0.5$.
+    \item \textbf{Decisión estadística:} Si el $p\text{-valor} \le \alpha$, se rechaza $H_0$. Si el $p\text{-valor} > \alpha$, no se rechaza $H_0$.
+\end{enumerate}
+
+\subsubsection{10. Criterios para elegir el método}
+Se elige sobre la prueba $t$ de Student de una muestra si no se cumple el supuesto de normalidad y la población es simétrica, o si los datos se miden en escala ordinal.
+
+\subsubsection{11. Ejemplo práctico}
+Un ingeniero de alimentos desea probar si el tiempo mediano de conservación de una leche ultrapasteurizada es mayor de 98 días. Toma una muestra de sachet y analiza los tiempos exactos de rancidez.
+
+\subsubsection{12. Ejercicio completamente resuelto}
+Ver la sección especial de \textbf{Ejercicios Resueltos Detallados} (Ejercicios \ref{ej:signo_uni} y \ref{ej:signo_ap}).
+
+\subsubsection{13. Interpretación contextual}
+Consiste en explicar qué significa la decisión estadística en términos prácticos del problema (p. ej., si la nafta cumple o no con el octanaje mínimo requerido por ley).
+
+\subsubsection{14. Errores frecuentes}
+\begin{itemize}
+    \item Olvidar reducir el tamaño de muestra $n$ al encontrar observaciones iguales a $\mu_0$.
+    \item No verificar la simetría de la distribución. Si la distribución presenta un sesgo pronunciado (como los salarios), la probabilidad teórica deja de ser $0.5$ y la prueba falla.
+\end{itemize}
+
+\subsubsection{15. Preguntas posibles del profesor}
+\begin{itemize}
+    \item \textbf{Pregunta:} \textit{¿Por qué se descartan los empates o observaciones iguales a $\mu_0$?}
+    \textbf{Respuesta:} Porque en una distribución continua la probabilidad exacta de que un valor sea exactamente igual a la mediana es cero. Si ocurre debido a la precisión del instrumento, estos puntos no aportan información sobre si la observación está por encima o por debajo de la mediana, por lo que se eliminan para mantener un ensayo dicotómico puro de Bernoulli con $p=0.5$.
+    \item \textbf{Pregunta:} \textit{¿Qué ocurre si la población de origen es muy asimétrica?}
+    \textbf{Respuesta:} La asimetría no invalida la prueba del signo cuando se contrasta una mediana. La mediana, por definición, deja la mitad de la probabilidad a cada lado en una distribución continua. La simetría sí es relevante para interpretar la prueba de rangos con signo de Wilcoxon como contraste de una mediana de diferencias.
+\end{itemize}
+
+\subsubsection{16. Guion oral breve para exponer}
+\begin{guion}
+    ``Estimados profesores, voy a exponer la Prueba del Signo. Es un método no paramétrico sumamente útil para evaluar hipótesis sobre la mediana en poblaciones que no cumplen el supuesto de normalidad, siempre y cuando se verifique la simetría poblacional. El procedimiento consiste en reemplazar cada valor muestral por un signo positivo o negativo según sea mayor o menor a la mediana propuesta. Dado que bajo la hipótesis nula la probabilidad de obtener un valor mayor o menor es exactamente un medio, modelamos el número de signos positivos mediante una distribución binomial de parámetro un medio. Calculamos la probabilidad acumulada de los resultados extremos y tomamos una decisión estadística fundamentada en el p-valor frente al nivel de significación alfa.''
+\end{guion}
+
+\subsubsection{17. Frase de inicio y de cierre}
+\begin{itemize}
+    \item \textbf{Frase de inicio:} ``Damos comienzo al desarrollo del Capítulo 4 abordando la Prueba del Signo, la herramienta de distribución libre más intuitiva y robusta para una sola muestra.''
+    \item \textbf{Frase de cierre:} ``Con esto concluimos la Prueba del Signo, habiendo demostrado que es posible realizar inferencias válidas sobre la localización central basíndonos exclusivamente en el conteo de signos de las desviaciones.''
+\end{itemize}
+
+\newpage
+% -------------------------------------------------------------
+% TEMA A-2: PRUEBA DE SUMA DE RANGOS (U Y H)
+% -------------------------------------------------------------
+\subsection{Tema A-2: Pruebas de Suma de Rangos (Wilcoxon y Kruskal-Wallis)}
+
+\subsubsection{Árbol de decisión: comparación mediante rangos}
+\begin{center}\begin{tikzpicture}[node distance=9mm and 18mm]
+\node[decision] (q) {¿Cuántos grupos independientes se comparan?};
+\node[resultado,below left=14mm and 12mm of q] (u) {\textbf{Dos grupos}\\Mann--Whitney o suma de rangos de Wilcoxon.};
+\node[resultado,below right=14mm and 12mm of q] (h) {\textbf{Tres o más}\\Kruskal--Wallis.};
+\node[resultado,below=12mm of u] (iu) {$H_0$: distribuciones iguales. Con formas similares puede interpretarse como comparación de localización.};
+\node[resultado,below=12mm of h] (ih) {Si se rechaza, al menos un grupo difiere; se necesitan comparaciones posteriores para identificarlo.};
+\draw[rama](q)--node[etiqueta]{$k=2$}(u);\draw[rama](q)--node[etiqueta]{$k\ge3$}(h);\draw[rama](u)--(iu);\draw[rama](h)--(ih);
+\end{tikzpicture}\end{center}
+
+\inicio{Voy a reemplazar los valores por sus posiciones para comparar grupos sin exigir normalidad.}
+\begin{idea}[Ejemplo inicial guiado]
+En las arenas se combinan los 29 diámetros y se asignan rangos del 1 al 29. Si ambas poblaciones fueran iguales, los rangos altos y bajos quedarían mezclados; una concentración de rangos altos en una arena produce un estadístico $U$ extremo. Con tres métodos anticorrosivos se aplica la misma idea mediante $H$ de Kruskal--Wallis.
+\end{idea}
+
+\begin{importante}
+Distinción esencial: Mann--Whitney (también llamado Wilcoxon de suma de rangos) compara dos muestras \emph{independientes}; bajo formas distribucionales iguales, una diferencia de localización puede interpretarse como diferencia de medianas. Wilcoxon de rangos con signo compara dos mediciones \emph{apareadas} mediante las diferencias no nulas y requiere simetría de esas diferencias para una interpretación como contraste de una mediana. Kruskal--Wallis extiende la comparación de rangos a tres o más grupos independientes. En general, el rechazo indica evidencia de alguna diferencia; no identifica por sí solo qué grupos difieren ni confirma igualdad cuando no se rechaza.
+\end{importante}
+
+\subsubsection{1. Qué estudia y para qué sirve}
+Estudian si dos o más muestras independientes provienen de poblaciones con distribuciones de localización idénticas. La prueba $U$ de Wilcoxon (o de Mann-Whitney) es el equivalente no paramétrico de la prueba $t$ de Student para dos muestras independientes. La prueba $H$ de Kruskal-Wallis es la generalización para $k \ge 3$ muestras, operando como el equivalente no paramétrico del Análisis de Varianza (ANOVA) de un factor.
+
+\subsubsection{2. Explicación intuitiva y definición formal}
+\textbf{Explicación intuitiva (Prueba U):} Si tomamos dos muestras de poblaciones idénticas y ordenamos conjuntamente todos los datos de menor a mayor, los elementos de ambas muestras deberían estar completamente entremezclados en el ordenamiento. Si les asignamos rangos numéricos (es decir, la posición en la lista del 1 al $n_1+n_2$), la suma de los rangos de la muestra 1 ($R_1$) debería ser muy similar a la suma de los rangos de la muestra 2 ($R_2$) tras ajustar por el tamaño muestral. Si una de las muestras contiene valores sistemáticamente más grandes que la otra, sus rangos se concentrarán en las posiciones más altas, generando una disparidad muy grande en la suma de rangos que nos obligará a rechazar la hipótesis de igualdad.
+
+\textbf{Definición formal (Prueba U):} Sean dos muestras independientes $X_1, \dots, X_{n1}$ e $Y_1, \dots, Y_{n2}$ de variables continuas. Probamos:
+\[ H_0: \text{Las dos poblaciones son idénticas } (\mu_1 = \mu_2) \]
+\[ H_1: \text{Las dos poblaciones tienen medianas distintas } (\mu_1 \neq \mu_2) \]
+El estadístico $U_1$ se define como:
+\[ U_1 = n_1 n_2 + \frac{n_1(n_1+1)}{2} - R_1 \]
+donde $R_1$ es la suma de los rangos asignados a la primera muestra. Si $n_1, n_2 > 8$, el estadístico estandarizado:
+\[ z = \frac{U_1 - \mu_{U1}}{\sigma_{U1}} \]
+sigue aproximadamente una distribución normal estándar $\mathcal{N}(0,1)$, con $\mu_{U1} = \frac{n_1 n_2}{2}$ y $\sigma_{U1} = \sqrt{\frac{n_1 n_2(n_1 + n_2 + 1)}{12}}$.
+
+\textbf{Definición formal (Prueba H de Kruskal-Wallis):} Se comparan $k$ muestras independientes de tamaños $n_1, n_2, \dots, n_k$ con una suma de rangos $R_i$ para cada una, y un total de datos $n = \sum n_i$.
+\[ H_0: \mu_1 = \mu_2 = \dots = \mu_k \quad (\text{poblaciones idénticas}) \]
+\[ H_1: \text{Al menos dos poblaciones difieren en localización} \]
+El estadístico de prueba $H$ está definido por:
+\[ H = \frac{12}{n(n+1)} \sum_{i=1}^{k} \frac{R_i^2}{n_i} - 3(n+1) \]
+Si $n_i > 5$ para todo $i$, la distribución muestral de $H$ se aproxima mediante una distribución Chi-cuadrado con $k-1$ grados de libertad: $H \sim \chi^2_{k-1}$.
+
+\subsubsection{3. Conceptos previos}
+Rangos, empates de datos, distribución normal estándar, distribución Chi-cuadrado, ANOVA de un factor, grados de libertad.
+
+\subsubsection{4. Tipo de datos y variables}
+Variables cuantitativas continuas u ordinales.
+
+\subsubsection{5. Supuestos y condiciones de aplicación}
+\begin{enumerate}
+    \item Muestras aleatorias e independientes.
+    \item La variable de interés es continua.
+    \item Para aproximaciones normales (U): $n_1, n_2 > 8$.
+    \item Para aproximaciones de Chi-cuadrado (H): $n_i > 5$ para toda muestra.
+\end{enumerate}
+
+\subsubsection{6. Fórmulas principales}
+\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!60!black,title=Fórmulas de Suma de Rangos]
+    \textbf{Estadístico de la Prueba U (Mann-Whitney):}
+    \[ U_1 = n_1 n_2 + \frac{n_1(n_1+1)}{2} - R_1 \quad ; \quad U_2 = n_1 n_2 + \frac{n_2(n_2+1)}{2} - R_2 \]
+    \[ \mu_{U1} = \frac{n_1 n_2}{2} \quad ; \quad \sigma_{U1} = \sqrt{\frac{n_1 n_2 (n_1 + n_2 + 1)}{12}} \quad ; \quad z = \frac{U_1 - \mu_{U1}}{\sigma_{U1}} \]
+    \textbf{Estadístico de la Prueba H (Kruskal-Wallis):}
+    \[ H = \frac{12}{n(n+1)} \sum_{i=1}^{k} \frac{R_i^2}{n_i} - 3(n+1) \]
+\end{tcolorbox}
+
+\subsubsection{7. Significado de todos los símbolos}
+\begin{itemize}
+    \item $n_1, n_2, n_i$: tamaños de las muestras respectivas.
+    \item $n$: tamaño total de la muestra unificada ($n = n_1 + n_2 + \dots + n_k$).
+    \item $R_1, R_2, R_i$: suma de los rangos asignados a los datos de la i-ésima muestra.
+    \item $U_1, U_2$: estadísticos de Mann-Whitney para cada muestra.
+    \item $\mu_{U1}, \sigma_{U1}$: media y desviación estándar de la distribución de $U_1$ bajo $H_0$.
+    \item $z$: estadístico normal estandarizado.
+    \item $H$: estadístico de Kruskal-Wallis.
+    \item $k$: número de grupos o poblaciones bajo comparación.
+\end{itemize}
+
+\subsubsection{8. Lectura oral e interpretación de cada fórmula}
+Para la fórmula de Kruskal-Wallis:
+\begin{quote}
+    \textit{``El estadístico $H$ es igual a doce dividido por el producto de $n$ y $n$ más uno, todo esto multiplicado por la sumatoria desde $i$ igual a uno hasta $k$ de la suma de rangos $R$ sub $i$ al cuadrado sobre el tamaño de muestra $n$ sub $i$, restando finalmente tres veces $n$ más uno''}.
+\end{quote}
+\textbf{Interpretación:} Compara la varianza entre las sumas de rangos observadas en cada grupo y la varianza esperada bajo la hipótesis nula. Si los grupos tienen distribuciones muy dispares, la sumatoria de las relaciones cuadráticas será muy alta, inflando el valor de $H$ hacia la zona de rechazo de la distribución Chi-cuadrado.
+
+\subsubsection{9. Procedimiento general paso a paso}
+\begin{enumerate}
+    \item Unificar los datos de todos los grupos y ordenarlos de forma creciente en una sola serie.
+    \item Asignar el rango $1$ al valor más pequeño, $2$ al segundo y así hasta $n$. Si hay empates (valores repetidos), se asigna a cada observación repetida la media aritmética de los rangos que les habrían correspondido.
+    \item Sumar los rangos para cada muestra de manera separada ($R_i$).
+    \item Aplicar la fórmula correspondiente al estadístico de prueba ($U$ para dos muestras, $H$ para tres o más).
+    \item Obtener el valor crítico o $p$-valor de la distribución normal o de la tabla de Chi-cuadrado según la prueba correspondiente.
+    \item Comparar el estadístico calculado con el valor crítico para tomar la decisión estadística.
+\end{enumerate}
+
+\subsubsection{10. Criterios para elegir el método}
+\begin{itemize}
+    \item Se elige la \textbf{Prueba U} sobre la prueba $t$ de dos muestras independientes si los datos son marcadamente asimétricos, ordinales o no normales.
+    \item Se elige la \textbf{Prueba H} sobre el ANOVA si el supuesto de homogeneidad de varianzas (homocedasticidad) o de normalidad de los residuos no se cumple.
+\end{itemize}
+
+\subsubsection{11. Ejemplo práctico}
+Comparar el nivel de satisfacción al cliente de tres sucursales bancarias diferentes, donde los datos se miden mediante una escala ordinal Likert de 1 a 5 estrellas.
+
+\subsubsection{12. Ejercicio completamente resuelto}
+Ver la sección especial de \textbf{Ejercicios Resueltos Detallados} (Ejercicios \ref{ej:wilcoxon_u} y \ref{ej:kruskal_h}).
+
+\subsubsection{13. Interpretación contextual}
+Traducir el rechazo o no de la hipótesis nula en términos de la aplicación real (p. ej., determinar si un aditivo quémico efectivamente reduce la corrosión del alambre en relación con los demás métodos).
+
+\subsubsection{14. Errores frecuentes}
+\begin{itemize}
+    \item No promediar correctamente los rangos cuando se presentan observaciones empetadas, lo cual distorsiona el valor de la varianza del estadístico.
+    \item Utilizar la aproximación de Chi-cuadrado para Kruskal-Wallis cuando los tamaños de grupo son muy pequeños ($n_i \le 5$), en cuyo caso se deben emplear tablas de distribución exacta.
+\end{itemize}
+
+\subsubsection{15. Preguntas posibles del profesor}
+\begin{itemize}
+    \item \textbf{Pregunta:} \textit{¿Por qué Kruskal-Wallis es una prueba de cola derecha si la hipótesis alternativa dice que ``las poblaciones son distintas''?}
+    \textbf{Respuesta:} En ANOVA y Kruskal-Wallis, las grandes diferencias en cualquier dirección entre las sumas de rangos de los grupos siempre generan valores positivos muy altos del estadístico $H$. Un valor de $H$ cercano a cero significa que las sumas de rangos son casi iguales a las esperadas (zona de aceptación), mientras que discrepancias significativas empujan el estadístico hacia la derecha. Por lo tanto, la región crítica se ubica exclusivamente en la cola derecha de la distribución Chi-cuadrado.
+    \item \textbf{Pregunta:} \textit{¿Cómo se manejan las observaciones empatadas en la prueba U de Wilcoxon?}
+    \textbf{Respuesta:} Se promedian las posiciones que ocuparían conjuntamente. Matemáticamente, si hay muchos empates, existe una fórmula de corrección para la desviación estándar $\sigma_U$, disminuyóndola ligeramente para corregir la subestimación de la varianza.
+\end{itemize}
+
+\subsubsection{16. Guion oral breve para exponer}
+\begin{guion}
+    ``Estimado tribunal, presentará las pruebas de suma de rangos de Wilcoxon y de Kruskal-Wallis. Estos métodos constituyen las alternativas no paramétricas más potentes para comparar localizaciones de dos o más poblaciones independientes. En lugar de comparar las medias directas, que son altamente sensibles a la asimetría y a los outliers, ordenamos el conjunto completo de observaciones de menor a mayor y les asignamos rangos numéricos. Al sumar los rangos correspondientes a cada grupo, evaluamos si la distribución de los rangos es uniforme entre las muestras, lo cual indicaría poblaciones idénticas. Para dos muestras independientes empleamos el estadístico U, que ante tamaños grandes se aproxima mediante una normal estándar. Para tres o más grupos, empleamos el estadístico H de Kruskal-Wallis, aproximado mediante una Chi-cuadrado de k menos un grados de libertad, realizando siempre una prueba de cola derecha debido a la naturaleza cuadrática del estadístico.''
+\end{guion}
+
+\subsubsection{17. Frase de inicio y de cierre}
+\begin{itemize}
+    \item \textbf{Frase de inicio:} ``Continuamos con el Tema A-2 del temario, analizando las robustas pruebas de suma de rangos diseñadas para la comparación de múltiples grupos independientes.''
+    \item \textbf{Frase de cierre:} ``De este modo, cerramos el análisis de suma de rangos, demostrando que la transformación de datos numéricos a rangos posicionales preserva de manera eficiente la estructura geométrica de la información sin las ataduras de la normalidad.''
+\end{itemize}
+
+\newpage
+% -------------------------------------------------------------
+% TEMA A-3: PRUEBAS DE ALEATORIEDAD (CORRIDAS)
+% -------------------------------------------------------------
+\subsection{Tema A-3: Pruebas de Aleatoriedad (Prueba de Corridas)}
+
+\subsubsection{Árbol de decisión: prueba de corridas}
+\begin{center}\begin{tikzpicture}[node distance=9mm and 18mm]
+\node[decision] (q) {¿La secuencia ya es binaria?};
+\node[resultado,below left=14mm and 12mm of q] (b) {\textbf{Sí}\\Contar símbolos de cada tipo y número de corridas.};
+\node[resultado,below right=14mm and 12mm of q] (n) {\textbf{No, es numérica}\\Dividir respecto de la mediana y omitir empates.};
+\node[resultado,below=12mm of b] (i) {Pocas corridas sugieren agrupamiento; demasiadas, alternancia.};
+\node[resultado,below=12mm of n] (z) {Con tamaños suficientes usar aproximación normal; si no, método exacto.};
+\draw[rama](q)--node[etiqueta]{sí}(b);\draw[rama](q)--node[etiqueta]{no}(n);\draw[rama](b)--(i);\draw[rama](n)--(z);
+\end{tikzpicture}\end{center}
+
+\inicio{Voy a estudiar el orden temporal, no solamente cuántas veces aparece cada resultado.}
+\begin{idea}[Ejemplo inicial guiado]
+La secuencia \texttt{nnnnn dddd nnnnnnnnnn dd nn dddd} contiene seis corridas. Tener 10 defectuosas y 17 no defectuosas no basta para decidir aleatoriedad: el orden muestra una agrupación inusual que se evalúa comparando seis con el número esperado de corridas.
+\end{idea}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=0.55cm,y=0.8cm]
+\foreach \i/\s in {0/C,1/C,2/S,3/S,4/C,5/C,6/C,7/S,8/S,9/S,10/C,11/C,12/S,13/S,14/S,15/C,16/C,17/S}{\node[circle,draw=blue!60!black,fill=blue!8,minimum size=5mm,inner sep=0pt] at (\i,0) {\s};}
+\draw[<->,red,thick] (0,-0.55)--(1,-0.55) node[midway,below] {1};
+\draw[<->,red,thick] (2,-0.55)--(3,-0.55) node[midway,below] {2};
+\draw[<->,red,thick] (4,-0.55)--(6,-0.55) node[midway,below] {3};
+\draw[<->,red,thick] (7,-0.55)--(9,-0.55) node[midway,below] {4};
+\draw[<->,red,thick] (10,-0.55)--(11,-0.55) node[midway,below] {5};
+\draw[<->,red,thick] (12,-0.55)--(14,-0.55) node[midway,below] {6};
+\draw[<->,red,thick] (15,-0.55)--(16,-0.55) node[midway,below] {7};
+\draw[<->,red,thick] (17,-0.55)--(17.1,-0.55) node[midway,below] {8};
+\end{tikzpicture}
+\caption{Ejemplo de una secuencia con ocho corridas.}
+\label{fig:ejemplo_corridas_teoria}
+\end{figure}
+\textbf{Interpretación del gráfico:} Cada flecha delimita un bloque consecutivo de símbolos iguales. Pocas corridas sugieren aglomeración; demasiadas, alternancia sistemática. Ambos extremos pueden aportar evidencia contra la aleatoriedad.
+
+\subsubsection{1. Qué estudia y para qué sirve}
+Estudia la hipótesis de aleatoriedad en una secuencia de observaciones temporales u ordenadas cronológicamente. Sirve para determinar si la obtención de una serie de datos sigue un proceso aleatorio independiente o si existe un patrón sistemático subyacente (tendencias, agrupamientos o alternancia excesiva), lo cual es fundamental en el control estadístico de calidad.
+
+\subsubsection{2. Explicación intuitiva y definición formal}
+\textbf{Explicación intuitiva:} Supongamos que lanzamos una moneda 20 veces y obtenemos los resultados en el orden que salieron. Si sale:
+\[ C\,C\,C\,C\,C\,C\,C\,C\,C\,C\,S\,S\,S\,S\,S\,S\,S\,S\,S\,S \]
+observamos solo 2 corridas o rachas (una racha de caras, luego una de secas). Aunque hay exactamente 10 caras y 10 secas, sospechamos falta de aleatoriedad debido a que están demasiado agrupadas (pocas corridas). De igual manera, si el resultado es:
+\[ C\,S\,C\,S\,C\,S\,C\,S\,C\,S\,C\,S\,C\,S\,C\,S\,C\,S\,C\,S \]
+tenemos 20 corridas. Tampoco es aleatorio porque hay demasiada alternancia (muchas corridas). La aleatoriedad se sitúa en un punto medio del número de corridas esperado por azar.
+
+\textbf{Definición formal:} Dada una secuencia de observaciones ordenadas que contiene $n_1$ símbolos del primer tipo y $n_2$ símbolos del segundo tipo, llamamos \textbf{corrida (o racha)} a la sucesión consecutiva de símbolos idénticos delimitada por símbolos distintos o por los extremos de la muestra. Sea $u$ el número total de corridas observadas. Bajo la hipótesis nula de aleatoriedad, si $n_1, n_2 > 10$, la distribución muestral de $u$ se aproxima mediante una distribución normal con parámetros:
+\[ \mu_u = \frac{2 n_1 n_2}{n_1 + n_2} + 1 \]
+\[ \sigma_u = \sqrt{\frac{2 n_1 n_2 (2 n_1 n_2 - n_1 - n_2)}{(n_1 + n_2)^2 (n_1 + n_2 - 1)}} \]
+El estadístico normalizado es:
+\[ z = \frac{u - \mu_u}{\sigma_u} \sim \mathcal{N}(0,1) \]
+
+\subsubsection{3. Conceptos previos}
+Secuencias ordenadas en el tiempo, variables dicotómicas, mediana como valor de corte, distribución normal estándar.
+
+\subsubsection{4. Tipo de datos y variables}
+\begin{itemize}
+    \item \textbf{Cualitativos dicotómicos:} Directamente (defectuoso/no defectuoso, cara/ceca).
+    \item \textbf{Cuantitativos continuos:} Se transforman a dicotómicos asignando la etiqueta ``$a$'' si la observación está por encima de la mediana y ``$b$'' si está por debajo, descartando los valores idénticos a ella.
+\end{itemize}
+
+\subsubsection{5. Supuestos y condiciones de aplicación}
+\begin{enumerate}
+    \item Los datos se recogen de forma secuencial y cronológica.
+    \item Para la aproximación normal estándar, ambos grupos de símbolos deben cumplir $n_1, n_2 > 10$. En muestras pequeñas, se requiere el uso de tablas con valores críticos exactos para el estadístico $u$.
+\end{enumerate}
+
+\subsubsection{6. Fórmulas principales}
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!60!black,title=Fórmulas de la Prueba de Corridas]
+    \[ \mu_u = \frac{2 n_1 n_2}{n_1 + n_2} + 1 \]
+    \[ \sigma_u = \sqrt{\frac{2 n_1 n_2 (2 n_1 n_2 - n_1 - n_2)}{(n_1 + n_2)^2 (n_1 + n_2 - 1)}} \]
+    \[ z = \frac{u - \mu_u}{\sigma_u} \]
+\end{tcolorbox}
+
+\subsubsection{7. Significado de todos los símbolos}
+\begin{itemize}
+    \item $u$: número total de corridas observadas en la secuencia.
+    \item $n_1$: cantidad de símbolos del primer tipo (o valores superiores a la mediana).
+    \item $n_2$: cantidad de símbolos del segundo tipo (o valores inferiores a la mediana).
+    \item $\mu_u$: media teórica del número de corridas bajo el supuesto de aleatoriedad.
+    \item $\sigma_u$: desviación estándar teórica del número de corridas bajo $H_0$.
+    \item $z$: estadístico normal estándar calculado.
+\end{itemize}
+
+\subsubsection{8. Lectura oral e interpretación de cada fórmula}
+Para la fórmula de la desviación estándar $\sigma_u$:
+\begin{quote}
+    \textit{``La desviación estándar de las corridas es la raíz cuadrada de la fracción cuyo numerador es el producto de dos por $n$ uno por $n$ dos por la diferencia de dos por $n$ uno por $n$ dos menos $n$ uno menos $n$ dos, y cuyo denominador es el producto de la suma de $n$ uno y $n$ dos al cuadrado, por la suma de $n$ uno y $n$ dos menos uno''}.
+\end{quote}
+\textbf{Interpretación:} Cuantifica la variabilidad natural esperada en el número de corridas en una secuencia aleatoria de longitudes conocidas $n_1$ y $n_2$. Sirve para establecer los límites lógicos de dispersión alrededor del promedio $\mu_u$.
+
+\subsubsection{9. Procedimiento general paso a paso}
+\begin{enumerate}
+    \item \textbf{Para datos cualitativos dicotómicos:} Escribir la cadena cronológica directamente.
+    \item \textbf{Para datos cuantitativos:} Calcular la mediana de toda la muestra. Reemplazar los valores por encima de la mediana con la letra ``$a$'' y los de abajo con ``$b$'' (descartando empates con la mediana).
+    \item Contar la cantidad de elementos de cada clase para obtener $n_1$ y $n_2$.
+    \item Contar el número de corridas ($u$) de la secuencia.
+    \item Calcular la media $\mu_u$, la desviación estándar $\sigma_u$ y el estadístico $z$.
+    \item \textbf{Decisión estadística (Prueba bilateral):} Si $z < -z_{\alpha/2}$ o $z > z_{\alpha/2}$, se rechaza la hipótesis nula de aleatoriedad.
+\end{enumerate}
+
+\subsubsection{10. Criterios para elegir el método}
+Es el único método diseñado específicamente para analizar la aleatoriedad de una sola muestra secuencial en base a rachas temporales, por lo que es insustituible en estudios de control de calidad.
+
+\subsubsection{11. Ejemplo práctico}
+Un operador de una planta quémica quiere comprobar si la concentración de un solvente en un reactor medido cada hora tiene un patrón de oscilación constante (falta de aleatoriedad por alta alternancia) o si la máquina se descalibra y tiende a retener el valor alto por muchas horas (falta de aleatoriedad por aglomeración).
+
+\subsubsection{12. Ejercicio completamente resuelto}
+Ver la sección especial de \textbf{Ejercicios Resueltos Detallados} (Ejercicios \ref{ej:racha_bin} y \ref{ej:racha_num}).
+
+\subsubsection{13. Interpretación contextual}
+Consiste en explicar qué implicancias físicas tiene el rechazo de la hipótesis nula (p. ej., si la máquina torno requiere un mantenimiento inmediato al encontrarse un patrón de desgaste no aleatorio).
+
+\subsubsection{14. Errores frecuentes}
+\begin{itemize}
+    \item Confundir cuándo usar una prueba unilateral o bilateral. El ingeniero debe evaluar con cuidado si le preocupa cualquier desviación de la aleatoriedad (bilateral) o un tipo de desviación en particular (pocas corridas/aglomeración o muchas corridas/repetición periódica).
+    \item Incluir valores iguales a la mediana en el conteo de $n_1$ o $n_2$ en lugar de descartarlos correctamente.
+\end{itemize}
+
+\subsubsection{15. Preguntas posibles del profesor}
+\begin{itemize}
+    \item \textbf{Pregunta:} \textit{¿Cuándo se asocia un número muy bajo de corridas con la falta de aleatoriedad?}
+    \textbf{Respuesta:} Un número de corridas significativamente inferior al esperado ($u < \mu_u$, lo que da un estadístico $z$ negativo grande) indica que los datos del mismo tipo tienden a aparecer agrupados de forma persistente. Esto indica una tendencia lenta o aglomeración sistemática de observaciones (falta de independencia cronológica por el lado izquierdo).
+    \item \textbf{Pregunta:} \textit{¿Cuándo se asocia un número muy alto de corridas con la falta de aleatoriedad?}
+    \textbf{Respuesta:} Un número excesivamente alto de corridas ($u > \mu_u$, resultando en un $z$ positivo grande) indica que los datos alternan de forma extremadamente rápida entre las dos condiciones. Esto es propio de sistemas con patrones repetitivos cíclicos o de control excesivo que compensan las variaciones en cada paso, destruyendo la aleatoriedad natural del sistema (falta de independencia por el lado derecho).
+\end{itemize}
+
+\subsubsection{16. Guion oral breve para exponer}
+\begin{guion}
+    ``Estimado jurado, la Prueba de Corridas o Rachas es un método fundamental de la inferencia estadística para evaluar la suposición crítica de independencia en observaciones secuenciales. Analizamos el orden temporal de los datos. Una corrida es una secuencia ininterrumpida de observaciones de la misma clase. Un número extremadamente bajo de corridas es evidencia de aglomeración o tendencias, mientras que un número excesivamente alto indica una alternancia sistemática o patrones cíclicos. Para muestras donde ambos grupos contienen más de 10 elementos, aplicamos el teorema central del límite calculando la media y la desviación estándar esperada del número de corridas. El estadístico z nos permite determinar si las fluctuaciones observadas son consistentes con un proceso puramente aleatorio o si, por el contrario, existe suficiente evidencia para rechazar la aleatoriedad.''
+\end{guion}
+
+\subsubsection{17. Frase de inicio y de cierre}
+\begin{itemize}
+    \item \textbf{Frase de inicio:} ``Abordamos ahora el Tema A-3 de nuestro programa, correspondiente a la Prueba de Rachas para evaluar la aleatoriedad temporal en secuencias estadísticas.''
+    \item \textbf{Frase de cierre:} ``Concluimos de este modo la prueba de corridas, habiendo demostrado que el orden temporal en que se registran las mediciones es una fuente invaluable de información sobre la estabilidad de los procesos industriales.''
+\end{itemize}
+
+\newpage
+% -------------------------------------------------------------
+% TEMA A-4: PRUEBA DE KOLMOGOROV-SMIRNOV
+% -------------------------------------------------------------
+\subsection{Tema A-4: Pruebas de Kolmogorov-Smirnov (K-S)}
+
+\subsubsection{Árbol de decisión: Kolmogorov--Smirnov}
+\begin{center}\begin{tikzpicture}[node distance=9mm and 18mm]
+\node[decision] (q) {¿La distribución teórica es continua y está completamente especificada?};
+\node[resultado,below left=14mm and 12mm of q] (s) {\textbf{Sí}\\Calcular $D=\sup_x|S_n(x)-F_0(x)|$.};
+\node[resultado,below right=14mm and 12mm of q] (n) {\textbf{No}\\La tabla clásica de K--S no corresponde automáticamente.};
+\node[resultado,below=12mm of s] (d) {Medir en cada dato la distancia al escalón inferior y superior.};
+\node[resultado,below=12mm of n] (a) {Si se estiman parámetros, usar corrección o calibración apropiada; si es discreta, otro procedimiento.};
+\draw[rama](q)--node[etiqueta]{sí}(s);\draw[rama](q)--node[etiqueta]{no}(n);\draw[rama](s)--(d);\draw[rama](n)--(a);
+\end{tikzpicture}\end{center}
+
+\inicio{Voy a medir la mayor separación entre lo observado y una distribución acumulada teórica.}
+\begin{idea}[Ejemplo inicial guiado]
+Para los diez orificios de una placa se compara la escalera empírica con la recta de una Uniforme en $[0,30]$. En cada observación se miden dos distancias verticales; la máxima es $D=0.193$. La teoría siguiente muestra cómo calcularla y contrastarla.
+\end{idea}
+
+\subsubsection{1. Qué estudia y para qué sirve}
+Estudia las diferencias estadísticas entre funciones de distribución acumuladas. La prueba \textbf{unimuestral} funciona como una prueba de bondad de ajuste para evaluar si una muestra de datos proviene de una población continua con una distribución teórica específica (uniforme, normal, exponencial, etc.). La prueba \textbf{bimuestral} evalúa si dos muestras independientes provienen de la misma distribución poblacional desconocida.
+
+\subsubsection{2. Explicación intuitiva y definición formal}
+\textbf{Explicación intuitiva:} Imagina que graficamos la distribución acumulada teórica (que es una curva continua que va de $0$ a $1$) y sobre el mismo eje graficamos la distribución acumulada observada en nuestra muestra (que se verá como una escalera de pasos que sube desde $0$ hasta $1$ con saltos de tamaño $1/n$ en cada dato). Si la muestra proviene realmente de la distribución teórica, la escalera debería estar muy cerca de la curva continua. La distancia vertical máxima entre la escalera y la curva teórica es nuestro estadístico de prueba $D$. Si esta distancia vertical máxima es mayor que un valor crítico tabulado (que depende del tamaño muestral), concluimos que la teoría no se ajusta a las observaciones y rechazamos la hipótesis de bondad de ajuste.
+
+\textbf{Definición formal:} Sea $X_1, X_2, \dots, X_n$ una muestra aleatoria de una distribución continua desconocida $F(x)$. Queremos probar:
+\[ H_0: F(x) = F_0(x) \quad (\text{para todo } x \in \mathbb{R}) \]
+\[ H_1: F(x) \neq F_0(x) \quad (\text{para al menos un } x) \]
+donde $F_0(x)$ es una función de distribución continua teórica completamente especificada. Sea $S_n(x)$ la función de distribución empírica acumulada observada:
+\[ S_n(x) = \frac{\text{Número de observaciones } \le x}{n} \]
+El estadístico de prueba $D$ se define como la diferencia absoluta máxima de separación vertical entre $F_0(x)$ y $S_n(x)$:
+\[ D = \sup_{x} \left| F_0(x) - S_n(x) \right| \]
+Para cada punto de quiebre (los valores observados ordenados $x_{(i)}$), medimos la distancia vertical tanto al escalón superior como al escalón inferior:
+\[ d_{i1} = \left| S_n(x_{(i)}) - F_0(x_{(i)}) \right| = \left| \frac{i}{n} - F_0(x_{(i)}) \right| \]
+\[ d_{i2} = \left| S_n(x_{(i-1)}) - F_0(x_{(i)}) \right| = \left| \frac{i-1}{n} - F_0(x_{(i)}) \right| \]
+El estadístico final es el máximo absoluto de todas estas distancias calculadas:
+\[ D = \max_{1 \le i \le n} \left( \max(d_{i1}, d_{i2}) \right) \]
+
+\subsubsection{3. Conceptos previos}
+Función de distribución acumulada (CDF), función de distribución empírica (ECDF), supremo matemático, distribuciones continuas básicas (Uniforme, Normal, Exponencial), valor crítico tabulado.
+
+\subsubsection{4. Tipo de datos y variables}
+Variables estrictamente cuantitativas y \textbf{continuas}.
+
+\subsubsection{5. Supuestos y condiciones de aplicación}
+\begin{enumerate}
+    \item La muestra es aleatoria e independiente.
+    \item La distribución teórica $F_0(x)$ bajo hipótesis nula debe ser continua.
+    \item Los parámetros de la distribución teórica deben estar \textbf{completamente especificados de antemano} (no deben estimarse a partir de la muestra). Si los parámetros se estiman a partir de los datos de la muestra, los valores críticos de la tabla clásica de Kolmogorov-Smirnov dejan de ser válidos y es necesario aplicar modificaciones (como la prueba de Lilliefors para normalidad).
+    \item No se aplica a distribuciones discretas (el uso de K-S con variables discretas resulta extremadamente conservador, disminuyendo notablemente la potencia de la prueba).
+\end{enumerate}
+
+\subsubsection{6. Fórmulas principales}
+\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!60!black,title=Estadístico K-S Unimuestral]
+    \[ S_n(x_{(i)}) = \frac{i}{n} \quad ; \quad S_n(x_{(i-1)}) = \frac{i-1}{n} \]
+    \[ d_{i1} = \left| \frac{i}{n} - F_0(x_{(i)}) \right| \quad ; \quad d_{i2} = \left| \frac{i-1}{n} - F_0(x_{(i)}) \right| \]
+    \[ D = \max \left\{ d_{11}, d_{12}, d_{21}, d_{22}, \dots, d_{n1}, d_{n2} \right\} \]
+\end{tcolorbox}
+
+\subsubsection{7. Significado de todos los símbolos}
+\begin{itemize}
+    \item $n$: tamaño de la muestra aleatoria.
+    \item $x_{(i)}$: i-ésima observación ordenada de la muestra de forma creciente.
+    \item $S_n(x)$: función de distribución acumulada empírica observada.
+    \item $F_0(x)$: función de distribución acumulada teórica supuesta bajo la hipótesis nula.
+    \item $d_{i1}$: distancia vertical absoluta entre el escalón superior y la curva teórica en el dato $x_{(i)}$.
+    \item $d_{i2}$: distancia vertical absoluta entre el escalón inferior (previo) y la curva teórica en el dato $x_{(i)}$.
+    \item $D$: estadístico de la prueba, que representa la distancia absoluta máxima vertical.
+\end{itemize}
+
+\subsubsection{8. Lectura oral e interpretación de cada fórmula}
+Para la fórmula del estadístico $D = \max \left( \max(d_{i1}, d_{i2}) \right)$:
+\begin{quote}
+    \textit{``El estadístico de Kolmogorov-Smirnov $D$ es el valor máximo absoluto de entre todas las diferencias verticales calculadas tanto al escalón superior $d_{i1}$ como al escalón inferior $d_{i2}$ a lo largo de las $n$ observaciones ordenadas''}.
+\end{quote}
+\textbf{Interpretación:} Busca el punto de la recta o curva donde la teoría y la realidad empírica se separan más. Si en este punto de máxima divergencia la separación vertical supera la tolerancia crítica por azar, rechazamos la teoría.
+
+\subsubsection{9. Procedimiento general paso a paso}
+\begin{enumerate}
+    \item Definir la hipótesis nula $H_0$ estableciendo la ecuación de la función acumulada teórica $F_0(x)$, y la alternativa $H_1$.
+    \item Ordenar la muestra de menor a mayor para obtener los estadísticos de orden $x_{(1)}, x_{(2)}, \dots, x_{(n)}$.
+    \item Calcular los valores teóricos acumulados para cada dato ordenado: $F_0(x_{(i)})$.
+    \item Calcular las proporciones empíricas acumuladas superior $i/n$ e inferior $(i-1)/n$.
+    \item Calcular para cada observación las distancias $d_{i1}$ y $d_{i2}$.
+    \item Encontrar la distancia absoluta máxima $D$ de entre todas las calculadas.
+    \item Buscar el valor crítico $D_{crit}$ en la tabla de Kolmogorov-Smirnov con el tamaño de muestra $n$ y el nivel de significación $\alpha$.
+    \item \textbf{Decisión:} Si $D > D_{crit}$, se rechaza $H_0$. Si $D \le D_{crit}$, no se rechaza $H_0$.
+\end{enumerate}
+
+\subsubsection{10. Criterios para elegir el método}
+Es preferible sobre la prueba de Chi-cuadrado de bondad de ajuste cuando el tamaño de muestra es pequeño, ya que la Chi-cuadrado requiere agrupar datos en intervalos (lo que destruye información y es muy sensible a la elección arbitraria de dichos intervalos), mientras que K-S utiliza cada observación individual de forma exacta.
+
+\subsubsection{11. Ejemplo práctico}
+Un laboratorio farmacéutico evalúa si la concentración de un principio activo liberado por hora sigue una distribución Uniforme en el intervalo de 0 a 10 miligramos.
+
+\subsubsection{12. Ejercicio completamente resuelto}
+Ver la sección especial de \textbf{Ejercicios Resueltos Detallados} (Ejercicio \ref{ej:kolmo_uni}).
+
+\subsubsection{13. Interpretación contextual}
+Determinar si el ajuste de los datos observados a una distribución uniforme es estadísticamente aceptable (p. ej., si los agujeros de una hojalata están correctamente distribuidos de manera uniforme, garantizando la homogeneidad del producto).
+
+\subsubsection{14. Errores frecuentes}
+\begin{itemize}
+    \item Aplicar la prueba clásica de Kolmogorov-Smirnov estimando previamente la media o varianza a partir de la muestra sin modificar los valores críticos de la tabla.
+    \item Aplicar la prueba a variables discretas, lo cual invalida las propiedades matemáticas de la distribución del estadístico $D$.
+    \item Medir solo la distancia al escalón superior ($d_{i1}$) e ignorar la distancia al escalón inferior ($d_{i2}$), lo cual puede provocar omitir la verdadera distancia máxima vertical.
+\end{itemize}
+
+\subsubsection{15. Preguntas posibles del profesor}
+\begin{itemize}
+    \item \textbf{Pregunta:} \textit{¿Por qué es necesario calcular tanto la distancia al escalón inferior como al superior?}
+    \textbf{Respuesta:} Dado que la función de distribución empírica $S_n(x)$ es una función escalonada discontinua y la distribución teórica $F_0(x)$ es continua, la máxima diferencia vertical puede ocurrir justo antes de dar el salto (en el escalón inferior) o justo después de dar el salto (en el escalón superior). Si solo calculáramos la distancia superior, podríamos ignorar un punto donde la curva teórica se separa aún más por debajo del salto.
+    \item \textbf{Pregunta:} \textit{¿Por qué no se puede aplicar Kolmogorov-Smirnov si los parámetros de la distribución se estiman con la muestra?}
+    \textbf{Respuesta:} Si estimamos los parámetros usando la muestra, la curva teórica $F_0(x)$ se ``fuerza'' a ajustarse mejor a los datos observados de lo que se ajustaría una verdadera hipótesis independiente. Como consecuencia, la distancia máxima calculada $D$ tiende a ser artificialmente más pequeña, lo que inflaría el error tipo II si usamos la tabla clásica de K-S. Para estos casos se debe usar la distribución de Lilliefors o simulación de Monte Carlo.
+\end{itemize}
+
+\subsubsection{16. Guion oral breve para exponer}
+\begin{guion}
+    ``Estimados docentes, expondrá la Prueba de Kolmogorov-Smirnov para una sola muestra, una potente técnica no paramétrica de bondad de ajuste diseñada para variables continuas. A diferencia del clásico método de Chi-cuadrado, que exige agrupar los datos en categorías arbitrarias perdiendo información valiosa, K-S opera directamente sobre las funciones de distribución acumuladas individuales. Graficamos la distribución empírica observada en forma de escalera de saltos de tamaño uno sobre n, y medimos la máxima separación vertical absoluta, denominada estadístico D, con respecto a la recta o curva teórica continua. Para asegurar que medimos la separación real, evaluamos tanto la distancia al escalón inferior como al superior en cada punto de observación. Finalmente, contrastamos esta distancia máxima contra el valor crítico tabulado para determinar si las desviaciones son atribuibles al azar o si justifican el rechazo de la hipótesis de ajuste.''
+\end{guion}
+
+\subsubsection{17. Frase de inicio y de cierre}
+\begin{itemize}
+    \item \textbf{Frase de inicio:} ``Cerramos el Tema A del Capítulo 4 abordando la elegante y eficiente Prueba de Kolmogorov-Smirnov como método supremo de bondad de ajuste continuo.''
+    \item \textbf{Frase de cierre:} ``Concluimos de esta manera la Prueba de Kolmogorov-Smirnov, habiendo establecido su superioridad en potencia sobre otros métodos categóricos y completado el estudio sistemático del Capítulo 4.''
+\end{itemize}
+
+\newpage
+% -------------------------------------------------------------
+% SECCIÓN 5: CUADROS COMPARATIVOS
+% -------------------------------------------------------------
+\begin{landscape}
+\section{Cuadros Comparativos}
+
+Para dominar el Capítulo 4 de cara al examen final, es indispensable comprender de forma matricial las diferencias operativas y conceptuales tanto entre paradigmas (Paramétricos vs. No Paramétricos) como entre las distintas pruebas que conforman la unidad.
+
+\subsection{Cuadro Comparativo: Pruebas Paramétricas vs. No Paramétricas}
+A continuación se presenta un contraste riguroso entre ambos paradigmas de inferencia:
+
+\begin{longtable}{p{4cm} p{6cm} p{6cm}}
+\caption{Diferencias Estructurales de Paradigmas Inferenciales} \label{tab:par_vs_nopar} \\
+\toprule
+\textbf{Criterio / Característica} & \textbf{Pruebas Paramétricas} & \textbf{Pruebas No Paramétricas} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{c}%
+{{\bfseries \tablename\ \thetable{} -- Continúa de la página anterior}} \\
+\toprule
+\textbf{Criterio / Característica} & \textbf{Pruebas Paramétricas} & \textbf{Pruebas No Paramétricas} \\
+\midrule
+\endhead
+\bottomrule
+\multicolumn{3}{r}{{Continúa en la siguiente página}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\textbf{Supuesto de Distribución} & Requiere que las poblaciones sigan una distribución normal. & No asume una forma paramétrica específica (distribución libre). \\
+\textbf{Escala de Medición} & Escala métrica (de intervalo o de razón) cuantitativa. & Escala ordinal o cualitativa nominal, además de métrica continua. \\
+\textbf{Estadístico de Centralidad} & Se enfoca en inferencias relativas a la \textbf{media aritmética} ($\mu$). & Se enfoca en inferencias sobre la \textbf{mediana} ($\tilde{\mu}$) o distribución general. \\
+\textbf{Sensibilidad a Outliers} & Extremadamente sensible. Un solo valor atípico distorsiona severamente la media. & Muy robusta. Los rangos o signos mitigan el impacto de valores extremos. \\
+\textbf{Eficiencia y Potencia} & Máxima eficiencia ($100\%$) cuando se cumplen las suposiciones. & Menor eficiencia en condiciones normales. Requiere mayor tamaño de muestra ($n$). \\
+\textbf{Tamaño de la Muestra} & Exige muestras grandes si no se puede garantizar la normalidad teórica. & Aplicable a muestras muy pequeñas donde la normalidad no es verificable. \\
+\textbf{Complejidad Matemática} & Elevada bajo formulación analítica de la densidad poblacional. & Sencilla. Se basa principalmente en combinatoria, rangos posicionales y signos. \\
+\end{longtable}
+
+\subsection{Cuadro Sinóptico de Pruebas No Paramétricas del Capítulo 4}
+Este cuadro constituye un mapa de decisiones para resumir toda la unidad:
+
+\begin{longtable}{p{2.5cm} p{3.2cm} p{2.2cm} p{2cm} p{2.8cm} p{3.3cm}}
+\caption{Sistematización de las Pruebas del Capítulo 4} \label{tab:sinoptico_nopar} \\
+\toprule
+\textbf{Prueba} & \textbf{Objetivo Estadístico} & \textbf{N.º Muestras} & \textbf{Tipo Datos} & \textbf{Estadístico Calculado} & \textbf{Distribución de Referencia} \\
+\midrule
+\endfirsthead
+\multicolumn{6}{c}%
+{{\bfseries \tablename\ \thetable{} -- Continúa de la página anterior}} \\
+\toprule
+\textbf{Prueba} & \textbf{Objetivo Estadístico} & \textbf{N.º Muestras} & \textbf{Tipo Datos} & \textbf{Estadístico Calculado} & \textbf{Distribución de Referencia} \\
+\midrule
+\endhead
+\bottomrule
+\multicolumn{6}{r}{{Continúa en la siguiente página}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\textbf{Prueba del Signo} & Contrastar una mediana frente a un valor o analizar pares apareados. & Una muestra o dos apareadas. & Continuos u ordinales. & Conteo de signos positivos $x$. & Binomial $\mathcal{B}(n, 0.5)$. \\
+\textbf{Prueba U de Wilcoxon} & Evaluar si dos poblaciones independientes son idénticas. & Dos muestras independientes. & Continuos o ordinales. & Suma de rangos $R_i$, estadístico $U_i$. & Normal estándar $\mathcal{N}(0, 1)$ si $n_i>8$. \\
+\textbf{Prueba H de Kruskal-Wallis} & Evaluar si $k$ poblaciones independientes son idénticas. & $k \ge 3$ muestras independientes. & Continuos o ordinales. & Estadístico de varianza de rangos $H$. & Chi-cuadrado $\chi^2_{k-1}$ si $n_i>5$. \\
+\textbf{Prueba de Corridas (Binaria)} & Evaluar aleatoriedad de secuencias cualitativas. & Una muestra secuencial temporal. & Nominal dicotómica. & Conteo de corridas observadas $u$. & Normal estándar $\mathcal{N}(0, 1)$ si $n_i>10$. \\
+\textbf{Prueba de Corridas (Numérica)} & Evaluar aleatoriedad de secuencias continuas. & Una muestra secuencial temporal. & Cuantitativos continuos. & Conteo de corridas respecto a mediana. & Normal estándar $\mathcal{N}(0, 1)$ si $n_i>10$. \\
+\textbf{Kolmogorov-Smirnov (Unimuestral)} & Bondad de ajuste de una muestra a distribución continua teórica. & Una muestra aleatoria. & Cuantitativos continuos. & Distancia máxima vertical absoluta $D$. & Distribución tabulada de K-S. \\
+\end{longtable}
+\end{landscape}
+
+\newpage
+% -------------------------------------------------------------
+% SECCIÓN 6: EJERCICIOS RESUELTOS DETALLADOS
+% -------------------------------------------------------------
+\section{Sección Especial: Ejercicios Resueltos Detallados}
+
+En esta sección se desarrollan paso a paso los ejercicios oficiales extraídos de los documentos académicos de la cátedra de la Universidad de Mendoza. Cada resolución sigue rigurosamente el esquema requerido para el examen, sin saltear ningún cálculo aritmético o algebraico.
+
+% --- EJERCICIO 1: SIGNO UNIMUESTRAL ---
+\subsection{Ejercicio 1: Prueba del Signo Unimuestral (Octanaje de Nafta)} \label{ej:signo_uni}
+
+\begin{tcolorbox}[colback=white,colframe=blue!60!black,title=Enunciado]
+    Los siguientes datos integran una muestra aleatoria de 15 mediciones de octanaje de cierto tipo de nafta:
+    \begin{center}
+    \small
+    \begin{tabular}{rrrrr}
+    99.0 & 102.3 & 99.8 & 100.5 & 99.7 \\
+    96.2 & 99.1 & 102.5 & 103.3 & 97.4 \\
+    100.4 & 98.9 & 98.3 & 98.0 & 101.6
+    \end{tabular}
+    \end{center}
+    Probar la hipótesis nula de que la mediana es $\tilde{\mu} = 98.0$ contra la hipótesis alternativa de que $\tilde{\mu} > 98.0$, con un nivel de significación de $\alpha = 0.01$.
+\end{tcolorbox}
+
+\subsubsection*{Resolución Desarrollada:}
+
+\begin{enumerate}
+    \item \textbf{Datos del problema:}
+    \begin{itemize}
+        \item Muestra original ($N = 15$ observaciones).
+        \item Valor de referencia hipotético: $\mu_0 = 98.0$.
+        \item Nivel de significación establecido: $\alpha = 0.01$.
+    \end{itemize}
+
+    \item \textbf{Objetivo de la prueba:}
+    Evaluar si la mediana del octanaje de la población de nafta supera el valor de 98.0 octanos.
+
+    \item \textbf{Método elegido y justificación:}
+    Se elige la \textbf{Prueba del Signo Unimuestral}. Se justifica debido a que los datos provienen de una variable continua y se requiere evaluar una hipótesis de localización central (mediana) sin hacer supuestos fuertes sobre la normalidad de la población.
+
+    \item \textbf{Supuestos y condiciones:}
+    Se asume que la muestra se extrajo de manera aleatoria e independiente y que la variable es continua, de modo que bajo $H_0$ la probabilidad de observar un valor por encima de la mediana hipotética es $0.5$. La prueba del signo no requiere simetría.
+
+    \item \textbf{Planteamiento de Hipótesis:}
+    \[ H_0: \tilde{\mu} = 98.0 \quad (p = 0.5) \]
+    \[ H_1: \tilde{\mu} > 98.0 \quad (p > 0.5) \quad \text{(Prueba unilateral de cola derecha)} \]
+
+    \item \textbf{Comparación de datos y conteo de signos (+ / -):}
+    Comparamos cada observación con $\mu_0 = 98.0$:
+    \begin{align*}
+        99.0 &> 98.0 \rightarrow (+) & 102.3 &> 98.0 \rightarrow (+) & 99.8 &> 98.0 \rightarrow (+) \\
+        100.5 &> 98.0 \rightarrow (+) & 99.7 &> 98.0 \rightarrow (+) & 96.2 &< 98.0 \rightarrow (-) \\
+        99.1 &> 98.0 \rightarrow (+) & 102.5 &> 98.0 \rightarrow (+) & 103.3 &> 98.0 \rightarrow (+) \\
+        97.4 &< 98.0 \rightarrow (-) & 100.4 &> 98.0 \rightarrow (+) & 98.9 &> 98.0 \rightarrow (+) \\
+        98.3 &> 98.0 \rightarrow (+) & 98.0 &= 98.0 \rightarrow (\text{descartado}) & 101.6 &> 98.0 \rightarrow (+)
+    \end{align*}
+    Cadena de signos resultante:
+    \[ + \quad + \quad + \quad + \quad + \quad - \quad + \quad + \quad + \quad - \quad + \quad + \quad + \quad + \]
+    \begin{itemize}
+        \item Tamaño de muestra efectivo (excluyendo el valor 98.0): $n = 15 - 1 = 14$.
+        \item Cantidad de signos positivos: $x = 12$.
+    \end{itemize}
+
+    \item \textbf{Fórmula general y sustitución numérica:}
+    Bajo $H_0$, la distribución es Binomial con $n=14$ y $p=0.5$. Dado que es una prueba de cola derecha, el $p$-valor se calcula como la probabilidad acumulada de obtener 12 o más signos positivos:
+    \[ p\text{-valor} = P(X \ge 12) = \sum_{k=12}^{14} \binom{14}{k} \left(\frac{1}{2}\right)^{14} \]
+    Sustitución numérica:
+    \[ P(X \ge 12) = \left[ \binom{14}{12} + \binom{14}{13} + \binom{14}{14} \right] \cdot \left(\frac{1}{2}\right)^{14} \]
+
+    \item \textbf{Operaciones intermedias detalladas:}
+    Calculamos los coeficientes binomiales de forma analítica:
+    \[ \binom{14}{12} = \frac{14!}{12!(14-12)!} = \frac{14 \times 13 \times 12!}{12! \times 2!} = \frac{182}{2} = 91 \]
+    \[ \binom{14}{13} = \frac{14!}{13!(14-13)!} = \frac{14 \times 13!}{13! \times 1!} = 14 \]
+    \[ \binom{14}{14} = 1 \]
+    Sumamos las combinaciones posibles:
+    \[ 91 + 14 + 1 = 106 \]
+    Calculamos la potencia de un medio:
+    \[ \left(\frac{1}{2}\right)^{14} = \frac{1}{16384} \approx 0.000061035 \]
+    Calculamos la probabilidad exacta del $p$-valor:
+    \[ p\text{-valor} = 106 \times \frac{1}{16384} = \frac{106}{16384} \approx 0.0064697 \]
+
+    \item \textbf{Resultado final y p-valor:}
+    \[ p\text{-valor} \approx 0.00647 \quad (0.647\%) \]
+
+    \item \textbf{Decisión estadística:}
+    Comparando el $p$-valor obtenido frente al nivel de significación prefijado ($\alpha = 0.01$):
+    \[ p\text{-valor} = 0.00647 < \alpha = 0.01 \]
+    Por lo tanto, \textbf{se rechaza la hipótesis nula $H_0$}.
+
+    \item \textbf{Interpretación contextual:}
+    Con un nivel de significación de $0.01$, existe suficiente evidencia estadística para sostener que la mediana del octanaje de la nafta excede el valor de $98.0$ octanos.
+
+\end{enumerate}
+
+\newpage
+% --- EJERCICIO 2: SIGNO APAREADA ---
+\subsection{Ejercicio 2: Prueba del Signo para Muestras Apareadas (Eficacia de Programa de Seguridad)} \label{ej:signo_ap}
+
+\begin{tcolorbox}[colback=white,colframe=blue!60!black,title=Enunciado]
+    En un programa de seguridad industrial, se registraron el número de accidentes antes y después del programa para 10 plantas de producción. Con la prueba del signo, verificar si el programa es eficaz para reducir los accidentes, con un nivel de significación de $\alpha = 0.05$. Los datos apareados son:
+    \begin{center}
+    \begin{tabular}{l cccccccccc}
+        \toprule
+        \textbf{Planta $i$} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+        \midrule
+        \textbf{Antes ($X_1$)} & 45 & 73 & 46 & 124 & 33 & 57 & 83 & 34 & 26 & 17 \\
+        \textbf{Después ($X_2$)} & 36 & 60 & 44 & 119 & 35 & 51 & 77 & 29 & 24 & 11 \\
+        \bottomrule
+    \end{tabular}
+    \end{center}
+\end{tcolorbox}
+
+\subsubsection*{Resolución Desarrollada:}
+
+\begin{enumerate}
+    \item \textbf{Datos del problema:}
+    \begin{itemize}
+        \item 10 pares de mediciones ($N = 10$).
+        \item Nivel de significación establecido: $\alpha = 0.05$.
+    \end{itemize}
+
+    \item \textbf{Objetivo de la prueba:}
+    Evaluar si el programa de seguridad es eficaz, es decir, si el número de accidentes posterior al programa es significativamente menor que el previo ($X_1 - X_2 > 0$).
+
+    \item \textbf{Método elegido y justificación:}
+    Se elige la \textbf{Prueba del Signo para muestras apareadas}. Es el método adecuado dado que las mediciones corresponden al mismo conjunto de unidades experimentales en dos tiempos distintos (diseño antes-después) y no podemos asumir normalidad en las diferencias.
+
+    \item \textbf{Supuestos y condiciones:}
+    Los pares se seleccionan de forma aleatoria y son independientes entre sí. Las diferencias deben permitir clasificar inequívocamente sus signos; no se requiere simetría para la prueba del signo.
+
+    \item \textbf{Planteamiento de Hipótesis:}
+    Si llamamos $p = P(X_1 - X_2 > 0)$, planteamos:
+    \[ H_0: \operatorname{Med}(X_1-X_2)=0 \quad (p = 0.5) \]
+    \[ H_1: \operatorname{Med}(X_1-X_2)>0 \quad (p > 0.5) \quad \text{(prueba de cola derecha)} \]
+
+    \item \textbf{Cálculo de las diferencias y asignación de signos:}
+    Calculamos la diferencia para cada planta $i$ y asignamos el signo correspondiente:
+    \begin{align*}
+        D_1 &= 45 - 36 = +9 \rightarrow (+) & D_2 &= 73 - 60 = +13 \rightarrow (+) & D_3 &= 46 - 44 = +2 \rightarrow (+) \\
+        D_4 &= 124 - 119 = +5 \rightarrow (+) & D_5 &= 33 - 35 = -2 \rightarrow (-) & D_6 &= 57 - 51 = +6 \rightarrow (+) \\
+        D_7 &= 83 - 77 = +6 \rightarrow (+) & D_8 &= 34 - 29 = +5 \rightarrow (+) & D_9 &= 26 - 24 = +2 \rightarrow (+) \\
+        D_{10} &= 17 - 11 = +6 \rightarrow (+)
+    \end{align*}
+    Cadena de signos resultante:
+    \[ + \quad + \quad + \quad + \quad - \quad + \quad + \quad + \quad + \quad + \]
+    \begin{itemize}
+        \item Tamaño de muestra efectivo (no hay diferencias nulas): $n = 10$.
+        \item Cantidad de signos positivos: $x = 9$.
+    \end{itemize}
+
+    \item \textbf{Fórmula general y sustitución numérica:}
+    El $p$-valor de la prueba unilateral de cola derecha bajo $H_0$ se calcula como la probabilidad binomial de obtener 9 o más éxitos en 10 ensayos con $p=0.5$:
+    \[ p\text{-valor} = P(X \ge 9) = \sum_{k=9}^{10} \binom{10}{k} \left(\frac{1}{2}\right)^{10} = \left[ \binom{10}{9} + \binom{10}{10} \right] \cdot \left(\frac{1}{2}\right)^{10} \]
+
+    \item \textbf{Operaciones intermedias detalladas:}
+    Calculamos los coeficientes binomiales analíticamente:
+    \[ \binom{10}{9} = 10 \quad ; \quad \binom{10}{10} = 1 \]
+    Sumamos las combinaciones:
+    \[ 10 + 1 = 11 \]
+    Calculamos un medio elevado a la potencia diez:
+    \[ \left(\frac{1}{2}\right)^{10} = \frac{1}{1024} \approx 0.00097656 \]
+    Multiplicamos para hallar el $p$-valor exacto:
+    \[ p\text{-valor} = 11 \times \frac{1}{1024} = \frac{11}{1024} \approx 0.010742 \]
+
+    \item \textbf{Resultado final y p-valor:}
+    \[ p\text{-valor} \approx 0.0107 \quad (1.07\%) \]
+
+    \begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[scale=0.85, >=stealth]
+        % Axes
+        \draw[->] (-0.5,0) -- (11.2,0);
+        \node[below=8pt] at (5.5,0) {\small Número de signos positivos ($x$)};
+        \draw[->] (0,-0.2) -- (0,5.5) node[above] {\small Probabilidad $P(X = x)$};
+        
+        % Y-axis labels
+        \foreach \y/\label in {1/0.05, 2/0.10, 3/0.15, 4/0.20, 5/0.25} {
+            \draw (0.1, \y) -- (-0.1, \y) node[left] {\scriptsize \label};
+            \draw[dashed, gray!20] (0,\y) -- (11, \y);
+        }
+        
+        % X-axis labels
+        \foreach \x in {0,1,2,3,4,5,6,7,8,9,10} {
+            \draw (\x, 0.1) -- (\x, -0.1) node[below] {\scriptsize \x};
+        }
+        
+        % Data bars scaled by factor 20 (max prob 0.246 * 20 = 4.92)
+        \draw[fill=gray!30] (0-0.15, 0) rectangle (0+0.15, 0.02);
+        \draw[fill=gray!30] (1-0.15, 0) rectangle (1+0.15, 0.20);
+        \draw[fill=gray!30] (2-0.15, 0) rectangle (2+0.15, 0.88);
+        \draw[fill=gray!30] (3-0.15, 0) rectangle (3+0.15, 2.34);
+        \draw[fill=gray!30] (4-0.15, 0) rectangle (4+0.15, 4.10);
+        \draw[fill=gray!30] (5-0.15, 0) rectangle (5+0.15, 4.92);
+        \draw[fill=gray!30] (6-0.15, 0) rectangle (6+0.15, 4.10);
+        \draw[fill=gray!30] (7-0.15, 0) rectangle (7+0.15, 2.34);
+        \draw[fill=gray!30] (8-0.15, 0) rectangle (8+0.15, 0.88);
+        
+        % Highlight rejection region bars (9 and 10) in red
+        \draw[fill=red!60, red!80!black] (9-0.15, 0) rectangle (9+0.15, 0.20);
+        \draw[fill=red!60, red!80!black] (10-0.15, 0) rectangle (10+0.15, 0.02);
+        
+        % Critical point at x = 8.5 (for alpha = 0.05, critical region is x >= 9)
+        \draw[dashed, red!80!black, thick] (8.5, 0) -- (8.5, 5.2) node[above, xshift=15pt] {\scriptsize Región Crítica ($\alpha=0.05$)};
+        \fill[red!10, opacity=0.3] (8.5, 0) rectangle (11, 5.2);
+        
+        % Annotations
+        \draw[<-, >=stealth, red!80!black, thick] (9, 0.3) to[out=45, in=180] (9.8, 1.8) node[right, text width=2.5cm] {\scriptsize \textbf{Resultado:} $x=9$\\$p\text{-valor}=0.0107$\\Región de rechazo};
+        
+    \end{tikzpicture}
+    \caption{Distribución Binomial bajo $H_0$ ($n=10, p=0.5$) para la Prueba de los Signos en Muestras Apareadas.}
+    \label{fig:binomial_signo}
+    \end{figure}
+
+    \begin{tcolorbox}[colback=red!2!white,colframe=red!30!black,title=Análisis Gráfico y Exposición Oral de la Distribución del Signo]
+        \small
+        \textbf{Qué representa el gráfico:} La distribución de probabilidad del número de signos positivos bajo el supuesto de que el programa de seguridad no es eficaz ($H_0$ es verdadera, con $p=0.5$).
+        \begin{itemize}
+            \item \textbf{Ejes:} El eje horizontal muestra la cantidad de signos positivos posibles (desde $0$ hasta $10$). El eje vertical representa la probabilidad binomial de cada resultado.
+            \item \textbf{Regiones y áreas:} La línea punteada roja en $8.5$ define la frontera de la región crítica para $\alpha=0.05$. El área a la derecha de esta línea (representada por los bastones de $x=9$ y $x=10$) acumula una probabilidad de $0.0107 + 0.00097 = 0.011$ ($1.1\%$), que es menor al $5\%$ de significación admisible.
+            \item \textbf{Guion de Exposición Oral:} \textit{``Colegas del jurado, en este gráfico de bastones visualizamos la distribución binomial teórica bajo la hipótesis nula de equiprobabilidad. Como el nivel de significación es del $5\%$, establecemos una frontera crítica que acumula esa probabilidad en el extremo derecho de la distribución. Nuestro resultado observado, que consiste en obtener $9$ signos positivos, tiene una probabilidad conjunta (junto con el resultado aún más extremo de $10$) de apenas $1.1\%$. Gráficamente se aprecia con total claridad cómo la barra roja de $x=9$ cae profundamente dentro de la zona de rechazo sombreada, lo que nos lleva a rechazar con seguridad la hipótesis nula y concluir que el programa de seguridad industrial redujo efectivamente la accidentabilidad de forma sistemática y no por azar.''}
+        \end{itemize}
+    \end{tcolorbox}
+
+    \item \textbf{Decisión estadística:}
+    Al contrastar el $p$-valor obtenido con el nivel de significación establecido ($\alpha = 0.05$):
+    \[ p\text{-valor} = 0.0107 < \alpha = 0.05 \]
+    Por ende, \textbf{se rechaza la hipótesis nula $H_0$}.
+
+    \item \textbf{Interpretación contextual:}
+    Con un nivel de significación de $0.05$, existe evidencia estadística de que, para más de la mitad de las plantas, el número de accidentes disminuyó tras aplicar el programa. La prueba del signo no cuantifica por sí sola el tamaño medio de esa reducción.
+
+\end{enumerate}
+
+\newpage
+% --- EJERCICIO 3: WILCOXON U ---
+\subsection{Ejercicio 3: Prueba U de Wilcoxon / Mann-Whitney (Análisis de Arenas)} \label{ej:wilcoxon_u}
+
+\begin{tcolorbox}[colback=white,colframe=blue!60!black,title=Enunciado]
+    En un estudio de rocas sedimentarias, se obtuvieron los siguientes diámetros de grano (en milímetros) de dos tipos de arena. Probar la hipótesis nula de que ambas muestras provienen de poblaciones idénticas contra la hipótesis alternativa de que tienen medias de diámetro distintas, con un nivel de significación de $\alpha = 0.01$:
+    \begin{center}\small
+    \begin{tabular}{lrrrrr}
+    \textbf{Arena I:} & 0.63 & 0.17 & 0.35 & 0.49 & 0.18 \\
+                      & 0.43 & 0.12 & 0.20 & 0.47 & 1.36 \\
+                      & 0.51 & 0.84 & 0.32 & 0.40 & 0.45 \\[2pt]
+    \textbf{Arena II:}& 1.13 & 0.54 & 0.96 & 0.26 & 0.39 \\
+                      & 0.88 & 0.92 & 0.53 & 1.01 & 0.48 \\
+                      & 0.89 & 1.07 & 1.11 & 0.58 &
+    \end{tabular}
+    \end{center}
+    Los tamaños de las muestras son $n_1 = 15$ y $n_2 = 14$ respectivamente.
+\end{tcolorbox}
+
+\subsubsection*{Resolución Desarrollada:}
+
+\begin{enumerate}
+    \item \textbf{Datos del problema:}
+    \begin{itemize}
+        \item Muestra 1 (Arena I): $n_1 = 15$ observaciones.
+        \item Muestra 2 (Arena II): $n_2 = 14$ observaciones.
+        \item Nivel de significación establecido: $\alpha = 0.01$.
+    \end{itemize}
+
+    \item \textbf{Objetivo de la prueba:}
+    Determinar si la diferencia de tamaño promedio de grano entre los dos tipos de arena es estadísticamente significativa.
+
+    \item \textbf{Método elegido y justificación:}
+    Se elige la \textbf{Prueba U de Wilcoxon / Mann-Whitney}. Se justifica debido a que se comparan dos grupos independientes de variables cuantitativas continuas, sin requerir el cumplimiento del supuesto paramétrico de normalidad para la prueba $t$ de dos muestras.
+
+    \item \textbf{Supuestos y condiciones:}
+    Se asume que las dos muestras son aleatorias e independientes, y que provienen de distribuciones continuas con formas similares. Al ser $n_1 = 15 > 8$ y $n_2 = 14 > 8$, es válido emplear la aproximación mediante la distribución normal estándar.
+
+    \item \textbf{Planteamiento de Hipótesis:}
+    \[ H_0: \text{Las poblaciones son idénticas } (\mu_1 = \mu_2) \quad \]
+    \[ H_1: \text{Las poblaciones tienen medias distintas } (\mu_1 \neq \mu_2) \quad (\text{Prueba bilateral}) \quad \]
+
+    \item \textbf{Ordenamiento conjunto y asignación de rangos:}
+    Se unifican los $n_1 + n_2 = 15 + 14 = 29$ valores y se ordenan de forma creciente, indicando la muestra de origen (I o II):
+    \begin{center}
+    \scriptsize
+    \begin{tabular}{r cccccccccccccc}
+        \toprule
+        \textbf{Valor} & 0.12 & 0.17 & 0.18 & 0.20 & 0.26 & 0.32 & 0.35 & 0.39 & 0.40 & 0.43 & 0.45 & 0.47 & 0.48 & 0.49 \\
+        \textbf{Grupo} & I & I & I & I & II & I & I & II & I & I & I & I & II & I \\
+        \textbf{Rango} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 \\
+        \midrule
+        \textbf{Valor} & 0.51 & 0.53 & 0.54 & 0.58 & 0.63 & 0.84 & 0.88 & 0.89 & 0.92 & 0.96 & 1.01 & 1.07 & 1.11 & 1.13 \\
+        \textbf{Grupo} & I & II & II & II & I & I & II & II & II & II & II & II & II & II \\
+        \textbf{Rango} & 15 & 16 & 17 & 18 & 19 & 20 & 21 & 22 & 23 & 24 & 25 & 26 & 27 & 28 \\
+        \midrule
+        \textbf{Valor} & 1.36 \\
+        \textbf{Grupo} & I \\
+        \textbf{Rango} & 29 \\
+        \bottomrule
+    \end{tabular}
+    \end{center}
+
+    A partir de la clasificación conjunta, se obtienen los rangos para cada muestra:
+    \begin{itemize}
+        \item Rangos Arena I: $1, 2, 3, 4, 6, 7, 9, 10, 11, 12, 14, 15, 19, 20, 29$
+        \item Rangos Arena II: $5, 8, 13, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28$
+    \end{itemize}
+
+    \item \textbf{Cálculo de la suma de rangos ($R_1$ y $R_2$):}
+    \[ R_1 = 1 + 2 + 3 + 4 + 6 + 7 + 9 + 10 + 11 + 12 + 14 + 15 + 19 + 20 + 29 = 162 \quad \]
+    \[ R_2 = 5 + 8 + 13 + 16 + 17 + 18 + 21 + 22 + 23 + 24 + 25 + 26 + 27 + 28 = 273 \quad \]
+    \textit{Control de consistencia:}
+    \[ R_1 + R_2 = 162 + 273 = 435 \quad ; \quad \frac{N(N+1)}{2} = \frac{29 \times 30}{2} = 435 \quad (\text{Es correcto}) \]
+
+    \item \textbf{Fórmula general y cálculo de los estadísticos $U_1$ y $U_2$:}
+    \[ U_1 = n_1 n_2 + \frac{n_1(n_1+1)}{2} - R_1 \quad ; \quad U_2 = n_1 n_2 + \frac{n_2(n_2+1)}{2} - R_2 \quad \]
+    Sustitución numérica:
+    \[ U_1 = 15 \times 14 + \frac{15 \times 16}{2} - 162 = 210 + 120 - 162 = 168 \quad \]
+    \[ U_2 = 15 \times 14 + \frac{14 \times 15}{2} - 273 = 210 + 105 - 273 = 42 \]
+    Elegimos el estadístico de interés correspondiente a la primera muestra: $U_1 = 168$.
+
+    \item \textbf{Cálculo de la media y la desviación estándar de la distribución de $U_1$:}
+    \[ \mu_{U1} = \frac{n_1 n_2}{2} = \frac{15 \times 14}{2} = 105 \quad \]
+    \[ \sigma_{U1} = \sqrt{\frac{n_1 n_2 (n_1 + n_2 + 1)}{12}} = \sqrt{\frac{15 \times 14 \times (15 + 14 + 1)}{12}} \quad \]
+    \[ \sigma_{U1} = \sqrt{\frac{210 \times 30}{12}} = \sqrt{\frac{6300}{12}} = \sqrt{525} \approx 22.913 \quad \]
+
+    \item \textbf{Sustitución en el estadístico normalizado $z$:}
+    \[ z = \frac{U_1 - \mu_{U1}}{\sigma_{U1}} = \frac{168 - 105}{22.913} = \frac{63}{22.913} \approx 2.7495 \quad (\text{redondeado a } 2.75) \quad \]
+
+    \item \textbf{Establecimiento de la región crítica (Valor Crítico):}
+    Para una prueba bilateral con $\alpha = 0.01$ en una distribución normal estándar:
+    \[ z_{\text{crit}} = \pm z_{0.005} = \pm 2.576 \quad \]
+    La regla de decisión establece que se rechaza $H_0$ si $z > 2.576$ o $z < -2.576$.
+
+    \item \textbf{Decisión estadística:}
+    Dado que el estadístico calculado $z = 2.75$ supera el valor crítico superior de $2.576$:
+    \[ z = 2.75 > 2.576 \]
+    Por lo tanto, \textbf{se rechaza la hipótesis nula $H_0$}.
+
+    \item \textbf{Interpretación contextual:}
+    Con un nivel de significación de $0.01$, existe suficiente evidencia estadística para afirmar que los diámetros promedio de los dos tipos de arena difieren significativamente en sus localizaciones centrales.
+
+\end{enumerate}
+
+% --- EJERCICIO 4: KRUSKAL-WALLIS H ---
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=4cm]
+\draw[->] (-3.5,0)--(3.5,0) node[right] {$z$};
+\draw[->] (0,0)--(0,0.43) node[above] {$f(z)$};
+\draw[thick,red!75!black,domain=-3.2:3.2,samples=100] plot (\x,{0.399*exp(-\x*\x/2)});
+\draw[blue,thick] (-2.576,0)--(-2.576,0.08) node[above] {\scriptsize $-2.576$};
+\draw[blue,thick] (2.576,0)--(2.576,0.08) node[above left] {\scriptsize $2.576$};
+\draw[very thick,black] (2.75,0)--(2.75,0.05) node[above right] {\scriptsize $z=2.75$};
+\end{tikzpicture}
+\caption{Región crítica bilateral para la aproximación normal de Mann--Whitney ($\alpha=0.01$).}
+\label{fig:normal_mann_whitney}
+\end{figure}
+\textbf{Interpretación:} Como $z=2.75>2.576$, el estadístico cae en la cola derecha de la región crítica; en una prueba bilateral también se rechazaría para $z<-2.576$.
+\subsection{Ejercicio 4: Prueba H de Kruskal-Wallis (Comparación de Métodos Anticorrosivos)} \label{ej:kruskal_h}
+
+\begin{tcolorbox}[colback=white,colframe=blue!60!black,title=Enunciado]
+    Un experimento diseñado para comparar la eficacia de tres métodos preventivos contra la corrosión produjo las siguientes profundidades máximas de cavidades (en milésimas de pulgada) en piezas de alambre expuestas al tratamiento correspondiente.
+    \begin{align*}
+        \text{\textbf{Método A:}} & \quad 77 \quad 54 \quad 67 \quad 74 \quad 71 \quad 66 \quad (n_1 = 6) \\
+        \text{\textbf{Método B:}} & \quad 60 \quad 41 \dots 59 \quad 65 \quad 62 \quad 64 \quad 52 \quad (n_2 = 7) \\
+        \text{\textbf{Método C:}} & \quad 49 \quad 52 \quad 69 \quad 47 \quad 56 \quad (n_3 = 5)
+    \end{align*}
+    Con un nivel de significación de $\alpha = 0.05$, probar la hipótesis nula de que las tres muestras provienen de poblaciones idénticas.
+\end{tcolorbox}
+
+\subsubsection*{Resolución Desarrollada:}
+
+\begin{enumerate}
+    \item \textbf{Datos del problema:}
+    \begin{itemize}
+        \item Muestra 1 (Método A): $n_1 = 6$.
+        \item Muestra 2 (Método B): $n_2 = 7$.
+        \item Muestra 3 (Método C): $n_3 = 5$.
+        \item Tamaño de la muestra total: $n = 6 + 7 + 5 = 18$.
+        \item Nivel de significación: $\alpha = 0.05$.
+    \end{itemize}
+
+    \item \textbf{Objetivo de la prueba:}
+    Evaluar si existe alguna diferencia estadísticamente significativa en la profundidad de corrosión mediana entre los tres métodos evaluados.
+
+    \item \textbf{Método elegido y justificación:}
+    Se elige la \textbf{Prueba H de Kruskal-Wallis}. Es la herramienta no paramétrica indicada para la comparación de tres o más muestras independientes cuantitativas continuas en ausencia del cumplimiento de los supuestos del ANOVA (normalidad u homocedasticidad).
+
+    \item \textbf{Supuestos y condiciones:}
+    Las muestras se extrajeron de forma aleatoria e independiente. Dado que todos los tamaños muestrales individuales cumplen con ser mayores o iguales a 5 ($n_1 = 6 > 5$, $n_2 = 7 > 5$, $n_3 = 5 \ge 5$), es perfectamente válido aproximar la distribución del estadístico $H$ mediante una distribución Chi-cuadrado con $k-1$ grados de libertad.
+
+    \item \textbf{Planteamiento de Hipótesis:}
+    \[ H_0: \text{Las poblaciones son idénticas } (\mu_1 = \mu_2 = \mu_3) \quad \]
+    \[ H_1: \text{Las poblaciones son distintas } (\text{al menos una difiere en localización}) \quad \]
+
+    \item \textbf{Clasificación conjunta de datos y promediado de empates:}
+    Ordenamos los 18 datos en una serie unificada de menor a mayor, registrando el grupo de origen:
+    \begin{center}
+    \small
+    \begin{tabular}{l ccccccccc}
+        \toprule
+        \textbf{Valor} & 41 & 47 & 49 & 52 & 52 & 54 & 56 & 59 & 60 \\
+        \textbf{Origen} & B & C & C & B & C & A & C & B & B \\
+        \textbf{Rango} & 1 & 2 & 3 & 4.5 & 4.5 & 6 & 7 & 8 & 9 \\
+        \midrule
+        \textbf{Valor} & 62 & 64 & 65 & 66 & 67 & 69 & 71 & 74 & 77 \\
+        \textbf{Origen} & B & B & B & A & A & C & A & A & A \\
+        \textbf{Rango} & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 \\
+        \bottomrule
+    \end{tabular}
+    \end{center}
+    \textit{Tratamiento de empates:} El valor $52$ aparece dos veces, ocupando las posiciones posicionales 4 y 5. Asignamos a cada uno el rango promedio:
+    \[ \text{Rango del } 52 = \frac{4 + 5}{2} = 4.5 \]
+    Este valor aparece para el grupo B en la posición 4 y el grupo C en la 5.
+
+    \item \textbf{Cálculo de la suma de rangos por grupo ($R_i$):}
+    \begin{itemize}
+        \item \textbf{Método A:} $6 + 13 + 14 + 16 + 17 + 18 = 84 \rightarrow R_1 = 84$.
+        \item \textbf{Método B:} $1 + 4.5 + 8 + 9 + 10 + 11 + 12 = 55.5 \rightarrow R_2 = 55.5$.
+        \item \textbf{Método C:} $2 + 3 + 4.5 + 7 + 15 = 31.5 \rightarrow R_3 = 31.5$.
+    \end{itemize}
+    \textit{Control de consistencia:}
+    \[ R_1 + R_2 + R_3 = 84 + 55.5 + 31.5 = 171 \quad ; \quad \frac{n(n+1)}{2} = \frac{18 \times 19}{2} = 171 \quad (\text{Es correcto}) \]
+
+    \item \textbf{Sustitución en la fórmula general del estadístico $H$:}
+    \[ H = \frac{12}{n(n+1)} \sum_{i=1}^{3} \frac{R_i^2}{n_i} - 3(n+1) \]
+    Sustitución numérica:
+    \[ H = \frac{12}{18 \times 19} \left[ \frac{84^2}{6} + \frac{55.5^2}{7} + \frac{31.5^2}{5} \right] - 3(18 + 1) \]
+
+    \item \textbf{Operaciones aritméticas intermedias:}
+    Calculamos los términos cuadráticos de cada fracción:
+    \[ \frac{84^2}{6} = \frac{7056}{6} = 1176 \]
+    \[ \frac{55.5^2}{7} = \frac{3080.25}{7} \approx 440.0357 \]
+    \[ \frac{31.5^2}{5} = \frac{992.25}{5} = 198.45 \]
+    Sumamos las razones obtenidas:
+    \[ 1176 + 440.0357 + 198.45 = 1814.4857 \]
+    Sustituimos el factor constante del término izquierdo:
+    \[ \frac{12}{18 \times 19} = \frac{12}{342} \approx 0.0350877 \]
+    Multiplicamos para hallar el primer término completo:
+    \[ 0.0350877 \times 1814.4857 = \frac{12 \times 1814.4857}{342} = \frac{21773.828}{342} \approx 63.66616 \]
+    Restamos el segundo término de la fórmula, $3(19) = 57$:
+    \[ H = 63.66616 - 57 = 6.66616 \quad (\text{redondeado a } 6.66) \quad \]
+
+    \item \textbf{Determinación de la región crítica (Valor Crítico):}
+    Bajo $H_0$, la distribución de referencia es Chi-cuadrado con $\nu = k-1 = 3-1 = 2$ grados de libertad. Para un nivel de significación de $\alpha = 0.05$, el valor crítico de la tabla es:
+    \[ \chi^2_{\text{crit}} = \chi^2_{0.05, 2} = 5.991 \quad \]
+    Se rechaza $H_0$ si el estadístico calculado $H$ es mayor que $5.991$.
+
+    \item \textbf{Decisión estadística:}
+    Al comparar el estadístico obtenido con el valor de la tabla:
+    \[ H = 6.66 > 5.991 \]
+    Por lo tanto, \textbf{se rechaza la hipótesis nula $H_0$}.
+
+    \begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[scale=0.9, >=stealth]
+        % Axes
+        \draw[->] (-0.5,0) -- (9,0) node[right] {\small $H$};
+        \draw[->] (0,-0.2) -- (0,3.5) node[above] {\small f(H)};
+        
+        % Plot of Chi-Square for df = 2 (exponential decaying f(x) = 3 * exp(-x/2.5))
+        \draw[thick, red!80!black, domain=0:8, samples=100] plot (\x, {3*exp(-\x/2.5)});
+        
+        % Critical point
+        \draw[dashed, blue!80!black, thick] (5.991, 2.5) -- (5.991, 0) node[below] {\scriptsize $\chi^2_{0.05, 2} = 5.991$};
+        
+        % Shading the rejection region
+        \fill[blue!20, opacity=0.5] (5.991, 0) -- plot[domain=5.991:8] (\x, {3*exp(-\x/2.5)}) -- (8, 0) -- cycle;
+        \node[above, blue!80!black] at (7.1, 0.6) {\scriptsize Región de Rechazo};
+        \node[above, blue!80!black] at (7.1, 0.1) {\scriptsize ($\alpha = 0.05$)};
+        
+        \node[above, green!50!black] at (2.5, 1.2) {\small Región de No Rechazo};
+        \node[above, green!50!black] at (2.5, 0.7) {\small ($1-\alpha = 0.95$)};
+        
+        % Statistic position H = 6.66
+        \draw[ultra thick, black, ->] (6.66, 2.2) -- (6.66, 0.2) node[above, yshift=55pt, text width=2.4cm, align=center] {\scriptsize \textbf{Estadístico Calculado}\\$H_{\text{calc}} = 6.66$\\ (Rechazo)};
+        \fill[black] (6.66, 0.2) circle (2pt);
+        
+    \end{tikzpicture}
+    \caption{Distribución Chi-cuadrado con 2 grados de libertad para la Prueba de Kruskal-Wallis.}
+    \label{fig:chi_square_kruskal}
+    \end{figure}
+
+    \begin{tcolorbox}[colback=blue!2!white,colframe=blue!30!black,title=Análisis Gráfico y Exposición Oral de Kruskal-Wallis]
+        \small
+        \textbf{Qué representa el gráfico:} La densidad de probabilidad Chi-cuadrado con $2$ grados de libertad que sirve de referencia bajo la hipótesis nula de igualdad entre las poblaciones.
+        \begin{itemize}
+            \item \textbf{Ejes, curvas y colas:} El eje horizontal representa el estadístico $H$. La curva decrece exponencialmente desde el origen, típica del Chi-cuadrado con $2$ grados de libertad. Al ser una prueba basada en diferencias al cuadrado, las variaciones sistemáticas entre grupos siempre desplazan el estadístico hacia valores grandes a la derecha, por lo que se modela como una prueba unilateral derecha estricta.
+            \item \textbf{área de rechazo:} Con $\alpha=0.05$, la región crítica se sitúa exclusivamente en la cola derecha a partir del valor crítico tabulado de $5.991$, que limita un área del $5\%$.
+            \item \textbf{Guion de Exposición Oral:} \textit{``Estimado tribunal, la distribución Chi-cuadrado con $2$ grados de libertad gobierna el comportamiento del estadístico de Kruskal-Wallis bajo la hipótesis nula de que los tres tratamientos contra la corrosión son igualmente eficaces. Al establecer un nivel de significación del $5\%$, el valor crítico de corte es $5.991$. Como observamos gráficamente, nuestro estadístico calculado $H = 6.66$ cae a la derecha del punto de corte, ubicándose de forma clara en la zona de rechazo sombreada. Esto evidencia que la variabilidad de las medias de los rangos de los tratamientos es significativamente mayor que la esperada bajo puro azar. Por ende, rechazamos la hipótesis nula de que los tres métodos preventivos tienen igual eficacia.''}
+        \end{itemize}
+    \end{tcolorbox}
+
+    \item \textbf{Interpretación contextual:}
+    Con un nivel de significación de $0.05$, existe suficiente evidencia estadística para afirmar que los tres métodos preventivos contra la corrosión no tienen igual eficacia, existiendo diferencias significativas en las profundidades de corrosión alcanzadas en el alambre.
+
+\end{enumerate}
+
+\newpage
+% --- EJERCICIO 5: RACHAS BINARIAS ---
+\subsection{Ejercicio 5: Prueba de Corridas / Rachas para Símbolos Binarios (Piezas Defectuosas)} \label{ej:racha_bin}
+
+\begin{tcolorbox}[colback=white,colframe=blue!60!black,title=Enunciado]
+    El siguiente arreglo se refiere al número de piezas defectuosas ($d$) y no defectuosas ($n$) en el orden cronológico en que fueron producidas por cierta máquina:
+    \begin{center}
+        \ttfamily n n n n n d d d d n n n n n n n n n n d d n n d d d d
+    \end{center}
+    Probar la hipótesis de aleatoriedad del proceso de producción con un nivel de confianza del $99\%$, lo que equivale a un nivel de significación de $\alpha = 0.01$.
+\end{tcolorbox}
+
+\subsubsection*{Resolución Desarrollada:}
+
+\begin{enumerate}
+    \item \textbf{Datos del problema:}
+    \begin{itemize}
+        \item Sucesión cronológica observada de piezas.
+        \item Nivel de significación: $\alpha = 0.01$ (confianza del $99\%$).
+    \end{itemize}
+
+    \item \textbf{Objetivo de la prueba:}
+    Determinar si la producción de piezas defectuosas ocurre de forma aleatoria a lo largo del tiempo o si existe algún patrón no aleatorio (por ejemplo, aglomeración de defectos por fallos sistemáticos temporales).
+
+    \item \textbf{Método elegido y justificación:}
+    Se elige la \textbf{Prueba de Corridas o Rachas para variables cualitativas dicotómicas}. Es el método adecuado puesto que permite evaluar la independencia cronológica de los datos contando la cantidad de secuencias consecutivas de símbolos idénticos.
+
+    \item \textbf{Supuestos y condiciones:}
+    Los datos están ordenados de manera estrictamente cronológica tal como salieron de la máquina. Dado que el número de piezas de cada tipo cumple con ser mayor o igual a 10 (como se calculará, $n_1 = 10 \ge 10$ y $n_2 = 17 \ge 10$), es perfectamente correcto emplear la aproximación mediante la distribución normal estándar para modelar el comportamiento del número de corridas.
+
+    \item \textbf{Planteamiento de Hipótesis:}
+    \[ H_0: \text{El orden de aparición de piezas defectuosas y no defectuosas es aleatorio} \quad \]
+    \[ H_1: \text{El orden de aparición no es aleatorio (Prueba bilateral)} \quad \]
+    \textit{Nota teórica:} Aunque se sospeche aglomeración (pocas corridas, cola izquierda), se realiza una prueba bilateral para detectar cualquier tipo de desviación de la aleatoriedad, tal como indica el temario de la cátedra.
+
+    \item \textbf{Identificación de corridas y conteo de parámetros ($n_1, n_2, u$):}
+    Agrupamos los símbolos idénticos consecutivos en corridas (rachas), marcando sus límites:
+    \[ \underbrace{\text{n n n n n}}_{1^{a}\text{ corrida}} \quad \underbrace{\text{d d d d}}_{2^{a}\text{ corrida}} \quad \underbrace{\text{n n n n n n n n n n}}_{3^{a}\text{ corrida}} \quad \underbrace{\text{d d}}_{4^{a}\text{ corrida}} \quad \underbrace{\text{n n}}_{5^{a}\text{ corrida}} \quad \underbrace{\text{d d d d}}_{6^{a}\text{ corrida}} \]
+    Realizamos el conteo directo de los parámetros:
+    \begin{itemize}
+        \item Cantidad de piezas defectuosas ($d$): $n_1 = 10$.
+        \item Cantidad de piezas no defectuosas ($n$): $n_2 = 17$.
+        \item Número de corridas observadas: $u = 6$.
+    \end{itemize}
+
+    \item \textbf{Fórmula general y sustitución de la media y desviación estándar de $u$:}
+    Bajo $H_0$, calculamos los parámetros de la aproximación normal:
+    \[ \mu_u = \frac{2 n_1 n_2}{n_1 + n_2} + 1 \quad ; \quad \sigma_u = \sqrt{\frac{2 n_1 n_2 (2 n_1 n_2 - n_1 - n_2)}{(n_1 + n_2)^2 (n_1 + n_2 - 1)}} \]
+    Sustitución numérica:
+    \[ \mu_u = \frac{2 \times 10 \times 17}{10 + 17} + 1 = \frac{340}{27} + 1 \quad \]
+    \[ \sigma_u = \sqrt{\frac{2 \times 10 \times 17 \times (2 \times 10 \times 17 - 10 - 17)}{(10 + 17)^2 \times (10 + 17 - 1)}} \quad \]
+
+    \item \textbf{Operaciones aritméticas intermedias detalladas:}
+    Calculamos la media teórica $\mu_u$:
+    \[ \mu_u = 12.59259 + 1 = 13.59259 \approx 13.593 \quad \]
+    Calculamos la desviación estándar teórica $\sigma_u$:
+    \[ 2 n_1 n_2 = 340 \]
+    \[ 2 n_1 n_2 - n_1 - n_2 = 340 - 10 - 17 = 313 \]
+    \[ \text{Numerador} = 340 \times 313 = 106420 \]
+    \[ (n_1 + n_2)^2 = 27^2 = 729 \]
+    \[ n_1 + n_2 - 1 = 26 \]
+    \[ \text{Denominador} = 729 \times 26 = 18954 \]
+    \[ \sigma_u = \sqrt{\frac{106420}{18954}} = \sqrt{5.614646} \approx 2.3695 \approx 2.37 \quad \]
+
+    \item \textbf{Sustitución en el estadístico normalizado $z$:}
+    \[ z = \frac{u - \mu_u}{\sigma_u} = \frac{6 - 13.59259}{2.3695} = \frac{-7.59259}{2.3695} \approx -3.204 \quad \]
+
+    \item \textbf{Establecimiento de la región crítica (Valor Crítico):}
+    Para una prueba bilateral de aleatoriedad con $\alpha = 0.01$:
+    \[ z_{\text{crit}} = \pm z_{0.005} = \pm 2.576 \quad \]
+    Se rechaza la hipótesis nula si $z > 2.576$ o $z < -2.576$.
+    \textit{Nota de consistencia:} Si se planteara como una prueba unilateral izquierda de aglomeración pura, el valor crítico sería $-2.326$, y la decisión sería idéntica.
+
+    \item \textbf{Decisión estadística:}
+    Al contrastar el estadístico calculado frente al valor crítico de la tabla:
+    \[ z = -3.204 < -2.576 \]
+    Se encuentra plenamente dentro de la zona de rechazo. Por tanto, \textbf{se rechaza la hipótesis nula $H_0$}.
+
+    \begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[scale=0.9, >=stealth]
+        % Axes
+        \draw[->] (-4,0) -- (4,0) node[right] {\small $z$};
+        \draw[->] (0,-0.2) -- (0,3.5) node[above] {\small f(z)};
+        
+        % Plot of normal curve
+        \draw[thick, blue!80!black, domain=-3.8:3.8, samples=150] plot (\x, {3*exp(-\x*\x/2)});
+        
+        % Critical points
+        \draw[dashed, red!80!black, thick] (-2.576, 3) -- (-2.576, 0) node[below] {\scriptsize $z_{\text{crit}} = -2.576$};
+        \draw[dashed, red!80!black, thick] (2.576, 3) -- (2.576, 0) node[below] {\scriptsize $z_{\text{crit}} = +2.576$};
+        
+        % Shading rejection regions
+        \fill[red!30, opacity=0.5] (-3.8, 0) -- plot[domain=-3.8:-2.576] (\x, {3*exp(-\x*\x/2)}) -- (-2.576, 0) -- cycle;
+        \fill[red!30, opacity=0.5] (2.576, 0) -- plot[domain=2.576:3.8] (\x, {3*exp(-\x*\x/2)}) -- (3.8, 0) -- cycle;
+        
+        % Region labels
+        \node[above, red!80!black] at (-3.2, 0.4) {\scriptsize Rechazo $H_0$};
+        \node[above, red!80!black] at (3.2, 0.4) {\scriptsize Rechazo $H_0$};
+        \node[above, green!50!black] at (0, 1.2) {\small Región de No Rechazo};
+        \node[above, green!50!black] at (0, 0.7) {\small ($1-\alpha = 0.99$)};
+        
+        % Statistic position z = -3.204
+        \draw[ultra thick, black, ->] (-3.204, 2.5) -- (-3.204, 0.2) node[above, yshift=65pt, text width=2.4cm, align=center] {\scriptsize \textbf{Estadístico Calculado}\\$z_{\text{calc}} = -3.204$\\ (Rechazo pleno)};
+        \fill[black] (-3.204, 0.2) circle (2pt);
+        
+    \end{tikzpicture}
+    \caption{Región Crítica de Dos Colas en la Distribución Normal Estándar ($\alpha = 0.01$) para la Prueba de Corridas (Piezas Defectuosas).}
+    \label{fig:normal_corridas}
+    \end{figure}
+
+    \begin{tcolorbox}[colback=red!2!white,colframe=red!30!black,title=Análisis Gráfico y Exposición Oral de Corridas]
+        \small
+        \textbf{Qué representa el gráfico:} La distribución normal teórica de la aproximación muestral para el número de corridas $u$ bajo la hipótesis nula de aleatoriedad.
+        \begin{itemize}
+            \item \textbf{Ejes, colas y áreas:} El eje horizontal es el estadístico normalizado $z$. Al ser una prueba bilateral para detectar tanto escasez (aglomeración) como exceso (alternancia) de corridas, la zona de rechazo del $1\%$ se reparte en un $0.005$ ($0.5\%$) en cada una de las colas extremas, delimitadas por los valores críticos de $\pm 2.576$.
+            \item \textbf{Ubicación del estadístico:} El valor calculado $z_{\text{calc}} = -3.204$ se sitúa en el extremo de la cola izquierda, superando ampliamente el límite de $-2.576$.
+            \item \textbf{Guion de Exposición Oral:} \textit{``Señores profesores, al modelar la prueba de aleatoriedad mediante la aproximación normal para muestras grandes, establecemos una región crítica de dos colas con valores críticos de $\pm 2.576$, debido al nivel de confianza establecido del $99\%$. Al calcular nuestro estadístico estandarizado, obtenemos un valor de $z = -3.204$. Como se aprecia en la gráfica, este valor se ubica muy por detrás de la frontera izquierda de no rechazo, entrando profundamente en la zona crítica. Esto nos indica gráficamente que la cantidad de corridas observada ($u=6$) es significativamente menor que la esperada por azar ($\mu_u = 13.59$). Concluyo entonces que existe evidencia suficiente para rechazar la hipótesis de aleatoriedad, indicando una fuerte agrupación o aglomeración sistemática de las piezas defectuosas en el proceso productivo.''}
+        \end{itemize}
+    \end{tcolorbox}
+
+    \item \textbf{Interpretación contextual:}
+    Con un nivel de significación de $0.01$, existe suficiente evidencia estadística para afirmar que la secuencia de producción de piezas defectuosas y no defectuosas no es aleatoria. El número observado de corridas ($u=6$) es significativamente menor que el esperado por azar ($\mu_u = 13.59$), lo que revela una fuerte tendencia del proceso a aglomerar las piezas defectuosas (p. ej., por sobrecalentamiento temporal de la máquina o fallas periódicas del herramental).
+
+\end{enumerate}
+
+\newpage
+% --- EJERCICIO 6: RACHAS MEDIANA ---
+\subsection{Ejercicio 6: Prueba de Corridas para Datos Numéricos (Ajustes de Torno automático)} \label{ej:racha_num}
+
+\begin{tcolorbox}[colback=white,colframe=blue!60!black,title=Enunciado]
+    Un ingeniero sospecha que se realizan demasiadas modificaciones al ajustar un torno automático. Registra los diámetros medios (en pulgadas) de 40 ejes de acero maquinados cronológicamente de forma sucesiva:
+    \begin{align*}
+        .261 \quad .258 \quad .249 \quad .251 \quad .247 \quad .256 \quad .250 \quad .247 \quad .255 \quad .243 \\
+        .252 \quad .250 \quad .253 \quad .247 \quad .251 \quad .243 \quad .258 \quad .251 \quad .245 \quad .250 \\
+        .248 \quad .252 \quad .254 \quad .250 \quad .247 \quad .253 \quad .251 \quad .246 \quad .249 \quad .252 \\
+        .247 \quad .250 \quad .253 \quad .247 \quad .249 \quad .253 \quad .246 \quad .251 \quad .249 \quad .253
+    \end{align*}
+    Utilizar el nivel de significación de $\alpha = 0.01$ para evaluar si el proceso presenta una aleatoriedad estable o si existe una alternancia excesiva que evidencie modificaciones exageradas en el torno.
+\end{tcolorbox}
+
+\subsubsection*{Resolución Desarrollada:}
+
+\begin{enumerate}
+    \item \textbf{Datos del problema:}
+    \begin{itemize}
+        \item Muestra original de $N = 40$ observaciones cuantitativas secuenciales.
+        \item Nivel de significación: $\alpha = 0.01$.
+    \end{itemize}
+
+    \item \textbf{Objetivo de la prueba:}
+    Determinar si la secuencia temporal de mediciones de diámetros es consistente con un proceso puramente aleatorio o si exhibe un patrón sistemático de sobreajuste (excesiva alternancia entre valores altos y bajos).
+
+    \item \textbf{Método elegido y justificación:}
+    Se elige la \textbf{Prueba de Corridas respecto de la Mediana para datos numéricos}. Se justifica puesto que permite analizar datos cuantitativos de forma cronológica, transformándolos a un código dicotómico usando la mediana muestral como valor de corte, lo cual permite contar las rachas de oscilación.
+
+    \item \textbf{Supuestos y condiciones:}
+    Los datos se recolectaron cronológicamente. Tras eliminar los valores iguales a la mediana, las muestras efectivas cumplen con el requisito para la aproximación mediante el teorema central del límite (como se verá, $n_1 = 19 > 10$ y $n_2 = 16 > 10$).
+
+    \item \textbf{Planteamiento de Hipótesis:}
+    \[ H_0: \text{El proceso de ajuste del torno es aleatorio} \quad \]
+    \[ H_1: \text{El proceso no es aleatorio, existe un patrón sistemático de repetición/alternancia} \quad \]
+
+    \item \textbf{Cálculo de la mediana y transformación a dicotómica:}
+    Se ordenan los 40 datos para hallar la mediana muestral $\tilde{X}$:
+    \[ \tilde{X} = 0.250 \quad \]
+    Asignamos la etiqueta ``$a$'' (por encima de la mediana) y ``$b$'' (por debajo), omitiendo los 5 valores que coinciden exactamente con $0.250$:
+    \begin{center}
+    \small
+    \begin{tabular}{r cccccccccc}
+        \toprule
+        \textbf{Dato} & .261 & .258 & .249 & .251 & .247 & .256 & .250 & .247 & .255 & .243 \\
+        \textbf{Signo} & a & a & b & a & b & a & (om) & b & a & b \\
+        \midrule
+        \textbf{Dato} & .252 & .250 & .253 & .247 & .251 & .243 & .258 & .251 & .245 & .250 \\
+        \textbf{Signo} & a & (om) & a & b & a & b & a & a & b & (om) \\
+        \midrule
+        \textbf{Dato} & .248 & .252 & .254 & .250 & .247 & .253 & .251 & .246 & .249 & .252 \\
+        \textbf{Signo} & b & a & a & (om) & b & a & a & b & b & a \\
+        \midrule
+        \textbf{Dato} & .247 & .250 & .253 & .247 & .249 & .253 & .246 & .251 & .249 & .253 \\
+        \textbf{Signo} & b & (om) & a & b & b & a & b & a & b & a \\
+        \bottomrule
+    \end{tabular}
+    \end{center}
+
+    Esto nos arroja la siguiente secuencia de letras:
+    \[ a\ a\ b\ a\ b\ a\ b\ a\ b\ a\ a\ b\ a\ b\ a\ a\ b\ b\ a\ a\ b\ a\ a\ b\ b\ a\ b\ a\ b\ b\ a\ b\ a\ b\ a \]
+    De aquí extraemos los conteos y corridas:
+    \begin{itemize}
+        \item Valores superiores a la mediana (letra $a$): $n_1 = 19$.
+        \item Valores inferiores a la mediana (letra $b$): $n_2 = 16$.
+        \item Cantidad total de corridas: $u = 27$.
+    \end{itemize}
+    \textit{Control de consistencia:} El tamaño de muestra efectivo es $n_1 + n_2 = 19 + 16 = 35$ (se descartaron 5 observaciones iguales a 0.250).
+
+    \item \textbf{Fórmula general y sustitución numérica:}
+    \[ \mu_u = \frac{2 n_1 n_2}{n_1 + n_2} + 1 \quad ; \quad \sigma_u = \sqrt{\frac{2 n_1 n_2 (2 n_1 n_2 - n_1 - n_2)}{(n_1 + n_2)^2 (n_1 + n_2 - 1)}} \quad \]
+    Sustitución:
+    \[ \mu_u = \frac{2 \times 19 \times 16}{35} + 1 = \frac{608}{35} + 1 \quad \]
+    \[ \sigma_u = \sqrt{\frac{608 \times (608 - 19 - 16)}{35^2 \times (35 - 1)}} \quad \]
+
+    \item \textbf{Operaciones aritméticas detalladas:}
+    Calculamos la media de corridas esperada:
+    \[ \mu_u = 17.3714 + 1 = 18.3714 \approx 18.371 \quad \]
+    Calculamos la desviación estándar esperada:
+    \[ 2 n_1 n_2 = 608 \]
+    \[ 2 n_1 n_2 - n_1 - n_2 = 608 - 35 = 573 \]
+    \[ \text{Numerador} = 608 \times 573 = 348384 \]
+    \[ (n_1 + n_2)^2 = 35^2 = 1225 \]
+    \[ n_1 + n_2 - 1 = 34 \]
+    \[ \text{Denominador} = 1225 \times 34 = 41650 \]
+    \[ \sigma_u = \sqrt{\frac{348384}{41650}} = \sqrt{8.36456} \approx 2.89215 \approx 2.89 \quad \]
+    Calculamos el estadístico $z$:
+    \[ z = \frac{u - \mu_u}{\sigma_u} = \frac{27 - 18.3714}{2.89215} = \frac{8.6286}{2.89215} \approx 2.9834 \quad (\text{redondeado a } 2.98) \quad \]
+
+    \item \textbf{Determinación del Valor Crítico:}
+    Dado que al ingeniero le preocupa específicamente que se realicen \textbf{demasiadas modificaciones} (lo que produce alternancia excesiva y un número de corridas inusualmente alto en la cola derecha):
+    \[ z_{\text{crit}} = z_{0.01} = 2.33 \quad \]
+    La hipótesis nula se rechaza si el estadístico calculado es mayor que el valor crítico superior: $z > 2.33$.
+    \textit{Nota de consistencia:} En caso de una prueba bilateral clásica al $99\%$, el valor crítico de dos colas sería $\pm 2.576$. Como $z = 2.98 > 2.576$, la hipótesis nula se rechaza bajo cualquier enfoque.
+
+    \item \textbf{Decisión estadística:}
+    Al comparar el estadístico calculado frente al valor crítico unilateral:
+    \[ z = 2.98 > 2.33 \]
+    El valor de $z$ cae plenamente en la región de rechazo de la hipótesis nula.
+
+    \item \textbf{Interpretación contextual:}
+    Con un nivel de significación de $0.01$, existe suficiente evidencia estadística para afirmar que la secuencia de diámetros no es aleatoria. Al ser el número observado de corridas ($u=27$) significativamente mayor que el esperado por azar ($\mu_u = 18.37$), se confirma la sospecha del ingeniero de que se están realizando ajustes excesivos en el torno automático, provocando una alternancia exagerada en las dimensiones de las piezas terminadas.
+
+\end{enumerate}
+
+\newpage
+% --- EJERCICIO 7: KOLMOGOROV-SMIRNOV ---
+\subsection{Ejercicio 7: Prueba de Kolmogorov-Smirnov Unimuestral (Distribución de Orificios en Placa)} \label{ej:kolmo_uni}
+
+\begin{tcolorbox}[colback=white,colframe=blue!60!black,title=Enunciado]
+    Se desea comprobar si los orificios en una placa de hojalata electrolítica de 30 pulgadas de ancho están uniformemente distribuidos a lo largo de la misma. Se han tomado las distancias (en pulgadas) de 10 agujeros medidos desde un extremo:
+    \[ 4.8 \quad 14.8 \quad 28.2 \quad 23.1 \quad 4.4 \quad 28.7 \quad 19.5 \quad 2.4 \quad 25.0 \quad 6.2 \]
+    Probar esta hipótesis nula con un nivel de significación de $\alpha = 0.05$.
+\end{tcolorbox}
+
+\subsubsection*{Resolución Desarrollada:}
+
+\begin{enumerate}
+    \item \textbf{Datos del problema:}
+    \begin{itemize}
+        \item Muestra aleatoria de $n = 10$ mediciones continuas de distancias.
+        \item Ancho total de la placa de hojalata: $A = 30$ pulgadas.
+        \item Nivel de significación: $\alpha = 0.05$.
+    \end{itemize}
+
+    \item \textbf{Objetivo de la prueba:}
+    Evaluar si la distribución empírica acumulada observada en la muestra de orificios se ajusta satisfactoriamente a una distribución Uniforme teórica entre 0 y 30 pulgadas.
+
+    \item \textbf{Método elegido y justificación:}
+    Se elige la \textbf{Prueba de Kolmogorov-Smirnov Unimuestral de Bondad de Ajuste}. Se justifica puesto que se evalúa el ajuste de una sola muestra a una distribución teórica continua y el tamaño muestral es pequeño ($n=10$), escenario donde la prueba K-S es sustancialmente más potente y exacta que la prueba de Chi-cuadrado.
+
+    \item \textbf{Supuestos y condiciones:}
+    Los datos provienen de una variable física estrictamente continua (longitud). Los parámetros de la distribución uniforme teórica están completamente prefijados por las fronteras de la placa de hojalata (mínimo 0, máximo 30 pulgadas), por lo que no se realiza ninguna estimación a partir de la muestra.
+
+    \item \textbf{Planteamiento de Hipótesis:}
+    La hipótesis nula establece que la distribución teórica acumulada es Uniforme en el intervalo $[0, 30]$:
+    \[ H_0: F(x) = F_0(x) = \begin{cases} 0 & \text{para } x \le 0 \\ \frac{x}{30} & \text{para } 0 < x < 30 \\ 1 & \text{para } x \ge 30 \end{cases} \quad \]
+    \[ H_1: \text{Los agujeros no están uniformemente distribuidos } (F(x) \neq F_0(x)) \quad \]
+
+    \item \textbf{Ordenamiento de datos y proporciones de la distribución empírica $S_n(x)$:}
+    Ordenamos las 10 observaciones de menor a mayor para obtener los estadísticos de orden $x_{(i)}$. Luego, calculamos los valores de la distribución acumulada teórica $F_0(x_{(i)}) = x_{(i)}/30$, la proporción acumulada superior $i/n$ y la inferior $(i-1)/n$:
+    \begin{center}
+    \small
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{r c c c c c c}
+        \toprule
+        \textbf{$i$} & $x_{(i)}$ & $F_0(x_{(i)}) = \frac{x_{(i)}}{30}$ & $S_n(x_{(i)}) = \frac{i}{10}$ & $S_n(x_{(i-1)}) = \frac{i-1}{10}$ & $d_{i1} = \left|\frac{i}{10} - F_0\right|$ & $d_{i2} = \left|\frac{i-1}{10} - F_0\right|$ \\
+        \midrule
+        1 & 2.4 & $2.4/30 = 0.080$ & 0.1 & 0.0 & $|0.1 - 0.080| = 0.020$ & $|0.0 - 0.080| = 0.080$ \\
+        2 & 4.4 & $4.4/30 \approx 0.147$ & 0.2 & 0.1 & $|0.2 - 0.147| = 0.053$ & $|0.1 - 0.147| = 0.047$ \\
+        3 & 4.8 & $4.8/30 = 0.160$ & 0.3 & 0.2 & $|0.3 - 0.160| = 0.140$ & $|0.2 - 0.160| = 0.040$ \\
+        4 & 6.2 & $6.2/30 \approx 0.207$ & 0.4 & 0.3 & $|0.4 - 0.207| = \mathbf{0.193}$ & $|0.3 - 0.207| = 0.093$ \\
+        5 & 14.8 & $14.8/30 \approx 0.493$ & 0.5 & 0.4 & $|0.5 - 0.493| = 0.007$ & $|0.4 - 0.493| = 0.093$ \\
+        6 & 19.5 & $19.5/30 = 0.650$ & 0.6 & 0.5 & $|0.6 - 0.650| = 0.050$ & $|0.5 - 0.650| = 0.150$ \\
+        7 & 23.1 & $23.1/30 = 0.770$ & 0.7 & 0.6 & $|0.7 - 0.770| = 0.070$ & $|0.6 - 0.770| = 0.170$ \\
+        8 & 25.0 & $25.0/30 \approx 0.833$ & 0.8 & 0.7 & $|0.8 - 0.833| = 0.033$ & $|0.7 - 0.833| = 0.133$ \\
+        9 & 28.2 & $28.2/30 = 0.940$ & 0.9 & 0.8 & $|0.9 - 0.940| = 0.040$ & $|0.8 - 0.940| = 0.140$ \\
+        10 & 28.7 & $28.7/30 \approx 0.957$ & 1.0 & 0.9 & $|1.0 - 0.957| = 0.043$ & $|0.9 - 0.957| = 0.057$ \\
+        \bottomrule
+    \end{tabular}}
+    \end{center}
+
+    \item \textbf{Cálculo de la distancia máxima vertical absoluta ($D$):}
+    Identificamos el valor máximo de todas las distancias superiores $d_{i1}$ e inferiores $d_{i2}$ calculadas:
+    \[ D = \max \left\{ d_{11}, d_{12}, \dots, d_{10,1}, d_{10,2} \right\} \]
+    El valor máximo absoluto se alcanza en $i=4$, con la distancia superior:
+    \[ d_{41} = |0.400 - 0.207| = 0.193 \]
+    Por lo tanto, el estadístico calculado es:
+    \[ D_{\text{calc}} = 0.193 \]
+
+    \item \textbf{Determinación del Valor Crítico:}
+    Para un tamaño muestral de $N = 10$ y un nivel de significación de $\alpha = 0.05$, buscamos en la tabla de valores críticos de la prueba de Kolmogorov-Smirnov:
+    \[ D_{\text{crit}} = D_{0.05, 10} = 0.410 \quad \]
+    La regla de decisión establece que se rechaza la hipótesis nula si $D_{\text{calc}} > 0.410$.
+
+    \item \textbf{Decisión estadística:}
+    Comparando el estadístico calculado frente al crítico de la tabla:
+    \[ D_{\text{calc}} = 0.193 \le D_{\text{crit}} = 0.410 \]
+    Por lo tanto, \textbf{no se rechaza la hipótesis nula $H_0$}.
+
+    \begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[scale=0.85, >=stealth]
+        % Axes
+        \draw[->] (-0.5,0) -- (11,0) node[right] {\small Distancia $X$ (pulgadas)};
+        \draw[->] (0,-0.2) -- (0,5.5) node[above] {\small Frecuencia Acumulada};
+        
+        % Grid and axis markers
+        \foreach \x/\val in {2/6, 4/12, 6/18, 8/24, 10/30} {
+            \draw (\x, 0.1) -- (\x, -0.1) node[below] {\scriptsize \val};
+        }
+        \foreach \y/\label in {1/0.2, 2/0.4, 3/0.6, 4/0.8, 5/1.0} {
+            \draw (0.1, \y) -- (-0.1, \y) node[left] {\scriptsize \label};
+            \draw[dashed, gray!15] (0,\y) -- (10,\y);
+        }
+        
+        % Theoretical cumulative distribution F_0(x) = x/30 -> Straight line from (0,0) to (10,5)
+        \draw[thick, blue] (0,0) -- (10,5) node[right, xshift=2pt] {\small $F_0(x) = \frac{x}{30}$};
+        
+        % Empirical step function S_n(x) [in red]
+        \draw[thick, red!80!black] (0,0) -- (0.8,0);
+        \draw[thick, red!80!black, dashed] (0.8,0) -- (0.8,0.5);
+        \draw[thick, red!80!black] (0.8,0.5) -- (1.47,0.5);
+        \draw[thick, red!80!black, dashed] (1.47,0.5) -- (1.47,1.0);
+        \draw[thick, red!80!black] (1.47,1.0) -- (1.6,1.0);
+        \draw[thick, red!80!black, dashed] (1.6,1.0) -- (1.6,1.5);
+        \draw[thick, red!80!black] (1.6,1.5) -- (2.07,1.5);
+        \draw[thick, red!80!black, dashed] (2.07,1.5) -- (2.07,2.0);
+        \draw[thick, red!80!black] (2.07,2.0) -- (4.93,2.0);
+        \draw[thick, red!80!black, dashed] (4.93,2.0) -- (4.93,2.5);
+        \draw[thick, red!80!black] (4.93,2.5) -- (6.5,2.5);
+        \draw[thick, red!80!black, dashed] (6.5,2.5) -- (6.5,3.0);
+        \draw[thick, red!80!black] (6.5,3.0) -- (7.7,3.0);
+        \draw[thick, red!80!black, dashed] (7.7,3.0) -- (7.7,3.5);
+        \draw[thick, red!80!black] (7.7,3.5) -- (8.33,3.5);
+        \draw[thick, red!80!black, dashed] (8.33,3.5) -- (8.33,4.0);
+        \draw[thick, red!80!black] (8.33,4.0) -- (9.4,4.0);
+        \draw[thick, red!80!black, dashed] (9.4,4.0) -- (9.4,4.5);
+        \draw[thick, red!80!black] (9.4,4.5) -- (9.57,4.5);
+        \draw[thick, red!80!black, dashed] (9.57,4.5) -- (9.57,5.0);
+        \draw[thick, red!80!black] (9.57,5.0) -- (10.0,5.0) node[above, xshift=-15pt] {\small $S_n(x)$};
+        
+        % Highlight the maximum vertical distance at x = 2.07 (6.2 inches)
+        % Theoretical: y = 2.07 * 0.5 = 1.035
+        % Empirical (top of step): y = 2.0 (0.4 prob)
+        \draw[ultra thick, purple, <->, >=stealth] (2.07, 1.035) -- (2.07, 2.0);
+        \draw[dashed, purple] (0, 1.035) -- (2.07, 1.035);
+        \draw[dashed, purple] (0, 2.0) -- (2.07, 2.0);
+        
+        \node[right, purple, text width=3.3cm] at (2.2, 1.4) {\scriptsize \textbf{Discrepancia Máxima:}\\$D_{\text{calc}} = 0.400 - 0.207 = \mathbf{0.193}$};
+        
+    \end{tikzpicture}
+    \caption{Gráfica de Kolmogorov-Smirnov (Bondad de Ajuste Unimuestral) para la distribución de orificios en la placa de hojalata.}
+    \label{fig:kolmogorov_placa}
+    \end{figure}
+
+    \begin{tcolorbox}[colback=green!2!white,colframe=green!30!black,title=Análisis Gráfico y Exposición Oral de Kolmogorov-Smirnov]
+        \small
+        \textbf{Qué representa el gráfico:} La comparación directa entre la función de distribución acumulada teórica continua ($F_0(x)$, en azul) y la acumulada empírica observada ($S_n(x)$, en rojo).
+        \begin{itemize}
+            \item \textbf{Ejes, curvas y escalones:} El eje horizontal es el ancho de la placa (de $0$ a $30$ pulgadas, mapeado a escala $[0, 10]$). El eje vertical representa la probabilidad acumulada de orificios. La recta azul es la distribución Uniforme teórica, que crece linealmente de $0$ a $1$. La escalera roja es la distribución empírica acumulada observada, con saltos de altura $1/n = 0.10$ en la ubicación exacta de cada orificio ordenado.
+            \item \textbf{Distancia máxima:} En cada observación, medimos la distancia vertical al escalón superior e inferior. Se señala con la flecha púrpura de doble punta en $x = 6.2$ la distancia máxima vertical absoluta observada $D_{\text{calc}} = |0.400 - 0.207| = 0.193$.
+            \item \textbf{Guion de Exposición Oral:} \textit{``Profesores, en esta pantalla visualizamos la esencia geométrica de la prueba de Kolmogorov-Smirnov. La recta azul representa una distribución Uniforme perfecta, donde los orificios estarían espaciados con perfecta homogeneidad acumulándose de forma lineal. La escalera roja representa nuestra muestra real. El estadístico $D$ se define geométricamente como la discrepancia vertical máxima absoluta entre ambas funciones. En nuestra muestra, esa distancia máxima ocurre en la cuarta observación (a las $6.2$ pulgadas), donde la probabilidad empírica alcanza el $40\%$ pero la teórica esperada es de apenas el $20.7\%$, arrojando una separación de $0.193$. Al contrastar esta distancia máxima observada de $0.193$ frente a la tolerancia crítica tabulada de $0.410$, comprobamos que la escalera observada nunca se aleja de la recta azul más allí de lo esperable por azar. Concluimos entonces que no se rechaza la hipótesis nula, confirmando que los orificios están distribuidos de forma uniforme y aleatoria a lo largo de la placa.''}
+        \end{itemize}
+    \end{tcolorbox}
+
+    \item \textbf{Interpretación contextual:}
+    Con un nivel de significación de $0.05$, no existe suficiente evidencia estadística para rechazar la hipótesis nula de que los orificios están uniformemente distribuidos a lo largo de la placa de hojalata. La distancia máxima observada de $0.193$ es perfectamente compatible con las fluctuaciones aleatorias esperadas por azar en una distribución continua uniforme.
+
+\end{enumerate}
+
+\newpage
+% -------------------------------------------------------------
+% SECCIÓN 7: PREGUNTAS FRECUENTES DEL EXAMEN FINAL
+% -------------------------------------------------------------
+\section{Preguntas Frecuentes del Examen Final (F.A.Q.)}
+
+\begin{importante}
+Criterio de lenguaje inferencial: ``no rechazar $H_0$'' significa que los datos no aportan evidencia suficiente contra $H_0$ al nivel $\alpha$ elegido; no equivale a confirmar que $H_0$ sea verdadera. Una prueba significativa tampoco identifica por sí sola qué grupos difieren sin comparaciones posteriores.
+\end{importante}
+
+En esta sección se consolidan las preguntas conceptuales y metodológicas más recurrentes por parte del tribunal de Estadística II en la Universidad de Mendoza, con sus correspondientes respuestas académicas de alto nivel.
+
+\begin{enumerate}
+    \item \textbf{¿Cuál es la diferencia primordial entre un método paramétrico y uno no paramétrico?}
+    \textit{Respuesta:} El método paramétrico fundamenta sus hipótesis e inferencias en un modelo de distribución de probabilidad preestablecido (habitualmente la normalidad) y estima o contrasta parámetros de dicho modelo (como $\mu$ o $\sigma$). El método no paramétrico (o de distribución libre) no requiere suposiciones sobre la forma analítica de la población, basíndose en estructuras combinatorias elementales, signos o el orden relativo de los datos para realizar inferencias exactas.
+
+    \item \textbf{Si las pruebas no paramétricas no exigen normalidad, ¿por qué no se usan siempre?}
+    \textit{Respuesta:} Debido al concepto de \textbf{eficiencia relativa}. Cuando los supuestos paramétricos de normalidad se cumplen en su totalidad, las pruebas paramétricas aprovechan de manera óptima toda la información numérica exacta de la muestra (como la media y varianza muestral). Las pruebas no paramétricas, al transformar los datos a signos o rangos, descartan información de magnitud, reduciendo su potencia estadística. Esto implica que para lograr la misma probabilidad de detectar un efecto real (potencia), una prueba no paramétrica requerirá siempre un tamaño de muestra mayor ($n$) que la paramétrica correspondiente.
+
+    \item \textbf{¿Por qué es indispensable el supuesto de simetría en la prueba del signo?}
+    \textit{Respuesta:} El supuesto de simetría garantiza que la probabilidad de que una observación cualquiera de la variable aleatoria caiga por encima o por debajo de la mediana $\tilde{\mu}$ sea exactamente igual a $1/2$ ($50\%$). Si la población fuese marcadamente asimétrica (p. ej., sesgada a la derecha), la mediana ya no dividiría simétricamente la masa probabilística, por lo que modelar el conteo de signos positivos bajo la hipótesis nula con $p=0.5$ daría resultados incorrectos.
+
+    \item \textbf{¿Cómo influyen los empates (valores idénticos) en la prueba U de Wilcoxon y la de Kruskal-Wallis, y cómo se corrigen?}
+    \textit{Respuesta:} Los empates reducen la variabilidad artificial de los rangos al asignárseles un rango promedio idéntico. Esto genera una subestimación de la desviación estándar o del estadístico de prueba. Para corregir este efecto en muestras grandes, se aplica un factor de corrección en el denominador del estadístico, el cual disminuye la desviación estándar teórica restableciendo la validez del nivel de significación real de la prueba.
+
+    \item \textbf{¿Por qué es bilateral la prueba de corridas?}
+    \textit{Respuesta:} Es bilateral por su diseño probabilístico. El número de corridas ($u$) puede desviarse de la aleatoriedad en dos sentidos extremos: por exceso de aglomeración (pocas corridas, lo que indica tendencias persistentes en los datos) o por exceso de alternancia (muchas corridas, lo que indica patrones cíclicos oscilatorios rápidos). Al ser ambos patrones contrarios a la independencia, la región crítica debe contemplar ambas colas de la distribución de referencia.
+
+    \item \textbf{¿Qué ventajas ofrece Kolmogorov-Smirnov sobre Chi-cuadrado para bondad de ajuste?}
+    \textit{Respuesta:} K-S ofrece dos ventajas fundamentales:
+    \begin{itemize}
+        \item No requiere agrupar los datos continuos en clases de frecuencia o intervalos arbitrarios, lo que conserva de manera intacta el valor numérico preciso de cada observación.
+        \item Funciona de forma óptima y exacta en muestras pequeñas, donde la prueba de Chi-cuadrado pierde validez al no cumplir el requisito mínimo de frecuencia esperada ($E_i \ge 5$) en los intervalos.
+    \end{itemize}
+\end{enumerate}
+
+\newpage
+% -------------------------------------------------------------
+% SECCIÓN 8: RESUMEN FINAL
+% -------------------------------------------------------------
+\section{Resumen Final}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!50!black,title=Síntesis para el Examen]
+    Las \textbf{Pruebas No Paramétricas} constituyen la red de seguridad del analista de datos. Permiten rescatar la validez de las inferencias estadísticas cuando la naturaleza asimétrica de las variables (como ingresos o fallos), la debilidad de las escalas de medición (ordinales), o el reducido tamaño muestral bloquean el camino de la inferencia clásica basada en la normalidad. 
+    
+    A lo largo de este capítulo, se ha analizado cómo transformar las magnitudes numéricas a unidades dicotómicas (signos), ordenamientos relativos (rangos) o distancias acumuladas (Kolmogorov-Smirnov) para construir estadísticos con supuestos menos restrictivos. El dominio de la justificación técnica, el cálculo paso a paso y la interpretación fluida de estos métodos proporciona una sólida base matemática para rendir el examen oral.
+\end{tcolorbox}
+
+\newpage
+% -------------------------------------------------------------
+% SECCIÓN 9: HOJA DE FÓRMULAS
+% -------------------------------------------------------------
+\begin{landscape}
+\section{Hoja de Fórmulas de la Unidad}
+
+Esta hoja de fórmulas constituye una guía de referencia rápida para el repaso de las ecuaciones fundamentales del Capítulo 4.
+\begin{table}[h!]
+\centering
+\caption{Resumen de Fórmulas del Capítulo 4}
+\label{tab:hoja_formulas}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{3.2cm} X X}
+\toprule
+\textbf{Prueba / Tema} & \textbf{Estadístico de Prueba} & \textbf{Parámetros de Referencia / $H_0$} \\
+\midrule
+\textbf{Prueba del Signo} & $x = \text{Número de signos } (+)$ & $X \sim \mathcal{B}(n, p=0.5)$ \\
+\textbf{Signo (Cola Derecha)} & $p\text{-valor} = \sum_{k=x}^{n} \binom{n}{k} \left(\frac{1}{2}\right)^n$ & $n = N - \text{empates}$ \\
+\textbf{Suma Rangos (Prueba U)} & $U_1 = n_1 n_2 + \frac{n_1(n_1+1)}{2} - R_1$ & $\mu_{U1} = \frac{n_1 n_2}{2}$ \\
+ & $U_2 = n_1 n_2 + \frac{n_2(n_2+1)}{2} - R_2$ & $\sigma_{U1} = \sqrt{\frac{n_1 n_2 (n_1+n_2+1)}{12}}$ \\
+\textbf{Aproximación Normal U} & $z = \frac{U_1 - \mu_{U1}}{\sigma_{U1}}$ & $z \sim \mathcal{N}(0, 1)$ si $n_1, n_2 > 8$ \\
+\textbf{Kruskal-Wallis (Prueba H)} & $H = \frac{12}{n(n+1)} \sum_{i=1}^{k} \frac{R_i^2}{n_i} - 3(n+1)$ & $H \sim \chi^2_{k-1}$ si $n_i > 5$ \\
+\textbf{Prueba de Corridas (Rachas)} & $u = \text{Número de corridas}$ & $z \sim \mathcal{N}(0, 1)$ si $n_1, n_2 > 10$ \\
+ & $z = \frac{u - \mu_u}{\sigma_u}$ & $\mu_u = \frac{2 n_1 n_2}{n_1 + n_2} + 1$ \\
+ & & $\sigma_u = \sqrt{\frac{2 n_1 n_2 (2 n_1 n_2 - n_1 - n_2)}{(n_1+n_2)^2 (n_1+n_2-1)}}$ \\
+\textbf{Kolmogorov-Smirnov} & $D = \max \left\{ d_{11}, d_{12}, \dots, d_{n1}, d_{n2} \right\}$ & $D_{\text{crit}} = D_{\alpha, n}$ de tabla \\
+ & $d_{i1} = \left| \frac{i}{n} - F_0(x_{(i)}) \right|$ & $F_0(x) = \text{Función continua teórica}$ \\
+ & $d_{i2} = \left| \frac{i-1}{n} - F_0(x_{(i)}) \right|$ & $x_{(i)} = \text{Valores ordenados}$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+\end{landscape}
+
+\newpage
+% -------------------------------------------------------------
+% SECCIÓN 10: HOJA DE DECISIONES Y PROCEDIMIENTOS
+% -------------------------------------------------------------
+\section{Hoja de Decisiones y Procedimientos}
+
+La correcta selección de una prueba no paramétrica es un criterio clave evaluado en los exámenes finales de Estadística II. Esta hoja actúa como un diagrama procedimental para orientar tu razonamiento de examen:
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!40!black,title=Guía Procedimental para Elección de Método]
+    \textbf{¿Cuál es el objetivo primordial del análisis?}
+    \begin{enumerate}
+        \item \textbf{Analizar la tendencia central de una sola muestra o de datos apareados:}
+        \begin{itemize}
+            \item Si se desea contrastar una mediana o la mediana de diferencias sin exigir simetría: $\rightarrow$ \textbf{Prueba del Signo}.
+            \item Si las diferencias son aproximadamente simétricas y sus magnitudes son informativas: $\rightarrow$ \textbf{Prueba de rangos con signo de Wilcoxon}; bajo esos supuestos suele aprovechar más información y puede tener mayor potencia.
+        \end{itemize}
+        \item \textbf{Comparar localizaciones de dos grupos o muestras independientes:}
+        \begin{itemize}
+            \item ¿Las muestras son independientes y provienen de poblaciones con formas distribucionales similares? $\rightarrow$ \textbf{Prueba U de Wilcoxon / Mann-Whitney}.
+        \end{itemize}
+        \item \textbf{Comparar localizaciones de tres o más grupos independientes ($k \ge 3$):}
+        \begin{itemize}
+            \item ¿Las muestras son independientes y provienen de distribuciones continuas? $\rightarrow$ \textbf{Prueba H de Kruskal-Wallis}.
+        \end{itemize}
+        \item \textbf{Evaluar la independencia o aleatoriedad temporal de una secuencia:}
+        \begin{itemize}
+            \item ¿La secuencia es binaria o cuantitativa continua tomada cronológicamente? $\rightarrow$ \textbf{Prueba de Corridas (Rachas)}.
+        \end{itemize}
+        \item \textbf{Evaluar el ajuste de una muestra a una distribución teórica continua:}
+        \begin{itemize}
+            \item ¿La muestra es pequeña, continua y la distribución teórica está plenamente especificada? $\rightarrow$ \textbf{Prueba de Kolmogorov-Smirnov Unimuestral}.
+        \end{itemize}
+    \end{enumerate}
+\end{tcolorbox}
+
+\section*{Nota sobre las referencias}
+Las referencias numéricas sin bibliografía verificable fueron retiradas del cuerpo del documento. No se encontró un archivo bibliográfico que permita reconstruirlas con seguridad; por ello no se inventan fuentes y esta sección deberá completarse únicamente con las referencias efectivamente utilizadas por la cátedra.
+
+\end{document}

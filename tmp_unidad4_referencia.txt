@@ -1,0 +1,264 @@
+Pruebas no parametricas
+La normalidad da la mayor eficiencia en los calculos estadísticos, y esa eficiencia va
+disminuyendo cuanto mas se van disparando las distribuciones respecto de la
+normal
+La media aritmetica es un estimador de la media poblacional, pero tambien es un
+estimador de la media poblacional la mediana. La media aritmetica es mas eficiente
+q la mediana sin embargo la mediana es mas robusta.
+
+
+
+
+Supongamos q tiramos 14 monedas, la probabilidad de q caiga 12 sellos y 2 caras
+es baja, la probabilidad mayor esq caiga 7 caras y 7 sellos.
+La probabilidad para determinar q caiga x sellos y x caras se calcula con una
+sumatoria desde k=12 hasta 14 de una probabilidad binomial
+(k,14,0.5(probabilidad))
+esta es la probabilidad q tirando 14 me de mas de 12 caras, osea involucra el 12,13
+y el 14.
+
+
+
+La prueba de signo se puede emplear también como alternativa no paramétrica de la prueba t
+para muestras apareadas o también para la prueba correspondiente para muestras de gran
+tamaño. En tales problemas, cada par de valores muestrales se reemplaza por un signo + si el
+primer valor es mayor que el segundo y con signo – en caso contrario y si son iguales, se
+descarta.
+
+
+
+
+o igual que 0.05
+
+se considera positivo si el primer numero es mayor al segundo. Ej 45 es mayor a 36
+entonces es “+”, 33 es menor a 35 entonces es “-”
+En el grafico voy a tener 11 pico y del 10 para adelante me dio un area de 0.011,
+como mi limite era 0.05 cae en zona de rechazo.
+Explicacion de pq se rechaza:
+Pruebas de suma de rangos
+vamos a ver 2 pruebas: la U, de wilcoxon y la H. La prueba U es una alternativa no
+parametrica de la prueba t bimuestral
+¿como se trabaja? se disponen de todas las medidas como si fueran una sola
+ordenadas de menor a mayor, marcando en cada muestra cual es el error(I o II) y se
+asigna un orden a cada una de las medidas en nuestro caso de 0 a 29, 0.12 es mi
+rango 1, 0.17 es el rango 2, y asi sucesivamente. Hago lo mismo para la muestra
+2(0.26+0.39+...).
+Luego sumo los rangos correspondiente a la muestra I (0.12 +0.17+0.18+...)
+SI hubiera una repeticion de valores se asigna el rango intermedio a los valores. Ej:
+si, por ejemplo, el tercero y cuarto valores fuesen identicos se asignaria a cada uno
+el rango (3+4)/2=3.5. Otro caso, si el 9no,10mo y 11mo fueran iguales, se asignaria
+a cada uno el rango (9+10+11)/3=10 →se promedian
+Como vemos entre R1 y R2 no hay igualdad, ahora vamos a ver si esa diferencia es
+demasiado grande para rechazar o no la hipotesis nula
+n1=tamaño muestra 1
+n2=tamaño muestra 2
+
+
+
+
+Luego utilizaremos un estadistico z formado por U1 menos la media de U1 sobre la
+desviacion estandar de U1(el U1 lo calculamos en el paso anterior)
+mis limites son 0.005(representados con la recta azul en el grafico) ya q tengo q
+dividir 0.01/2
+vemos q ele estadístico z=2.75(linea negra) cayo en la zona de rechazo. Asi hice el
+calculo para obtener los puntos criticos:
+Prueba H
+
+
+
+
+se toman las k muestra como una sola muestra
+se ordenan los elementos de mayor a menor y se asignan rangos identificando a
+cada una de las poblaciones. Entonces vamos a llegar a k rangos distintos
+correspondientes a cada una de las muestras, las voy a llamar R1,R2,R3. Cada
+muestra tomada de la poblacion tiene n1 observaciones, n2 observaciones,etc.
+El valor n es la suma de los tamaños muestrales de cada una..
+
+El estadistico q voy a utilizar es el H, q tiene una distribucion chi cuadrado con k-1
+grado de libertad.
+
+
+
+
+El metodo A en la primer muestra produjo 77 milesimos de pulgada, en la segunda
+muestra produjo 54, y asi sucesivamente. El tamaño muestral para el metodo A es
+de 6
+El tamaño muestral para el metodo de B es de 7
+El tamaño muestral para el metodo C es de 5
+
+Con que hayan 2 poblaciones distintas aunque hayan 5 poblaciones se las
+considera a todas distintas
+
+
+
+
+Aca estoy calculando una prueba de cola derecha, porque en el chi cuadrado si las
+diferencias son importantes me voy hacia la derecha, si las diferencias son
+practicamente nulas me voy hacia la izquierda y estoy en la zona de aceptacion.
+ACA AL PESAR DE DECIR DISTINTAS (ANTES AL DECIR DISTINTAS
+AUTOMATICAMENTE DECIAMOS Q ERA DE AMBAS COLAS) pero aca no pq es
+chi cuadrado y aca las grandes diferencias quedan marcadas por un chi cuadrado
+grande y me voy a la derecha.
+Mi chi cuadrado limite es 5.991
+Para los calculos tomo todas las muestras juntas y las ordeno de mayor a menor
+Como podemos observar al repetirse el 52 en el rango 4 y 5, debo colocar el
+promedio de los 2 rangos osea 4+5/2 =4.5. Ya que tengo en el rango 3 y 4 al 52.
+Fijarse como aparece en el metodo B y C el 4.5.
+
+Para ver si son significativamente o aproximadamente iguales los rangos R1,R2,R3
+tenemos q hacer la prueba de significancia.
+-Establezco el estadistico H
+H cae en zona de rechazo por lo que podemos decir que con un nivel de
+significancia de 0.05 son distintos los metodos, no tienen la misma eficacia
+PRUEBAS DE ALEATORIEDAD
+
+
+
+
+En el esquemos podemos apreciar un total de 8 corridas.
+
+
+Hay muchas veces en que se necesita en q la prueba sea realmente aleatoria, por ejemplo si
+estuvieramos diseñando ruedas de ruleta en los juegos. Nosotros queremos q los números que
+salgan tengan la misma probabilidad de salir y no tengamos una tendencia sino estamos en el
+horno.
+En el caso del lanzamiento las A serian las apariciones de cara y las B las de seca. Voy a
+definir lo q llamamos corridas(cuando coinciden los mismos resultados), ejemplo en la
+corrida 1 me salio 2 caras, en la corrida 2 me salieron 2 secas, y asi.
+Luego cuento las corridas, las corridas me van a dar falta de aleatoriedad.
+
+Si en el lanzamiento de la moneda me salian cara, sello, cara,sello, y asi sucesivamente voy a
+tener muchas corridas
+
+
+En el caso de q salgan todas caras y todas sellos tenemos 2 corridas. Son pocas corridas.
+Tanto las pocas corridas como las muchas corridas me indican falta de aleatoriedad
+
+muchas corridas = falta de aleatoriedad
+pocas corridas= falta de aleatoreidad
+         = media         = desviacion estandar
+
+En el ejemplo anterior n1=9(cantidad de total de A) y n2=11(cantidad total de B).
+
+    (numero de corridas) =8
+     =10.9
+
+      =2.15
+
+
+
+
+Si la pieza defectuosa sigue un patron se pierde la aleatoriedad, la aleatoriedad se produciria
+cuando todo funciona normalmente, osea bien. Por ejemplo si tengo una maquina para
+producir bolsas se me rompe un componente de la maquina y me empiezan a salir bolsas
+rotas, aqui sigo un patron por lo q me indica q algo esta mal, la bolsa deberia salir defectuosa
+de manera aleatoria.
+Vamos a ver si no hay aleatoriedad por el lado izquierdo o por si es por el lado derecho.
+Es aleatoriedad por el lado derecho cuando  (numero de corridas) es grande, cuando se
+van a alternando muy rápidamente. En cambio cuando no hay aleatoriedad por el lado
+izquierdo cuando el    es demasiado chico.
+
+Como estamos con una distribucion normal tenemos q buscar el qnorm(alfa,0,1)
+tengo 6 corridas (ya q mi “u” es chico), 10 defectuosos, 17 no defectuosos
+
+Luego determino el        y el
+Por ultimo determino el estadistico Z
+
+
+
+
+Como podemos ver Z cae en la zona de rechazo, entonces el arreglo no es aleatorio. Hay
+pocas corridas, tendria q haber mas corridas para q sea aleatorio.
+
+
+
+
+Otras formas de utilizar la prueba de aleatoriedad pero cuando se tienen datos numericos
+ahora, es producir esa cadena de valores dicotomicos contando las secuencias por encima y
+por debajo de la mediana.
+Si con a se denota una observación por encima de la mediana de la muestra y con b se denota
+una observación por debajo de la mediana, se puede emplear la sucesión de letras a y b para
+probar la aleatoriedad del método indicado.
+
+Problema: Un ingeniero está preocupado debido a que están realizando demasiadas
+modificaciones al ajustar un torno automático. Dados los siguientes diámetros medios (en
+pulgadas) de 40 ejes maquinados sucesivamente en el torno:
+
+.261 .258 .249 .251 .247 .256 .250 .247 .255 .243 .252 .250
+.253 .247 .251 .243 .258 .251 .245 .250 .248 .252 .254 .250
+.247 .253 .251 .246 .249 .252 .247 .250 .253 .247 .249 .253
+.246 .251 .249 .253
+
+emplear el nivel de significación 0.01 para probar la hipótesis nula de aleatoriedad contra la
+alterna de que existe un patrón que se repite con frecuencia.
+-primero calculo la mediana del conjunto de los 40 valores de datos
+mediana = 0.250
+-Luego comparo cada valor de la tabla con la mediana. Ej: 0.261 esta por encima de la
+mediana entonces coloco la letra “a”. El valor q sigue 0.258 esta por encima tambien de la
+mediana entonces coloco la letra “a”. 0.249 esta por debajo de la mediana entonces coloco
+“b” y asi sucesivamente. Tengo un valor q es el mismo 0.250 q es igual a la mediana lo cual
+lo debo ignorar y no lo coloco en la tabla. Fijarse q no lo sume tengo 35 entre a y b.
+La tabla final me queda:
+
+
+
+
+   voy a tener 27 corridas (mi “u” es grande por eso por cola derecha).
+    Luego de calcular la media          y la desviacion estandar          calculo por ultimo el
+estadistico Z.
+    El estadistico Z me cae en la zona de rechazo por lo que rechazo la hipotesis nula, por lo
+q existe un patron de repeticion. Hay muchas corridas por lo que claramente no es aleatoreo.
+
+
+
+PRUEBAS DE KOLMOGOROV-SMIRNOV
+
+
+
+
+Quiero saber si los agujeros estan uniformemente distribuidos.
+Queremos probar la hipotesis nula de q los agujeros estan normalmente bien, uniformemente
+distribuidos contra la hipotesis alternativa de q no estan bien distribuidos.
+
+Como tengo una distribucion uniforme, a diferencia de la campana de gaus q su grafico es
+como una “s” aca voy a tener una funcion lineal, una recta. Idealmente deberia ser una recta
+en la distribucion acumulada “esperada” pero voy a tener escalones en la recta en la
+distribucion “observada”. La acumulada va a variar desde 0 a 1.
+F(x) tiene q variar entre 0 y 1, 0 para x<=0 y 1 para x>30. Entre medio la funcion vale x/30.
+El valor 0,410 sale de la tabla de prueba de kolmogorov-smirnov. Donde me fijo el nivel de
+significancia y el tamaño de la muestra y en su interseccion tengo el valor de 0.410
+
+
+
+
+Para realizar el grafico primero tengo q ordenar los datos
+Luego divido cada valor por 30(ancho de la tira) y observo las proporciones correspondiente
+de la funcion acumulada observada
+como observamos, observamos q en cada comienzo del escalon hay una distancia hacia el
+escalon inferior y una distancia hacia el escalon superior. Osea q en todos los quiebres tengo
+2 distancias. Luego leo todas las distancias al escalon inferior y al escalon superior y en total
+voy a obtener 20 distancias. En cada punto q tengo van apareciendo 2 distancias, en todo ese
+cumulo de distancias me quedo con la mas grande y esta la comparo con el “d” critico quie
+saco de la tabla de kolmogorov-smirnov (0.410).
+
+Recordar q estamos construyendo (recta azul) la funcion acumulada de la distribucion
+uniforme, los datos me permitieron elaborar la funcion escalonada(recta roja escalonada).
+Marcamos los puntos en la distribucion uniforme para marcar las distancias q estoy midiendo.
+con la integral calcule los valores esperados, como es funcion uniforme uso dunif, pero si
+hubiera sido la normal uso dnorm, si era chi cuadrado hubiera puesto dchisq y asi para la
+distribucion q yo quiera.
+Construyo siempre un escalonamiento de la funcion distribucion acumulada observada y la
+esperada para encontrar despues la distancia maxima de separacion y contrastarla con el valor
+encontrado en la tabla de kolmogorov-smirnov.
+
+asi se ve el grafico con los datos:
+
+
+
+
+siendo la recta azul la distribucion acumulada supuesta y la roja escalonada la observada.
+
+0.194 fue la maxima distancia separadora q encontre
+5. Decisión: Ya que 0.193 < 0.410 (valor de Tabla) No se Rechaza la Hipótesis Nula. Luego,
+los agujeros están significativamente uniformemente distribuidos.
+

@@ -1,0 +1,129 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx} % MUY IMPORTANTE: Necesario para que funcione \resizebox
+
+\begin{document}
+
+\begin{center}
+    \Large \textbf{Etapa de Estimación y Predicción} \\[0.5cm]
+    \normalsize \textbf{Estadística Aplicada Resumen de Estudio} \\
+    \textbf{Roberto Francisco Espinola} \\
+    \textbf{Septiembre 2026}
+\end{center}
+
+\vspace{0.5cm}
+
+Habiendo comprobado que nuestro modelo es significativo, es decir, al rechazar la hipótesis nula de que $\beta = 0$, y al haber relación lineal entre $X$ e $Y$, podemos estimar valores de la variable dependiente $Y$. A continuación, analizaremos qué ocurre si queremos realizar estimaciones fijando la variable independiente en un punto específico, por ejemplo, $x_0 = 190 \text{ cm/seg}$. O sea, vamos a estimar el valor promedio de todas las turbinas que operen a $190 \text{ cm/s}$.
+
+\vspace{0.4cm}
+
+\subsection*{Paso 4: Intervalo de Confianza para la Media de Y ($x_0 = 190$)}
+
+El estimador puntual es:
+\[
+\hat{y}_0 = a + b \cdot 190 = 0.069242 + 0.003829 \cdot 190 = \mathbf{0.7967} \text{ mm}^2\text{/seg}
+\]
+
+El error máximo de estimación para la media poblacional $\mu_y$ con un 95\% de confianza es:
+\[
+E = t_{\alpha/2, n-2} \cdot s_e \cdot \sqrt{\frac{1}{n} + \frac{n(x_0 - \bar{x})^2}{S_{xx}}}
+\]
+
+Calculamos la amplitud del margen de error sustituyendo los datos en la fórmula de la raíz:
+\[
+E = 2.306 \cdot 0.159052 \cdot \sqrt{\frac{1}{10} + \frac{10(190 - 200)^2}{1,320,000}}
+\]
+\[
+E = 0.36677 \cdot \sqrt{0.1 + \frac{10(-10)^2}{1,320,000}}
+\]
+\[
+E = 0.36677 \cdot \sqrt{0.1 + \frac{1000}{1,320,000}} = 0.36677 \cdot \sqrt{0.100757} \approx \textbf{0.1164}
+\]
+
+\vspace{0.3cm}
+Sustituyendo los valores numéricos consolidados, la inecuación queda configurada de la siguiente manera:
+
+\[
+\resizebox{\textwidth}{!}{$\displaystyle
+\underbrace{0.7967}_{\hat{y}_0} - \underbrace{\left( 2.306 \cdot 0.159052 \cdot \sqrt{\frac{1}{10} + \frac{10(190 - 200)^2}{1,320,000}} \right)}_{E \approx 0.1164} < \mu_y < \underbrace{0.7967}_{\hat{y}_0} + \underbrace{\left( 2.306 \cdot 0.159052 \cdot \sqrt{\frac{1}{10} + \frac{10(190 - 200)^2}{1,320,000}} \right)}_{E \approx 0.1164}
+$}
+\]
+
+\vspace{0.3cm}
+Resolviendo la resta en el lado izquierdo y la suma en el lado derecho, obtenemos los límites:
+\begin{itemize}
+    \item \textbf{Extremo Inferior:} $0.7967 - 0.1164 = 0.6803$
+    \item \textbf{Extremo Superior:} $0.7967 + 0.1164 = 0.9131$
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent \textbf{Conclusión del Intervalo:}
+\[
+\mathbf{0.6803 < \mu_y < 0.9131}
+\]
+
+\vspace{0.8cm}
+\hrule
+\vspace{0.8cm}
+
+Y ahora, ¿qué pasa si queremos predecir qué pasará si $x_0 = 190$, o sea, predecir una turbina en particular a una velocidad de 190?
+
+\vspace{0.6cm}
+\subsection*{Paso 5: Intervalo de Predicción para una Observación Futura Individual ($x_0 = 190$)}
+
+¿Qué pasa si en lugar de predecir la media de muchos ensayos queremos anticipar el resultado de \textbf{un único ensayo futuro}? La incertidumbre será mucho mayor, puesto que a la variabilidad de estimar la recta se le suma la dispersión física natural del proceso ($\sigma^2$). La fórmula del error máximo de predicción individual agrega un ``1'' dentro de la raíz:
+
+\[
+\resizebox{\textwidth}{!}{$\displaystyle
+\underbrace{\hat{y}_0}_{\text{Estimador puntual}} - \underbrace{t_{\alpha/2, n-2} \cdot s_e \cdot \sqrt{1 + \frac{1}{n} + \frac{n(x_0 - \bar{x})^2}{S_{xx}}}}_{E_{pred} \text{ (Margen de Error)}} < y_0 < \underbrace{\hat{y}_0}_{\text{Estimador puntual}} + \underbrace{t_{\alpha/2, n-2} \cdot s_e \cdot \sqrt{1 + \frac{1}{n} + \frac{n(x_0 - \bar{x})^2}{S_{xx}}}}_{E_{pred} \text{ (Margen de Error)}}
+$}
+\]
+
+\vspace{0.2cm}
+\noindent Calculamos la amplitud del margen de error sustituyendo los datos en la fórmula de la raíz:
+
+\[
+E_{pred} = 2.306 \cdot 0.159052 \cdot \sqrt{1 + \frac{1}{10} + \frac{10(190 - 200)^2}{1,320,000}}
+\]
+\[
+E_{pred} = 0.36677 \cdot \sqrt{1 + 0.1 + \frac{10(-10)^2}{1,320,000}}
+\]
+\[
+E_{pred} = 0.36677 \cdot \sqrt{1 + 0.1 + \frac{1000}{1,320,000}} = 0.36677 \cdot \sqrt{1.100757} \approx \mathbf{0.3848}
+\]
+
+\vspace{0.4cm}
+
+\[
+\resizebox{\textwidth}{!}{$\displaystyle
+\underbrace{0.7967}_{\hat{y}_0} - \underbrace{\left( 2.306 \cdot 0.159052 \cdot \sqrt{1 + \frac{1}{10} + \frac{10(190 - 200)^2}{1,320,000}} \right)}_{E_{pred} \approx 0.3848} < y_0 < \underbrace{0.7967}_{\hat{y}_0} + \underbrace{\left( 2.306 \cdot 0.159052 \cdot \sqrt{1 + \frac{1}{10} + \frac{10(190 - 200)^2}{1,320,000}} \right)}_{E_{pred} \approx 0.3848}
+$}
+\]
+
+\vspace{0.4cm}
+\noindent Resolviendo la resta en el lado izquierdo y la suma en el lado derecho, obtenemos los límites:
+
+\begin{itemize}
+    \item \textbf{Extremo Inferior:} $0.7967 - 0.3848 = 0.4119$
+    \item \textbf{Extremo Superior:} $0.7967 + 0.3848 = 1.1815$
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent \textbf{Conclusión del Intervalo:}
+\[
+\mathbf{0.4119 < y_0 < 1.1815}
+\]
+
+Podemos predecir, con un 95\% de confianza, que si extraemos una turbina individual y fijamos la velocidad del aire a $190 \text{ cm/seg}$, su coeficiente de evaporación específico se encontrará entre $0.4119 \text{ y } 1.1815 \text{ mm}^2\text{/seg}$.
+
+\vspace{0.5cm}
+\noindent \textcolor{blue}{\textbf{Nota de análisis estadístico (Tip para el final oral):}} \\
+Si el tribunal te pide justificar por qué este intervalo ($[0.4119, 1.1815]$) es más ancho que el de la media ($[0.6803, 0.9131]$), la respuesta técnica es que predecir un evento individual incluye \textbf{dos fuentes de error}. No solo estamos lidiando con la incertidumbre de dónde está posicionada exactamente la recta verdadera (error de los estimadores $a$ y $b$), sino que también debemos sumarle la variabilidad inherente del sistema (la varianza poblacional $\sigma^2$), porque un ensayo individual puede caer en cualquier parte de la campana de Gauss alrededor de esa recta. Ese "1" extra dentro de la raíz representa matemáticamente esa dispersión física.
+
+\end{document}

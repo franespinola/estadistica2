@@ -1,0 +1,72 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+# Configuración de alta resolución (300 dpi)
+fig = plt.figure(figsize=(12, 8), dpi=300)
+ax = fig.add_subplot(111, projection='3d')
+
+# Parámetros de la recta poblacional
+alpha = 2
+beta = 0.6
+sigma = 0.8 # Varianza común
+
+# Valores de la muestra en el eje x
+x_vals = [2, 5, 8]
+labels = ['x_1', 'x_2', 'x_n']
+
+# 1. Dibujar la recta de regresión poblacional y = alfa + beta*x
+x_line = np.linspace(0, 10, 100)
+y_line = alpha + beta * x_line
+ax.plot(x_line, y_line, 0, color='blue', linewidth=2, label=r'$y = \alpha + \beta x$')
+ax.text(8.5, alpha + beta * 8.5, 0.1, r'$y = \alpha + \beta x$', color='blue', fontsize=14, weight='bold')
+
+# 2. Dibujar las distribuciones de inferencia para cada x_i
+for x_i, label in zip(x_vals, labels):
+    y_i = alpha + beta * x_i
+    
+    # Línea punteada desde el eje X hasta la recta (plano XY)
+    ax.plot([x_i, x_i], [0, y_i], [0, 0], color='gray', linestyle='--')
+    
+    # Curva de densidad de probabilidad (Distribución Normal)
+    y_curve = np.linspace(y_i - 3*sigma, y_i + 3*sigma, 100)
+    z_curve = norm.pdf(y_curve, y_i, sigma)
+    
+    # Proyectamos la curva sobre el plano X = x_i
+    x_curve = np.full_like(y_curve, x_i)
+    ax.plot(x_curve, y_curve, z_curve, color='gray', linestyle='-.')
+    
+    # Línea vertical indicando la máxima probabilidad en la media
+    max_z = norm.pdf(y_i, y_i, sigma)
+    ax.plot([x_i, x_i], [y_i, y_i], [0, max_z], color='black', linestyle='-')
+    
+    # Etiqueta en el eje X
+    ax.text(x_i, -0.8, 0, f'${label}$', fontsize=12)
+
+# 3. Configuración visual (emulando el estilo del boceto)
+ax.set_xlim(0, 10)
+ax.set_ylim(0, 10)
+ax.set_zlim(0, 0.6)
+
+# Limpiar paneles y grillas para un estilo académico limpio
+ax.xaxis.pane.fill = False
+ax.yaxis.pane.fill = False
+ax.zaxis.pane.fill = False
+ax.grid(False)
+
+# Etiquetas de los ejes
+ax.set_xlabel('x', labelpad=10, fontsize=12)
+ax.set_ylabel('y', labelpad=10, fontsize=12)
+ax.set_zlabel('f(x)', labelpad=10, fontsize=12)
+
+# Ocultar ticks numéricos
+ax.set_xticks([])
+ax.set_yticks([])
+ax.set_zticks([])
+
+# Ajustar ángulo de cámara para coincidir con la imagen (isometrico)
+ax.view_init(elev=25, azim=-45)
+
+plt.tight_layout()
+plt.savefig('regresion_inferencia.png', transparent=True)
+plt.show()
