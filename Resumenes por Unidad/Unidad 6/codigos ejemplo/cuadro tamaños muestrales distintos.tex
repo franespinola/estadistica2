@@ -1,0 +1,27 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{graphicx}
+
+\begin{document}
+
+\begin{table}[h]
+\centering
+\resizebox{\textwidth}{!}{% Ajusta la tabla al ancho de la página si es muy larga
+\begin{tabular}{l | c c c c c c | c | c | c}
+\hline
+\textbf{Tratamiento} & \textbf{Obs. 1} & \textbf{Obs. 2} & \dots & \textbf{Obs. $j$} & \dots & \textbf{Obs. $n_i$} & \textbf{Tamaño ($n_i$)} & \textbf{Total ($T_{i.}$)} & \textbf{Media ($\bar{y}_{i.}$)} \\
+\hline
+Muestra 1 & $y_{11}$ & $y_{12}$ & \dots & $y_{1j}$ & \dots & $y_{1n_1}$ & $n_1$ & $T_{1.}$ & $\bar{y}_{1.}$ \\
+Muestra 2 & $y_{21}$ & $y_{22}$ & \dots & $y_{2j}$ & -- & -- & $n_2$ & $T_{2.}$ & $\bar{y}_{2.}$ \\
+\dots & \dots & \dots & \dots & \dots & \dots & \dots & \dots & \dots & \dots \\
+Muestra $k$ & $y_{k1}$ & $y_{k2}$ & \dots & $y_{kn_k}$ & -- & -- & $n_k$ & $T_{k.}$ & $\bar{y}_{k.}$ \\
+\hline
+\textbf{Total Global} & \multicolumn{6}{c|}{} & $N = \sum n_i$ & $T_{..}$ & $\bar{y}_{..}$ \\
+\hline
+\end{tabular}%
+}
+\end{table}
+
+\end{document}
