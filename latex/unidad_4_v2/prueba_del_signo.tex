@@ -1,0 +1,102 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.0cm,bottom=1.0cm,left=1.4cm,right=1.4cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\pagestyle{empty}
+
+\newcommand{\cuerpo}{\fontsize{13.6}{16.6}\selectfont}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{6pt}%
+  \setlength{\belowdisplayskip}{6pt}%
+  \setlength{\abovedisplayshortskip}{3pt}%
+  \setlength{\belowdisplayshortskip}{3pt}%
+  \cuerpo
+}
+
+\begin{document}
+
+\hfill $\longrightarrow$ \textbf{Una muestra}
+
+\vspace{-6pt}
+{\fontsize{17}{20}\selectfont\bfseries\uline{Prueba del Signo}\par}
+
+\begin{minipage}[t]{0.60\textwidth}
+\vspace{0pt}
+Sirve como \textbf{alternativa no paramétrica} a \textbf{T-Unimuestral (pueden ser apareadas o no}, osea datos de antes y después) donde \textbf{H0:} $\mu = \mu 0$. Se aplica cuando se muestrea de una \textbf{población simétrica} (elementos con misma probabilidad de ser mayor o menor a la media)
+\end{minipage}\hfill
+\begin{minipage}[t]{0.36\textwidth}
+\vspace{10pt}
+\begin{center}
+\colorbox{blue!7}{$\displaystyle \ t \ = \ \frac{\bar{x}-\mu_0}{s/\sqrt{n}} \ $}
+\end{center}
+\end{minipage}
+
+El \textbf{criterio} que se utiliza es reemplazar cada valor por los signos ``+'' o ``-'' según sea mayor o menor que la media (o mediana en su defecto), si es igual se ignora. Se considera siempre una prob \textbf{p=0.5.}
+
+\textbf{Ejemplo:} $\mu 0 = 98$ y la alternativa $\mu > \mu 0$. Se coloca + si es mayor a 98, - si no lo es, nada si es igual. Queda una cadena de signos: $+++\cdot+++\cdot+++++$
+
+Para \textbf{muest apareadas (A y D)}: una H0 puede ser u1-u2=0 \ si u1$>$u2 es + \ y si u1$<$u2 es -
+
+\textbf{x} es la cant de signos +. \textbf{n} la cantidad de signos totales. \textbf{Se calcula la prob de obtener ``x'' o más signos y si menor o igual a un $\boldsymbol{\alpha}$ (ej: 0.01) se rechaza H0.}
+
+\begin{center}
+\colorbox{yellow!60}{$\displaystyle \sum_{k=9}^{10} \text{dbinom}(k,n,0.5) = 0.011$}
+\qquad
+{\small
+\begin{tabular}{@{}l@{}}
+k:num de exitos \\
+n: total de signos \\
+0,5: probabilidad
+\end{tabular}
+}
+\end{center}
+
+\hrule
+\vspace{2pt}
+
+octanaje lote nafta se quiere saber si el promedio supera los 98, con n=10
+
+\begin{center}
+99.0 \quad 102.3 \quad 99.8 \quad 100.5 \quad 99.7 \quad 96.2 \quad 99.1 \quad 102.5 \quad 103.3
+\end{center}
+
+{\fontsize{16}{19}\selectfont\bfseries Apareadas\par}
+
+\textbf{Caso Práctico:} Un ingeniero industrial evalúa la eficacia de un nuevo programa de seguridad para reducir los accidentes de trabajo en 10 plantas de fabricación. Se registran los accidentes antes y después del programa: Probar si el programa es eficaz para reducir la cantidad de
+
+\begin{center}
+Tabla 1: Accidentes registrados en 10 plantas industriales
+
+\vspace{2pt}
+\begin{tabular}{l r r r r r r r r r r}
+\toprule
+\textbf{Planta} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} \\
+\midrule
+Antes & 45 & 73 & 46 & 124 & 33 & 57 & 83 & 34 & 26 & 17 \\
+Después & 36 & 60 & 44 & 119 & 35 & 51 & 77 & 29 & 24 & 11 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+$H_0 : \tilde{\mu}_D = 0$ \quad (La mediana de las diferencias es cero, el programa no tiene efecto)
+
+$H_1 : \tilde{\mu}_D > 0$ \quad (Los accidentes antes son mayores que después, el programa es eficaz)
+
+Resultados: $n = 10$ diferencias efectivas, $x = 9$ signos positivos. La cadena de signos es:
+
+\begin{center}
+$+\ \ +\ \ +\ \ +\ \ -\ \ +\ \ +\ \ +\ \ +\ \ +$
+\end{center}
+
+\end{document}

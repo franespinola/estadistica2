@@ -1,0 +1,92 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.0cm,bottom=1.0cm,left=1.3cm,right=1.3cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{9pt}
+\pagestyle{empty}
+
+\newcommand{\cuerpo}{\fontsize{16.4}{20}\selectfont}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{6pt}%
+  \setlength{\belowdisplayskip}{6pt}%
+  \setlength{\abovedisplayshortskip}{3pt}%
+  \setlength{\belowdisplayshortskip}{3pt}%
+  \cuerpo
+}
+
+\begin{document}
+
+\begin{center}
+{\fontsize{21}{25}\selectfont\bfseries Prueba H} {\fontsize{19}{23}\selectfont (3 o mas muestras indep.)}
+\end{center}
+
+\begin{center}
+\begin{minipage}{0.87\textwidth}
+\begin{center}
+{\fontsize{19}{23}\selectfont\bfseries\uline{Prueba H (Kruskal Wallis)}}
+\end{center}
+
+Alternativa no paramétrica de \textbf{Anova.} Comparo que \textbf{k} medias poblacionales (de k muestras) sean significativamente iguales. \textbf{H0:} u1=u2=...=uk
+
+1.Unimos las k muestras y las ordenamos de forma creciente.
+
+2. A cada valor se le indica a que muestra pertenece (I, II,k) y se le asigna un rango (posición). Si dos valores son iguales, se asigna un promedio de sus rangos.
+
+3. Sumamos los rangos de cada muestra (R1, R2, .., Rk)
+
+4. Aplicamos la fórmula H, si \textbf{ni$>$5.} Aceptamos o rechazamos H0
+\[
+H = \frac{12}{n\cdot(n+1)}\cdot \sum_{i=1}^{k} \frac{\left(R_i\right)^2}{\left(n_i\right)} - 3\cdot(n+1)
+\]
+
+Distribución chi cuadrado con \textbf{k-1 grados de libertad. k} el numero de poblaciones. \textbf{n} es la suma de todos los tamaños muest
+\end{minipage}
+\end{center}
+
+\begin{minipage}[t]{0.615\textwidth}
+\vspace{0pt}
+\textbf{Caso Práctico:} Se evalúa la eficacia de tres tratamientos preventivos anticorrosión midiendo la profundidad máxima de las cavidades (en milésimas de pulgada) en piezas de cable sometidas a un ensayo acelerado:
+
+\begin{itemize}[leftmargin=20pt,itemsep=20pt,topsep=14pt,parsep=0pt]
+  \item \textbf{Método A} ($n_1 = 6$): 77, 54, 67, 74, 71, 66
+  \item \textbf{Método B} ($n_2 = 7$): 60, 41, 59, 65, 62, 64, 52
+  \item \textbf{Método C} ($n_3 = 5$): 49, 52, 69, 47, 56
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.355\textwidth}
+\vspace{34pt}
+{\footnotesize
+$H_0$ : Las poblaciones de los tres tratamientos son idénticas ($\tilde{\mu}_A = \tilde{\mu}_B = \tilde{\mu}_C$)
+
+\vspace{4pt}
+$H_1$ : Al menos uno de los tratamientos difiere en su localización central (distinta eficacia)
+}
+\end{minipage}
+
+\vspace{34pt}
+\begin{center}
+{\fontsize{13.6}{17}\selectfont
+\renewcommand{\arraystretch}{1.25}
+\setlength{\tabcolsep}{6.4pt}
+\begin{tabular}{l c c c c c c c c c c c c c c c c c c}
+\toprule
+Valor & 41 & 47 & 49 & 52 & 52 & 54 & 56 & 59 & 60 & 62 & 64 & 65 & 66 & 67 & 69 & 71 & 74 & 77 \\
+Grupo & B & C & C & B & C & A & C & B & B & B & B & B & A & A & C & A & A & A \\
+\midrule
+Rango & 1 & 2 & 3 & \textbf{4.5} & \textbf{4.5} & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\end{document}
