@@ -1,0 +1,119 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array,multirow}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{4pt}%
+  \setlength{\belowdisplayskip}{4pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+{\large\bfseries Tema B\par}
+\vspace{2pt}
+
+\textbf{\uline{Hipotesis relativa a 2 medias}}
+
+Se comparan 2 medias poblaciones $u_1$--$u_2$
+
+\textbf{$H_0 : \mu_1 - \mu_2 = \delta$,} \hspace{1.5cm} $\delta$ \textbf{diferencia propuesta}
+
+$\mu_1-\mu_2<\delta$ \textbf{cola izq.} \hspace{0.8cm} $\mu_1-\mu_2>\delta$ \textbf{cola der.} \hspace{0.8cm} $\mu_1-\mu_2<>\delta$ \textbf{bil}
+
+\[
+z = \frac{(x_{m1} - x_{m2}) - \delta}{\sigma_{xm1} - \sigma_{xm2}}
+\qquad \text{\textbf{diferencia entre medias muestrales}}
+\]
+
+Si las poblaciones son normales, \textbf{se define un estadístico:}
+
+\textbf{1) Para n grande ($n>30$):} $\sigma^2$ \textit{conocido}
+\[
+z = \frac{\left[\bar{x}_1 - \bar{x}_2\right] - \delta}{\sqrt{\dfrac{\sigma_1^2}{n_1} + \dfrac{\sigma_2^2}{n_2}}}
+\]
+\vspace{-4pt}
+{\centering\hspace{2.2cm}{\footnotesize $\downarrow$ \textit{varianza de la media muestral}}\par}
+
+$\sigma^2$ \textit{desconocido:} \textit{sustituyendo $\sigma_1$ y $\sigma_2$ por $s_1$ y $s_2$}
+
+\textbf{2) Para n chico ($n<30$) con $\sigma^2$ desconocida:} ``\textbf{Prueba t-bimuestral}'' \textit{(muestras independientes)} \\
+suponemos $\sigma_1 = \sigma_2$ ($=\sigma$)
+
+\[
+t = \frac{\left[\left(\overline{x_1} - \overline{x_2}\right) - \delta\right]}{\sqrt{(n_1-1)\cdot(s_1)^2 + (n_2-1)\cdot(s_2)^2}} \cdot \sqrt{\frac{n_1 \cdot n_2 \cdot (n_1+n_2-2)}{n_1+n_2}}
+\qquad \text{con } \nu = n_1 + n_2 - 2
+\]
+
+\textbf{3) Si las 2 poblac. no son independientes:} \\
+La muestra es la diferencia entre las 2 poblaciones relacionadas, con su signo.
+
+\begin{center}
+Horas-hombre perdidas antes y después del programa.
+
+\vspace{3pt}
+\begin{tabular}{l r r r r r r r r r r l}
+\toprule
+\rowcolor{gray!12} Planta & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & \\
+\midrule
+Antes    & 45 & 73 & 46 & 124 & 33 & 57 & 83 & 34 & 26 & 17 & \textbf{h0:} $\mu = 0$ \\
+Después  & 36 & 60 & 44 & 119 & 35 & 51 & 77 & 29 & 24 & 11 & \textbf{h1:} $\mu > 0$ \\
+\rowcolor{gray!12} $d_i$ & 9 & 13 & 2 & 5 & $-2$ & 6 & 6 & 5 & 2 & 6 & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\[
+\bar{x} = \frac{9 + 13 + 2 + 5 - 2 + 6 + 6 + 5 + 2 + 6}{10} = 5.2
+\]
+
+\[
+s = \sqrt{\frac{\sum d_i^2 - n \cdot \bar{x}^2}{n-1}}
+\qquad \text{\textbf{n-1 para quitar sesgo}}
+\]
+
+\[
+t = \frac{\bar{x} - \mu_0}{s/\sqrt{n}}
+\qquad \parbox{5cm}{\textbf{Aplica t-unimuestral}\\ conclus->\textbf{eficaz}}
+\]
+
+$qt(0.95,\ df = 9)$ \hspace{2cm} \textbf{Se rechaza h0}
+
+\vspace{4pt}
+\hrule
+\vspace{4pt}
+
+\textbf{Ejemplo:} En una estación agrícola se deseaba ensayar el efecto de un determinado fertilizante sobre la producción de trigo. Para ello se eligieron \textcolor{blue}{24} parcelas de terreno de igual superficie; la mitad de ellas fueron tratadas con el fertilizante y la otra mitad no (grupo control). Todas las demás condiciones fueron las mismas. La media de trigo conseguida fue de \textcolor{blue}{0.264 m$^3$} con una desviación estándar de \textcolor{blue}{0.02 m$^3$}, mientras que la media en las parcelas tratadas fue de \textcolor{blue}{0.28 m$^3$} con una desviación estándar de \textcolor{blue}{0.022 m$^3$}. ¿Puede decirse que hay un incremento significativo en la producción de trigo por el empleo del fertilizante al nivel de significación del 5\%?
+
+\begin{description}[leftmargin=1.4cm,style=nextline,itemsep=1pt,topsep=1pt,parsep=0pt]
+  \item[1 --] Hipótesis Nula $\mu_1 - \mu_2 = 0$, la diferencia se debe al azar
+
+  Hipótesis Alternativa $\mu_1 > \mu_2$ (unilateral cola derecha), el fertilizante incrementa significativamente la producción.
+  \item[2 -] Nivel de significancia: $\alpha = 0.05$. $t_\alpha = 1.717$ con $\nu = 22$ grados de libertad.
+  \item[3 -] Para trabajar con tablas normalizadas:
+\end{description}
+
+\[
+t = \frac{\left[\left(\overline{x_1} - \overline{x_2}\right) - \delta\right]}{\sqrt{(n_1-1)\cdot(s_1)^2 + (n_2-1)\cdot(s_2)^2}} \cdot \sqrt{\frac{n_1 \cdot n_2 \cdot (n_1+n_2-2)}{n_1+n_2}}
+\]
+
+\[
+t = \frac{\left[(0.28 - 0.264) - 0\right]}{\sqrt{(12-1)\cdot 0.022^2 + (12-1)\cdot(0.02)^2}} \cdot \sqrt{\frac{12 \cdot 12 \cdot (12+12-2)}{12+12}} = 1.849
+\]
+
+\textbf{5-} Dado que $1.849 > t_{0.05}$ ($t_{0.05} = 1.717$) \textcolor{blue}{se Rechaza la Hipótesis Nula $\mu_1$ - $\mu_2 = 0$}. Vale decir, \textcolor{blue}{hay un incremento significativo} en la producción de trigo por el empleo del fertilizante.
+
+\end{document}
