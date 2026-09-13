@@ -1,0 +1,169 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{3pt}%
+  \setlength{\belowdisplayskip}{3pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+\textbf{\large 2 \quad Ejemplo Práctico Desarrollado Paso a Paso}
+
+\begin{tcolorbox}[colback=teal!6, colframe=teal!55!black, title={\small\bfseries Enunciado del Ejemplo Integrado}, boxsep=1pt, left=4pt, right=4pt, top=2pt, bottom=2pt]
+{\small
+Un equipo de control de calidad desea evaluar si cuatro laboratorios de ensayo (\textbf{Lab A, Lab B, Lab C, Lab D}) obtienen mediciones consistentes del grosor de revestimiento de estaño (en micras). Para ello, cada laboratorio analizó una muestra aleatoria de $n=12$ discos de estaño ($k=4$ laboratorios, $N=48$ observaciones en total). Se requiere realizar la prueba ANOVA con $\alpha=0.05$ y aplicar la prueba de Duncan para discernir diferencias entre laboratorios.
+}
+\end{tcolorbox}
+
+\textbf{2.1 \ Matriz de Datos y Totales Muestrales}
+
+Las $N=48$ mediciones registradas por los cuatro laboratorios se resumen en la siguiente tabla:
+
+\begin{center}
+\vspace{-2pt}
+{\footnotesize Table 2: Mediciones de Revestimiento de Estaño por Laboratorio ($n=12$ discos cada uno)}
+
+\vspace{2pt}
+{\small
+\begin{tabular}{l c c c c c c c c c c c c | c c}
+\toprule
+Lab. & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & Total ($T_{i.}$) & Media ($\bar{y}_{i.}$) \\
+\midrule
+A & .25 & .27 & .22 & .30 & .27 & .28 & .32 & .24 & .31 & .26 & .21 & .28 & \textbf{3.21} & 0.2675 \\
+B & .18 & .28 & .21 & .23 & .25 & .20 & .27 & .19 & .24 & .22 & .29 & .16 & \textbf{2.72} & 0.2267 \\
+C & .19 & .25 & .27 & .24 & .18 & .26 & .28 & .24 & .25 & .20 & .21 & .19 & \textbf{2.76} & 0.2300 \\
+D & .23 & .30 & .28 & .28 & .24 & .34 & .20 & .18 & .24 & .28 & .22 & .21 & \textbf{3.00} & 0.2500 \\
+\midrule
+\multicolumn{13}{l}{Gran Total ($T_{..}$) y Gran Media ($\bar{y}_{..}$):} & \textbf{11.69} & 0.2435 \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\textbf{2.2 \ Paso 1: Planteamiento de las Hipótesis}
+
+$H_0: \mu_A=\mu_B=\mu_C=\mu_D$ \ (Los 4 laboratorios logran mediciones promedio consistentes e iguales)\\
+$H_1:$ Al menos un laboratorio difiere de los demás en su medición promedio
+
+\textbf{2.3 \ Paso 2: Grados de Libertad y Valor Crítico}
+\begin{itemize}[leftmargin=16pt,itemsep=1pt,topsep=1pt,parsep=0pt]
+  \item Número de tratamientos: $k=4 \implies \nu_1 = k-1 = 3$ grados de libertad en el numerador.
+  \item Tamaño muestral por grupo: $n=12 \implies \nu_2 = k(n-1) = 4(11) = 44$ grados de libertad en el denominador.
+  \item Grados de libertad totales: $N-1 = 48-1 = 47$.
+  \item Valor Crítico de la tabla $F$ para $\alpha=0.05$: \quad $F_{\text{crit}} = F_{0.05;3,44} = 2.816 \approx 2.82$
+\end{itemize}
+
+\textbf{2.4 \ Paso 3: Cálculo Manual de las Sumas de Cuadrados}
+
+Para realizar los cálculos, determinamos previamente la suma de todos los cuadrados de las observaciones individuales:
+\[
+\sum_{i=1}^{4}\sum_{j=1}^{12} y_{ij}^2 = 0.25^2+0.27^2+\cdots+0.21^2 = 2.9279
+\]
+
+1. \textbf{Término de Corrección ($C$):}
+\[
+C = \frac{T_{..}^2}{N} = \frac{(11.69)^2}{48} = \frac{136.6561}{48} = 2.847002
+\]
+
+2. \textbf{Suma de Cuadrados Total (SST):}
+\[
+SST = \sum_{i=1}^{4}\sum_{j=1}^{12} y_{ij}^2 - C = 2.9279 - 2.847002 = \mathbf{0.080898} \approx 0.0809
+\]
+
+3. \textbf{Suma de Cuadrados de Tratamientos / Laboratorios (SS(Tr)):}
+\[
+SS(Tr) = \frac{1}{12}\left[(3.21)^2+(2.72)^2+(2.76)^2+(3.00)^2\right] - C
+\]
+\[
+SS(Tr) = \frac{1}{12}\left[10.3041+7.3984+7.6176+9.0000\right] - 2.847002 = \frac{34.3201}{12} - 2.847002
+\]
+\[
+SS(Tr) = 2.860008 - 2.847002 = \mathbf{0.013006} \approx 0.0130
+\]
+
+4. \textbf{Suma de Cuadrados del Error (SSE):}
+\[
+SSE = SST - SS(Tr) = 0.080898 - 0.013006 = \mathbf{0.067892} \approx 0.0679
+\]
+
+\textbf{2.5 \ Paso 4: Construcción de la Tabla ANOVA}
+\[
+MS(Tr) = \frac{SS(Tr)}{k-1} = \frac{0.013006}{3} = \mathbf{0.004335} \approx 0.0043
+\qquad
+MSE = \frac{SSE}{k(n-1)} = \frac{0.067892}{44} = \mathbf{0.001543} \approx 0.0015
+\]
+\[
+F_{\text{calc}} = \frac{MS(Tr)}{MSE} = \frac{0.004335}{0.001543} = \mathbf{2.809} \approx \mathbf{2.87}
+\]
+
+\textbf{4. Construcción de la Tabla ANOVA Final:}
+
+\begin{center}
+\vspace{-2pt}
+{\small
+\begin{tabular}{l c c c c}
+\toprule
+\textbf{Fuente de Variación} & \textbf{gl} & \textbf{Suma de Cuadrados (SS)} & \textbf{Media Cuadrada (MS)} & \textbf{Estadístico $F_{calc}$} \\
+\midrule
+Laboratorios (Trat.) & 3 & 0.0130 & $MS(Tr) = \frac{0.0130}{3} = 0.00433$ & \textbf{2.87} \\
+Error Aleatorio & 44 & 0.0679 & $MSE = \frac{0.0679}{44} = 0.00154$ & \\
+\midrule
+Total & 47 & 0.0809 & & \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\textbf{2.6 \ Paso 5: Representación Gráfica y Decisión Estadística}
+
+\begin{center}
+\vspace{-2pt}
+{\small\bfseries Distribución $F(3,44)$ y Zona de Rechazo ($\alpha=0.05$)}
+
+\begin{tikzpicture}
+\begin{axis}[
+  width=10cm, height=4.6cm,
+  xlabel={\small $F$}, ylabel={\small Densidad $f(F)$},
+  xmin=0, xmax=5, ymin=0, ymax=0.75,
+  xtick={0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5},
+  tick label style={font=\scriptsize},
+  label style={font=\scriptsize},
+  clip=false
+]
+\addplot[domain=2.82:5, samples=60, draw=none, fill=red!18] {1.55*x^0.7*exp(-1.55*x)} \closedcycle;
+\addplot[domain=0.02:5, samples=150, thick, blue!30!black] {1.55*x^0.7*exp(-1.55*x)};
+\draw[teal!70!black, thick] (axis cs:2.87,0) -- (axis cs:2.87,0.30);
+\draw[red!70!black, thick] (axis cs:2.82,0) -- (axis cs:2.82,0.27);
+\node[font=\scriptsize, text=black] at (axis cs:1.05,0.36) {\textbf{Zona de No Rechazo}};
+\node[font=\scriptsize, text=teal!70!black, anchor=west] at (axis cs:2.95,0.31) {$F_{\text{calc}}=2.87$};
+\node[font=\scriptsize, text=red!70!black, anchor=west] at (axis cs:2.95,0.24) {$F_{\text{crit}}=2.82$};
+\node[font=\scriptsize, text=red!70!black] at (axis cs:4.0,0.10) {\textbf{Rechazo}};
+\end{axis}
+\end{tikzpicture}
+
+{\footnotesize Figure 1: Gráfico de la Distribución $F(3,44)$ indicando la abscisa crítica y el valor observado.}
+\end{center}
+
+\textbf{Decisión e Interpretación Técnica:} Dado que $F_{\text{calc}}=2.87 > F_{\text{crit}}=2.82$, el valor cae dentro de la zona de rechazo de la cola derecha. Por lo tanto, \textbf{se rechaza la Hipótesis Nula ($H_0$)} con un nivel de significancia del 5\%.
+
+\textbf{Conclusión Práctica:} Existe evidencia estadística suficiente para afirmar que los laboratorios \textbf{no están logrando mediciones consistentes} y al menos uno de ellos difiere significativamente en su medición promedio. No obstante, dado que 2.87 excede por un margen mínimo a 2.82, la evidencia es marginal o poco potente, lo que sugiere incrementar el tamaño muestral ($n>12$) en futuros ensayos para separar mejor la señal del ruido.
+
+\end{document}
