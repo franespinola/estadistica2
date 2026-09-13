@@ -1,0 +1,90 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{3pt}%
+  \setlength{\belowdisplayskip}{3pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+{\large\bfseries\uline{Pruebas de aleatoreidad}} --- Prueba de corridas
+\vspace{4pt}
+
+Sirven para comprobar si el orden de una muestra o proceso puede considerarse \textbf{aleatorio}. Se analiza si los valores se suceden sin un patrón sistemático.\\
+Una \textbf{corrida} o \textbf{racha} es una secuencia de una o más letras iguales consecutivas.
+\[
+a\,a \mid b\,b \mid a \mid b\,b\,b \qquad \longrightarrow \quad \textbf{4 corridas}
+\]
+
+\textbf{\large Hipotesis}
+
+H0:el arreglo o secuencia es aleatorio
+
+H1:el arreglo no es aleatorio $\Rightarrow$prueba bilateral\\
+H1:hay demasiadas corridas $\Rightarrow$prueba unilateral derecha\\
+H1:hay muy pocas corridas $\Rightarrow$prueba unilateral izquierda
+
+\textbf{\large Pasos}
+
+\begin{minipage}[t]{0.55\textwidth}
+\textbf{1. Construir la cadena de letras}
+
+-Si los datos son \textbf{binarios} ---éxito/fracaso, 1/0, caro/barato---, se construye directamente una cadena de letras a y b.\\
+-Si los datos son \textbf{numéricos}:
+\begin{enumerate}[leftmargin=18pt,itemsep=0pt,topsep=1pt,parsep=0pt]
+  \item Calcular la mediana.
+  \item Asignar a a cada observación superior a la mediana.
+  \item Asignar b a cada observación inferior a la mediana.
+  \item Los valores iguales a la mediana se omiten.
+  \item Mantener el orden original de los datos.
+\end{enumerate}
+
+\textbf{2. Contar las cantidades}
+
+n1=cantidad de letras a\\
+n2=cantidad de letras b\\
+u=cantidad total de corridas
+
+\textbf{3. Calcular los parámetros de la distribución de corridas}
+\[
+\mu_u = \frac{2n_1 n_2}{n_1+n_2} + 1
+\]
+\[
+\sigma_u = \sqrt{\frac{2n_1 n_2\,(2n_1 n_2 - n_1 - n_2)}{(n_1+n_2)^2\,(n_1+n_2-1)}}
+\]
+\end{minipage}\hfill
+\begin{minipage}[t]{0.42\textwidth}
+\textbf{4. Aproximacion normal}
+
+si n1$>$10 y n2$>$10 la dist. del num de corridas \textbf{u} se aproxima a una dist. normal, aplico estadistico z
+\[
+Z_{\text{calc}} = \frac{u - \mu_u}{\sigma_u}
+\]
+
+\textbf{Interpretaciones}
+\begin{itemize}[leftmargin=12pt,itemsep=1pt,topsep=1pt,parsep=0pt]
+  \item {\small $u$ grande: demasiados cambios entre $a$ y $b$; alternancia excesiva.}
+  \item {\small $u$ chico: pocas alternancias; los valores iguales tienden a agruparse.}
+  \item {\small $u$ cercano a $\mu_u$: comportamiento compatible con aleatoriedad.}
+\end{itemize}
+
+\vspace{4pt}
+\textbf{Se usa en control de calidad para dar aleatoreidad a procesos}
+\end{minipage}
+
+\end{document}

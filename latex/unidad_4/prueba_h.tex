@@ -1,0 +1,166 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+\usepackage[most]{tcolorbox}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{3pt}%
+  \setlength{\belowdisplayskip}{3pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+\begin{center}
+{\large\bfseries\uline{Prueba H (Kruskal Wallis)}}
+\end{center}
+\vspace{-2pt}
+
+Alternativa no paramétrica de \textbf{Anova.} Comparo que \textbf{k} medias poblacionales (de k muestras) sean significativamente iguales. \textbf{H0:} u1=u2=...=uk
+
+1.Unimos las k muestras y las ordenamos de forma creciente.
+
+2. A cada valor se le indica a que muestra pertenece (I, II,k) y se le asigna un rango (posición). Si dos valores son iguales, se asigna un promedio de sus rangos.
+
+3. Sumamos los rangos de cada muestra (R1, R2, .., Rk)
+
+4. Aplicamos la fórmula H, si \textbf{ni$>$5.} Aceptamos o rechazamos H0
+\[
+H = \frac{12}{n\cdot(n+1)}\cdot \sum_{i=1}^{k} \frac{\left(R_i\right)^2}{\left(n_i\right)} - 3\cdot(n+1)
+\]
+
+Distribución chi cuadrado con \textbf{k-1 grados de libertad}. \textbf{k} el numero de poblaciones. \textbf{n} es la suma de todos los tamaños muestrales
+
+\vspace{2pt}
+\hrule
+\vspace{4pt}
+
+\begin{center}
+{\large\bfseries EXPLICACION \ PRUEBA DE SUMA DE RANGOS - H}
+\end{center}
+\vspace{-2pt}
+
+\textbf{4.2 \ 2. La Prueba H de Kruskal-Wallis (Tres o más muestras independientes)}
+
+¿Qué ocurre si la investigación involucra tres o más grupos independientes? La prueba U se queda corta. Necesitamos generalizarla para $k \geq 3$ grupos. Esto es la \textbf{Prueba H de Kruskal-Wallis}, que es el equivalente no paramétrico de la prueba ANOVA paramétrica de una vía.
+
+\textbf{Ejercicio 4: Comparación de Métodos contra la Corrosión en Cables}
+
+\textbf{Caso Práctico:} Se evalúa la eficacia de tres tratamientos preventivos anticorrosión midiendo la profundidad máxima de las cavidades (en milésimas de pulgada) en piezas de cable sometidas a un ensayo acelerado:
+\begin{itemize}[leftmargin=16pt,itemsep=1pt,topsep=1pt,parsep=0pt]
+  \item \textbf{Método A ($n_1 = 6$):} 77, 54, 67, 74, 71, 66
+  \item \textbf{Método B ($n_2 = 7$):} 60, 41, 59, 65, 62, 64, 52
+  \item \textbf{Método C ($n_3 = 5$):} 49, 52, 69, 47, 56
+\end{itemize}
+
+Probar si los tres tratamientos difieren significativamente en su eficacia preventiva utilizando un nivel de significación de $\alpha = 0.05$.
+
+\textbf{Resolución Desarrollada Paso a Paso:}
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt,topsep=2pt,parsep=0pt]
+  \item \textbf{Planteamiento de Hipótesis:}
+
+  $H_0$: Las poblaciones de los tres tratamientos son idénticas ($\tilde{\mu}_A = \tilde{\mu}_B = \tilde{\mu}_C$)\\
+  $H_1$: Al menos uno de los tratamientos difiere en su localización central (distinta eficacia)
+
+  \item \textbf{Ordenamiento de Datos y Asignación de Rangos (Manejo de Empates):} Agrupamos todos los datos ($N = 6+7+5 = 18$ observaciones) y los ordenamos de forma creciente: \hfill {\small\textbf{Ordenamos las K muestras como una sola}}
+
+  \begin{center}
+  \vspace{-2pt}
+  {\small
+  \begin{tabular}{l c c c c c c c c c c c c c c c c c c}
+  \toprule
+  Valor & 41 & 47 & 49 & 52 & 52 & 54 & 56 & 59 & 60 & 62 & 64 & 65 & 66 & 67 & 69 & 71 & 74 & 77 \\
+  Grupo & B & C & C & B & C & A & C & B & B & B & B & B & A & A & C & A & A & A \\
+  \midrule
+  Rango & 1 & 2 & 3 & \textbf{4.5} & \textbf{4.5} & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 \\
+  \bottomrule
+  \end{tabular}
+  }
+  \vspace{-4pt}
+  \end{center}
+
+  \begin{tcolorbox}[colback=red!6, colframe=red!70!black, title={\small\bfseries Atención - Error Frecuente}, boxsep=1pt, left=4pt, right=4pt, top=2pt, bottom=2pt]
+  {\small
+  \textbf{El tratamiento de empates:} En la tabla observamos que el valor 52 aparece dos veces (posiciones ordinales 4 y 5). En estadística no paramétrica, \textbf{jamás se les asignan rangos arbitrarios} (como 4 al primero y 5 al segundo) porque esto inventaría un orden inexistente. En su lugar, a cada elemento empatado se le asigna el promedio de los rangos que ocuparían conjuntamente:
+  \[
+  \text{Rango asignado} = \frac{4+5}{2} = 4.5
+  \]
+  Ambas observaciones reciben el rango 4.5 (el cual se reparte entre los sumatorios de los grupos B y C).
+  }
+  \end{tcolorbox}
+
+  \item \textbf{Suma de Rangos por Grupo ($R_i$):}
+  \begin{align*}
+  R_A &= 6 + 13 + 14 + 16 + 17 + 18 = \mathbf{84} \\
+  R_B &= 1 + 4.5 + 8 + 9 + 10 + 11 + 12 = \mathbf{55.5} \\
+  R_C &= 2 + 3 + 4.5 + 7 + 15 = \mathbf{31.5}
+  \end{align*}
+
+  \textit{Control aritmético rápido ($N = 18$):}
+  \[
+  \sum R = 84 + 55.5 + 31.5 = 171
+  \quad \text{y} \quad
+  \frac{18(19)}{2} = 171 \quad \checkmark\ \text{(Correcto)}
+  \]
+
+  \item \textbf{Cálculo del Estadístico H de Kruskal-Wallis:} Utilizamos la ecuación fundamental de la prueba H:
+  \begin{align*}
+  H &= \frac{12}{N(N+1)} \left( \sum_{i=1}^{k} \frac{R_i^2}{n_i} \right) - 3(N+1) \\
+  H &= \frac{12}{18(19)} \left( \frac{84^2}{6} + \frac{55.5^2}{7} + \frac{31.5^2}{5} \right) - 3(19) \\
+  H &= \frac{12}{342} \left( \frac{7056}{6} + \frac{3080.25}{7} + \frac{992.25}{5} \right) - 57 \\
+  H &= 0.0350877\,(1176 + 440.036 + 198.45) - 57 \\
+  H &= 0.0350877\,(1814.486) - 57 \\
+  H &= 63.666 - 57 = \mathbf{6.666} \approx \mathbf{6.66}
+  \end{align*}
+
+  \item \textbf{Región Crítica y Decisión (Distribución de Referencia):} Bajo la hipótesis nula, si los tamaños muestrales de cada grupo son mayores a 5 ($n_i > 5$, lo cual se cumple ya que tenemos $n_1 = 6, n_2 = 7, n_3 = 5$), el estadístico H se modela mediante la distribución \textbf{Chi-cuadrado} con $k-1$ grados de libertad (donde $k = 3$ grupos, $gl = 2$). Para $\alpha = 0.05$ y $gl = 2$:
+  \[
+  \chi^2_{\text{crit}} = \chi^2_{0.05,2} = \mathbf{5.991}
+  \]
+  La regla de decisión establece que se rechaza la hipótesis nula si $H > 5.991$ (Ver figura 3).
+
+  \begin{center}
+  \vspace{-2pt}
+  \begin{tikzpicture}
+  \begin{axis}[
+    width=9.5cm, height=4.6cm,
+    title={\small\bfseries Distribución de Referencia $\chi^2$ con 2 g.l. (Kruskal-Wallis) \ (Desgaste de Cables de Cobre)},
+    xlabel={\footnotesize Estadístico H de Kruskal-Wallis},
+    ylabel={\footnotesize Densidad de Probabilidad},
+    xmin=0, xmax=10, ymin=0, ymax=0.52,
+    xtick={0,2,4,6,8,10},
+    tick label style={font=\scriptsize},
+    clip=false
+  ]
+  \addplot[domain=5.991:10, samples=60, draw=none, fill=red!25] {0.5*exp(-x/2)} \closedcycle;
+  \addplot[domain=0.001:10, samples=120, thick, blue!40!black] {0.5*exp(-x/2)};
+  \draw[red!70!black, dashed] (axis cs:5.991,0) -- (axis cs:5.991,0.5);
+  \fill[orange!80!yellow] (axis cs:6.66,0.018) circle (2.2pt);
+  \node[draw=orange!80!black, fill=orange!10, align=center, font=\tiny, anchor=south] at (axis cs:6.4,0.14) {H\_calc = 6.66\\ (Cae en Zona de Rechazo)\\ \textcolor{red!70!black}{(Cola Derecha al 5\%)}};
+  \draw[gray] (axis cs:6.5,0.13) -- (axis cs:6.66,0.025);
+  \end{axis}
+  \end{tikzpicture}
+  \vspace{-8pt}
+
+  {\footnotesize Figura 3: Gráfica de la distribución Chi-cuadrado con 2 grados de libertad. El estadístico calculado H (6.66) cae en la zona de rechazo a la derecha del valor crítico 5.991.}
+  \end{center}
+
+  \item \textbf{Decisión e Interpretación:} Como $H = 6.66 > \chi^2_{\text{crit}} = 5.991$, se rechaza la hipótesis nula $H_0$. \textbf{Interpretación:} A un nivel de significación del 5\%, existe suficiente evidencia para afirmar que los tres tratamientos contra la corrosión de cables no tienen la misma eficacia preventiva. Al analizar la suma de rangos, el Método A (con el rango más alto, indicando mayor profundidad de cavidad) resulta ser el menos eficaz, mientras que el Método C presenta los mejores resultados preventivos (cavidades menos profundas).
+\end{enumerate}
+
+\end{document}

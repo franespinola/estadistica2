@@ -1,0 +1,254 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{3pt}%
+  \setlength{\belowdisplayskip}{3pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+\hfill $\longrightarrow$ \textbf{Una muestra}
+
+{\large\bfseries\uline{Prueba del Signo}\par}
+\vspace{2pt}
+
+\begin{minipage}{0.63\textwidth}
+Sirve como \textbf{alternativa no paramétrica} a \textbf{T-Unimuestral (pueden ser apareadas o no}, osea datos de antes y después) donde \textbf{H0:} $\mu = \mu 0$. Se aplica cuando se muestrea de una \textbf{población simétrica} (elementos con misma probabilidad de ser mayor o menor a la media)
+\end{minipage}\hfill
+\begin{minipage}{0.30\textwidth}
+\[
+t = \frac{\bar{x}-\mu_0}{s/\sqrt{n}}
+\]
+\end{minipage}
+
+El \textbf{criterio} que se utiliza es reemplazar cada valor por los signos ``+'' o ``-'' según sea mayor o menor que la media (o mediana en su defecto), si es igual se ignora. Se considera siempre una prob \textbf{p=0.5}.
+
+\textbf{Ejemplo:} $\mu 0 = 98$ y la alternativa $\mu > \mu 0$. Se coloca + si es mayor a 98, - si no lo es, nada si es igual. Queda una cadena de signos: $+++\cdot+++\cdot+++++$
+
+Para \textbf{muest apareadas (A y D)}: una H0 puede ser u1-u2=0 \ si u1$>$u2 es + \ y si u1$<$u2 es -
+
+\textbf{x} es la cant de signos +. \textbf{n} la cantidad de signos totales. \textbf{Se calcula la prob de obtener ``x'' o más signos y si menor o igual a un $\boldsymbol{\alpha}$ (ej: 0.01) se rechaza H0.}
+
+\begin{center}
+\vspace{-4pt}
+\colorbox{yellow!60}{$\displaystyle \sum_{k=9}^{10} \text{dbinom}(k,n,0.5) = 0.011$}
+\quad
+{\small
+\begin{tabular}{@{}l@{}}
+k:num de exitos \\
+n: total de signos \\
+0,5: probabilidad
+\end{tabular}
+}
+\vspace{-6pt}
+\end{center}
+
+\hrule
+\vspace{2pt}
+
+\begin{center}
+{\large\bfseries EJEMPLOS RESOLUCION PRUEBA DE SIGNO} \\ \textbf{Unimuestral}
+\end{center}
+\vspace{-4pt}
+
+\textbf{3.2 \ 2. Ejercicio 1: Prueba del Signo Unimuestral (Octanaje de Nafta)}
+
+\textbf{Caso Práctico:} Un laboratorio analiza el octanaje de un nuevo lote de nafta. Se toma una muestra aleatoria de 15 mediciones cronológicas:
+
+99.0 \ \ 102.3 \ \ 99.8 \ \ 100.5 \ \ 99.7 \ \ 96.2 \ \ 99.1 \ \ 102.5 \ \ 103.3 \ \ 97.4 \ \ 100.4 \ \ 98.9 \ \ 98.3 \ \ 98.0 \ \ 101.6
+
+Se desea comprobar si el octanaje promedio (mediana) excede la especificación estándar de 98.0 con un nivel de significación de $\alpha = 0.01$.
+
+\textbf{Resolución Paso a Paso:}
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt,topsep=2pt,parsep=0pt]
+  \item \textbf{Fórmula y Planteamiento de Hipótesis:}
+
+  $H_0 : \tilde{\mu} = 98.0$ \quad (La mediana es igual a 98.0)\\
+  $H_1 : \tilde{\mu} > 98.0$ \quad (El octanaje excede de forma significativa la especificación, prueba de cola derecha)
+
+  \item \textbf{Cálculo de Signos y Descarte de Empates:} Comparamos cada uno de los 15 valores muestrales contra la mediana de referencia 98.0:
+  \begin{itemize}[leftmargin=12pt,itemsep=1pt,topsep=1pt,parsep=0pt]
+    \item $99.0>98.0 \rightarrow +$ \quad $102.3>98.0 \rightarrow +$ \quad $99.8>98.0 \rightarrow +$ \quad $100.5>98.0 \rightarrow +$
+    \item $99.7>98.0 \rightarrow +$ \quad $96.2<98.0 \rightarrow -$ \quad $99.1>98.0 \rightarrow +$ \quad $102.5>98.0 \rightarrow +$
+    \item $103.3>98.0 \rightarrow +$ \quad $97.4<98.0 \rightarrow -$ \quad $100.4>98.0 \rightarrow +$ \quad $98.9>98.0 \rightarrow +$
+    \item $98.3>98.0 \rightarrow +$ \quad $98.0=98.0 \rightarrow$ \textbf{Empate (Se elimina de la muestra)} \quad $101.6>98.0 \rightarrow +$
+  \end{itemize}
+
+  Por lo tanto, la muestra efectiva se reduce a $n = 14$ observaciones (eliminando el empate). Contamos la cantidad de signos positivos: $x = 12$. La cadena de signos resultante es:
+
+  \centerline{$+\ \ +\ \ +\ \ +\ \ +\ \ -\ \ +\ \ +\ \ +\ \ -\ \ +\ \ +\ \ +\ \ +$}
+
+  \item \textbf{Cálculo de la Probabilidad (p-valor):} Bajo la hipótesis nula, el número de signos positivos $X$ se distribuye de forma binomial: $X \sim \mathcal{B}(14, 0.5)$. Como la hipótesis alternativa es unilateral derecha ($\tilde{\mu} > 98.0$), queremos saber la probabilidad de obtener 12 o más éxitos por puro azar:
+  \[
+  p\text{-valor} = P(X \geq 12) = \sum_{k=12}^{14} \binom{14}{k} (0.5)^{14}
+  \]
+  Calculamos los términos binomiales individuales:
+  \[
+  P(X{=}12) = \tbinom{14}{12}(0.5)^{14} = 91 \times 0.00006103 = 0.00555
+  \qquad
+  P(X{=}13) = \tbinom{14}{13}(0.5)^{14} = 14 \times 0.00006103 = 0.00085
+  \]
+  \[
+  P(X{=}14) = \tbinom{14}{14}(0.5)^{14} = 1 \times 0.00006103 = 0.00006
+  \qquad
+  p\text{-valor} = 0.00555 + 0.00085 + 0.00006 = 0.00647 \approx \mathbf{0.0065}
+  \]
+
+  \item \textbf{Decisión Estadística:} Comparamos el $p$-valor con el nivel de significación prefijado $\alpha = 0.01$:
+  \[
+  p\text{-valor} = 0.0065 < \alpha = 0.01
+  \]
+  \textbf{Decisión: Se rechaza la hipótesis nula $H_0$.}
+
+  \item \textbf{Interpretación Contextual:} Con un nivel de significación del 1\%, existe suficiente evidencia estadística para afirmar que el octanaje del lote de nafta excede de forma significativa el promedio requerido de 98.0. El lote cumple con holgura los requerimientos de calidad.
+\end{enumerate}
+
+\begin{center}
+\vspace{-4pt}
+\begin{tikzpicture}
+\begin{axis}[
+  width=11.5cm, height=3.7cm,
+  ybar, bar width=5.5pt,
+  title={\small Prueba del signo: $H_1$: mediana $> 98$ \quad {\footnotesize Bajo $H_0$: $X \sim$ Binomial(14; 0.5)}},
+  xlabel={\footnotesize Se rechaza $H_0$ si $X \geq 12$ --- Cantidad de signos positivos (X)},
+  ylabel={\footnotesize Probabilidad bajo $H_0$},
+  xmin=-0.7, xmax=14.7, ymin=0, ymax=0.24,
+  xtick={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14},
+  tick label style={font=\scriptsize},
+  clip=false
+]
+\fill[red!12] (axis cs:11.5,0) rectangle (axis cs:14.7,0.24);
+\addplot[fill=cyan!60!blue!60, draw=none] coordinates {(0,0.000061) (1,0.000854) (2,0.005554) (3,0.022217) (4,0.061096) (5,0.122192) (6,0.183289) (7,0.209473) (8,0.183289) (9,0.122192) (10,0.061096) (11,0.022217)};
+\addplot[fill=red!80, draw=none] coordinates {(12,0.005554) (13,0.000854) (14,0.000061)};
+\node[align=center, anchor=north east, font=\tiny, text=red!70!black] at (axis cs:14.6,0.235) {Zona de rechazo\\ $\alpha = 0{,}01$\\ Resultado observado: X = 12\\ $p = 0{,}0065$};
+\end{axis}
+\end{tikzpicture}
+\vspace{-10pt}
+\end{center}
+
+El valor q me da del dbinorm \ lo comparo con el nivel de significancia
+
+\hrule
+\vspace{2pt}
+
+\begin{center}\textbf{Apareadas (antes y despues)}\end{center}
+\vspace{-4pt}
+
+\textbf{3.3 \ 3. Ejercicio 2: Prueba del Signo para Muestras Apareadas (Programa de Seguridad)}
+
+\textbf{Caso Práctico:} Un ingeniero industrial evalúa la eficacia de un nuevo programa de seguridad para reducir los accidentes de trabajo en 10 plantas de fabricación. Se registran los accidentes antes y después del programa: Probar si el programa es eficaz para reducir la cantidad de accidentes con un nivel de significación de $\alpha = 0.05$.
+
+\begin{center}
+\vspace{-4pt}
+{\small Tabla 1: Accidentes registrados en 10 plantas industriales}
+
+\vspace{1pt}
+{\small
+\begin{tabular}{l r r r r r r r r r r}
+\toprule
+Planta & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+\midrule
+Antes & 45 & 73 & 46 & 124 & 33 & 57 & 83 & 34 & 26 & 17 \\
+Después & 36 & 60 & 44 & 119 & 35 & 51 & 77 & 29 & 24 & 11 \\
+\bottomrule
+\end{tabular}
+}
+\vspace{-6pt}
+\end{center}
+
+\textbf{Resolución Paso a Paso:}
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt,topsep=2pt,parsep=0pt]
+  \item \textbf{Planteamiento de Hipótesis:} Sea $D = X_{\text{Antes}} - X_{\text{Después}}$.
+
+  $H_0 : \tilde{\mu}_D = 0$ \quad (La mediana de las diferencias es cero, el programa no tiene efecto)\\
+  $H_1 : \tilde{\mu}_D > 0$ \quad (Los accidentes antes son mayores que después, el programa es eficaz)
+
+  \item \textbf{Cálculo de Signos:} Asignamos un signo $+$ si la diferencia es positiva ($X_{\text{Antes}} > X_{\text{Después}}$) y un signo - si es negativa:
+  \begin{itemize}[leftmargin=12pt,itemsep=1pt,topsep=1pt,parsep=0pt]
+    \item Planta 1: $45>36 \rightarrow +$ \quad Planta 2: $73>60 \rightarrow +$ \quad Planta 3: $46>44 \rightarrow +$
+    \item Planta 4: $124>119 \rightarrow +$ \quad Planta 5: $33<35 \rightarrow -$ \quad Planta 6: $57>51 \rightarrow +$
+    \item Planta 7: $83>77 \rightarrow +$ \quad Planta 8: $34>29 \rightarrow +$ \quad Planta 9: $26>24 \rightarrow +$
+    \item Planta 10: $17>11 \rightarrow +$
+  \end{itemize}
+
+  Resultados: $n = 10$ diferencias efectivas, $x = 9$ signos positivos. La cadena de signos es:
+
+  \centerline{$+\ \ +\ \ +\ \ +\ \ -\ \ +\ \ +\ \ +\ \ +\ \ +$}
+
+  \item \textbf{Cálculo del p-valor:} Bajo $H_0$, la cantidad de signos positivos sigue una distribución binomial con $n = 10, p = 0.5$. Calculamos la probabilidad de obtener 9 o más signos positivos en el extremo de la cola derecha:
+  \[
+  p\text{-valor} = P(X \geq 9) = \binom{10}{9}(0.5)^{10} + \binom{10}{10}(0.5)^{10} = (10+1)\times 0.0009765 = \mathbf{0.0107}
+  \]
+
+  \item \textbf{Visualización Gráfica del p-valor:} En la figura 1 se muestra la distribución binomial del número de signos positivos para un tamaño muestral de $n = 10$.
+\end{enumerate}
+
+\begin{center}
+\vspace{-4pt}
+\begin{tikzpicture}
+\begin{axis}[
+  width=10.8cm, height=3.8cm,
+  ybar, bar width=9pt,
+  title={\small\bfseries Distribución Binomial bajo $H_0$: $\mathcal{B}(10, 0.5)$ \ (Eficacia del Programa de Seguridad)},
+  xlabel={\footnotesize Número de Signos Positivos (+)},
+  ylabel={\footnotesize Probabilidad},
+  xmin=-0.7, xmax=10.7, ymin=0, ymax=0.44,
+  xtick={0,1,2,3,4,5,6,7,8,9,10},
+  tick label style={font=\scriptsize},
+  nodes near coords={\pgfmathprintnumber[fixed,precision=3]{\pgfplotspointmeta}},
+  every node near coord/.append style={font=\tiny},
+  legend style={font=\tiny, at={(0.02,0.98)}, anchor=north west, cells={anchor=west}},
+  clip=false
+]
+\addplot[fill=blue!65!cyan, draw=none] coordinates {(0,0.001) (1,0.010) (2,0.044) (3,0.117) (4,0.205) (5,0.246) (6,0.205) (7,0.117) (8,0.044)};
+\addlegendentry{Región de No Rechazo}
+\addplot[fill=red!80, draw=none] coordinates {(9,0.010) (10,0.001)};
+\addlegendentry{Zona de Rechazo (X $>=$ 9, p-valor=0.011)}
+\draw[red, dashed, thick] (axis cs:8.5,0) -- (axis cs:8.5,0.44);
+\end{axis}
+\end{tikzpicture}
+\vspace{-10pt}
+
+{\scriptsize Figura 1: Distribución de probabilidad binomial bajo la hipótesis nula. El área roja representa el resultado observado de obtener 9 o más signos positivos.}
+\vspace{-4pt}
+\end{center}
+
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt,topsep=2pt,parsep=0pt]
+  \setcounter{enumi}{4}
+  \item \textbf{Decisión e Interpretación:} Como $p$-valor $= 0.0107 < \alpha = 0.05$, el estadístico de prueba cae profundamente dentro de la zona de rechazo (el área sombreada bajo la cola derecha acumulada es mucho menor que la frontera del 5\%). \textbf{Decisión: Se rechaza la hipótesis nula $H_0$. Interpretación:} El programa de seguridad implementado es altamente eficaz, logrando una reducción sistemática y estadísticamente significativa en el número de accidentes de trabajo en las plantas.
+\end{enumerate}
+
+La probabilidad de obtener un valor mayor o menor a 98 es de 0.5 \quad \textbf{Para calcular la probabilidad} \ $P(x \geq 12)$
+{\small
+\[
+\textstyle\sum_{x=12}^{14} \text{dbinom}(x, 14, 0.5)
+\;\longrightarrow\; (=) \;\longrightarrow\;
+P(x \geq 12) = C_{14}^{12}\left(\tfrac{1}{2}\right)^{14} + C_{14}^{13}\left(\tfrac{1}{2}\right)^{14} + C_{14}^{14}\left(\tfrac{1}{2}\right)^{14} = 106\left(\tfrac{1}{2}\right)^{14} = 0.0065
+\]
+}
+
+\colorbox{gray!8}{\parbox{\textwidth}{%
+\textbf{Si Valor} $p < \alpha \rightarrow$ \textbf{Se rechaza $H_0$} (Hay evidencia estadística significativa a favor de la hipótesis alternativa).
+
+\textbf{Si Valor} $p \geq \alpha \rightarrow$ \textbf{No se rechaza $H_0$} (Los datos no aportan evidencia suficiente para descartar la hipótesis nula).
+}}
+
+\end{document}
