@@ -104,6 +104,30 @@ $H_0$: secuencia aleatoria. $H_1$: no aleatoria (bil.) / demasiadas corridas (un
 \]
 Si $n_1,n_2>10$: $Z_{calc}=(u-\mu_u)/\sigma_u$. $u$ grande=alternancia excesiva; $u$ chico=valores agrupados; $u\approx\mu_u$=compatible con aleatoriedad.
 
+\topic{violet}{Resumen: qué prueba usar}
+\begin{center}
+{\notesize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Prueba & Alt. a & Uso \\
+\midrule
+Signo & t-Uni. & 1 m. o pareada \\
+U & t-Bi. & 2 m. indep. \\
+H & ANOVA & $k{\geq}3$ m. indep. \\
+Corridas & --- & Aleatoriedad \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+Todas se usan cuando \textbf{no} se cumplen los supuestos paramétricos (normalidad) o los datos son ordinales/de rango.
+
+\topic{violet}{Regla general de decisión}
+\colorbox{gray!10}{\parbox{0.92\linewidth}{{\notesize
+Si $p<\alpha$ (o $F_{calc}>F_{crit}$, o $|Z_{calc}|>Z_{crit}$) $\Rightarrow$ \textbf{Se rechaza $H_0$} (evidencia significativa a favor de $H_1$).\\
+Si $p\geq\alpha$ (o $F_{calc}\leq F_{crit}$) $\Rightarrow$ \textbf{No se rechaza $H_0$} (datos insuficientes para descartarla).
+}}}
+
 %======================= UNIDAD 5 =======================
 \unithead{orange}{UNIDAD 5 --- Regresión}
 
@@ -182,6 +206,9 @@ Mayor caída en $p=3$ (salto de 7.58 a 1.02) $\Rightarrow$ se elige polinomio c�
 
 \topic{orange}{Regresión múltiple}
 Incorpora $x_1,\ldots,x_k$ variables independientes para explicar $Y$; se estima un plano (o hiperplano) de regresión en vez de una recta.
+
+\topic{orange}{Criterio para elegir el modelo}
+1) Probar \textbf{recta} (mínimos cuadrados) y ver el diagrama de dispersión. 2) Si los puntos siguen una curva de forma conocida (exponencial, potencial, recíproca), aplicar \textbf{regresión curvilínea} (linealizar). 3) Si no se conoce la forma, usar \textbf{ajuste polinómico} probando grados sucesivos y elegir el grado con el \textbf{método de la varianza residual} (mayor caída de $\sigma_{res}^2$).
 
 %======================= UNIDAD 6 =======================
 \unithead{green}{UNIDAD 6 --- ANOVA}
@@ -322,6 +349,14 @@ Total & 13 & 146.249 & \\
 }
 \end{center}
 $F_{crit}(1,12)=4.747$. Como $1.047<4.747$ $\Rightarrow$ \textbf{No se rechaza $H_0$} (las marcas no difieren).}
+
+\topic{green}{Resumen: qué diseño usar}
+\begin{itemize}[leftmargin=10pt,itemsep=1pt,topsep=1pt,parsep=0pt]
+  \item \textbf{Completamente aleatorio:} mismo $n$ en cada tratamiento, sin factor de bloqueo.
+  \item \textbf{Bloques aleatorios:} se controla 1 variable de bloqueo para reducir el error (ej. lavarropas).
+  \item \textbf{Tamaños distintos ($n_i$):} igual al diseño 1 vía pero con muestras desbalanceadas.
+\end{itemize}
+En los 3 casos, si se rechaza $H_0$ se concluye que \textbf{al menos un tratamiento difiere} de los demás (no cuál en particular; para eso se usan pruebas de comparación múltiple, ej. Duncan).
 
 \end{multicols}
 \end{document}
