@@ -1,0 +1,145 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.4pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{3pt}%
+  \setlength{\belowdisplayskip}{3pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+\begin{center}
+{\small Cuadro 1: Diseño en Bloques Completos al Azar (Detergentes vs. Lavarropas)}
+
+\vspace{2pt}
+{\footnotesize
+\begin{tabular}{l c c c c c c}
+\toprule
+\textbf{Tratamiento} & \textbf{Bloque 1 ($B_1$)} & \textbf{Bloque 2 ($B_2$)} & \textbf{Bloque 3 ($B_3$)} & \textbf{Total} & \textbf{Media} & \textbf{Efecto Tratamiento} \\
+(Detergente) & Lavarropas Nuevo & Lavarropas Estándar & Lavarropas Viejo & $(y_{i.})$ & $(\bar{y}_{i.})$ & $(\alpha_i=\bar{y}_{i.}-\bar{y}_{..})$ \\
+\midrule
+Detergente A & $y_{11}=86$ & $y_{12}=79$ & $y_{13}=75$ & 240 & 80.0 & $\alpha_1=+10$ \\
+Detergente B & $y_{21}=74$ & $y_{22}=72$ & $y_{23}=64$ & 210 & 70.0 & $\alpha_2=\ \ 0$ \\
+Detergente C & $y_{31}=65$ & $y_{32}=59$ & $y_{33}=56$ & 180 & 60.0 & $\alpha_3=-10$ \\
+\midrule
+Total Columna ($y_{.j}$) & 225 & 210 & 195 & \multicolumn{3}{c}{$y_{..}=630$} \\
+Media Bloque ($\bar{y}_{.j}$) & 75.0 & 70.0 & 65.0 & \multicolumn{3}{c}{$\bar{y}_{..}=70.0$} \\
+Efecto Bloque ($\beta_j$) & $\beta_1=+5$ & $\beta_2=\ \ 0$ & $\beta_3=-5$ & \multicolumn{3}{c}{---} \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\textbf{1. Identificación del diseño y modelo}
+
+Hay $a=3$ tratamientos, $b=3$ bloques y $ab=9$ observaciones: cada detergente aparece una vez en cada lavarropas. El modelo es:
+\[
+\boxed{y_{ij}=\mu+\alpha_i+\beta_j+\varepsilon_{ij}}
+\]
+\begin{itemize}[leftmargin=16pt,itemsep=0pt,topsep=1pt,parsep=0pt]
+  \item $\mu$: media general poblacional, estimada por $\bar{y}_{..}=70$.
+  \item $\alpha_i$: efecto del detergente $i$. Por ejemplo, $\hat{\alpha}_A=80-70=+10$; $\hat{\alpha}_B=0$; $\hat{\alpha}_C=-10$.
+  \item $\beta_j$: efecto del lavarropas $j$. $\hat{\beta}_1=75-70=+5$; $\hat{\beta}_2=0$; $\hat{\beta}_3=-5$.
+  \item $\varepsilon_{ij}$: error o variación aleatoria no explicada por detergente ni lavarropas.
+\end{itemize}
+
+Ejemplo en la primera celda: el valor ajustado es $70+10+5=85$ y el residuo es $86-85=+1$. Por eso: $86=70+10+5+1$.
+
+\textbf{2. Hipótesis y regla de decisión}
+
+$H_{0,Tr}: \alpha_1=\alpha_2=\alpha_3=0$ \quad (los detergentes tienen la misma media); \quad $H_{1,Tr}$: al menos un $\alpha_i \neq 0$.
+
+$H_{0,Bl}: \beta_1=\beta_2=\beta_3=0$ \quad (los lavarropas no influyen); \quad $H_{1,Bl}$: al menos un $\beta_j \neq 0$.
+
+Los grados de libertad son $gl_{Tr}=a-1=2$, $gl_{Bl}=b-1=2$, $gl_E=(a-1)(b-1)=4$ y $gl_T=ab-1=8$. Como son pruebas $F$ de cola derecha:
+\[
+F_{\text{crítico},Tr}=F_{0.01;2,4}=18, \qquad F_{\text{crítico},Bl}=F_{0.01;2,4}=18.
+\]
+
+Se rechaza cada hipótesis nula si su $F_{calculado}>18$.
+
+\textbf{3. Desarrollo de las sumas de cuadrados}
+
+\textbf{Paso 1. Término de corrección.} El total general es $T_{..}=630$:
+\[
+C = \frac{T_{..}^2}{ab} = \frac{630^2}{3\cdot 3} = 44100.
+\]
+
+\textbf{Paso 2. Suma de cuadrados total.} Primero sumamos los cuadrados de los nueve datos:
+\[
+\sum\sum y_{ij}^2 = 86^2+79^2+75^2+74^2+72^2+64^2+65^2+59^2+56^2 = 44860.
+\]
+\[
+SST = \sum\sum y_{ij}^2 - C = 44860-44100 = 760.
+\]
+{\small SST representa toda la variación de blancura observada.}
+
+\textbf{Paso 3. Suma de cuadrados de tratamientos.} Cada total de fila contiene $b=3$ observaciones:
+\[
+SS(Tr) = \frac{240^2+210^2+180^2}{3} - 44100 = 600.
+\]
+{\small Esta parte mide la variación explicada por las diferencias entre detergentes.}
+
+\textbf{Paso 4. Suma de cuadrados de bloques.} Cada total de columna contiene $a=3$ observaciones:
+\[
+SS(Bl) = \frac{225^2+210^2+195^2}{3} - 44100 = 150.
+\]
+{\small Esta parte mide la variación explicada por los lavarropas.}
+
+\textbf{Paso 5. Suma de cuadrados del error.}
+\[
+SSE = SST - SS(Tr) - SS(Bl) = 760-600-150 = 10.
+\]
+{\small Es la variación que queda sin explicar después de considerar detergentes y lavarropas.}
+
+\textbf{4. Medias cuadradas, estadísticos $F$ y tabla ANOVA}
+\[
+MS(Tr) = \frac{SS(Tr)}{a-1} = \frac{600}{2} = 300, \qquad
+MS(Bl) = \frac{SS(Bl)}{b-1} = \frac{150}{2} = 75, \qquad
+MSE = \frac{SSE}{(a-1)(b-1)} = \frac{10}{4} = 2.5.
+\]
+\[
+F_{Tr} = \frac{MS(Tr)}{MSE} = \frac{300}{2.5} = 120, \qquad
+F_{Bl} = \frac{MS(Bl)}{MSE} = \frac{75}{2.5} = 30.
+\]
+
+\begin{center}
+\vspace{-2pt}
+{\small
+\begin{tabular}{l c c c c}
+\toprule
+\textbf{Fuente de variación} & \textbf{gl} & \textbf{Suma de cuadrados} & \textbf{Media cuadrada} & $F_{calculado}$ \\
+\midrule
+Detergentes (tratamientos) & 2 & 600 & 300 & 120 \\
+Lavarropas (bloques) & 2 & 150 & 75 & 30 \\
+Error & 4 & 10 & 2.5 & --- \\
+\midrule
+Total & 8 & 760 & --- & --- \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\hfill\textbf{a=3 detergentes \quad b=3(hay 3 lavarropas)}
+
+\textbf{5. Conclusión}
+\begin{itemize}[leftmargin=16pt,itemsep=1pt,topsep=1pt,parsep=0pt]
+  \item $F_{Tr}=120>18$: se \textbf{rechaza} $H_{0,Tr}$. Al 1\%, hay evidencia de diferencias significativas entre las medias de blancura de los detergentes.
+  \item $F_{Bl}=30>18$: se \textbf{rechaza} $H_{0,Bl}$. Al 1\%, hay evidencia de que los lavarropas influyen significativamente en la blancura.
+\end{itemize}
+
+\end{document}
