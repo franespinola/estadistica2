@@ -1,0 +1,182 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array,multirow}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{3pt}%
+  \setlength{\belowdisplayskip}{3pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+{\large\bfseries\uline{Hipotesis relativa a varias proporciones}\par}
+\vspace{2pt}
+
+Se prueba que todas las proporciones de distintas poblaciones binomiales sean significativamente iguales:
+
+\hspace{1.2cm}\textbf{H0:} $p_1 = p_2 = \ldots = p_k = p$ \\
+\hspace*{1.2cm}\textbf{H1:} que al menos 1 no lo sea
+
+\textbf{Método 1:} \ Si \textbf{n.p} y \textbf{(1-p).n} mayores a \textbf{5}: \\
+La D.Binomial se aproxima a D.Normal, entonces, \uline{se calcula para cada población}:
+\[
+z_i = \frac{x_i - n_i\cdot p_i}{\sqrt{n_i\cdot p_i\cdot\left(1-p_i\right)}}
+\]
+
+\begin{minipage}{0.70\textwidth}
+- El cuadrado de una v. aleatoria con dist. normal, es una v. aleatoria con dist. \textbf{chi-cuadrado} con 1 gl \\
+- La suma de \textbf{k} v aleatorias con distribuciones \textbf{chi-cuadrado} con 1gl dan otra v. aleatoria \textbf{chi-cuadrado} con \textbf{k} gl. \hspace{0.8cm} gl=grados de libertad
+\end{minipage}\hfill
+\begin{minipage}{0.25\textwidth}
+\[
+Z_i^2 \sim \chi_1^2
+\]
+\end{minipage}
+
+Dado que las $p_i$ son todas iguales por hipótesis nula y $p_n = x_n/n_n$, se pueden sustituir por:
+\[
+\widehat{p} = \frac{x_1 + x_2 + \cdots + x_k}{n_1 + n_2 + \cdots + n_k}
+\qquad \text{suma de proporciones}
+\]
+
+$\bullet$ Obteniendo el estadístico:
+
+\begin{minipage}{0.44\textwidth}
+\[
+\chi^2 = \sum_{i=1}^{k} \frac{\left(x_i - n_i\cdot\widehat{p}\,\right)^2}{n_i\cdot\widehat{p}\cdot\left(1-\widehat{p}\,\right)}
+\]
+\end{minipage}
+\begin{minipage}{0.26\textwidth}
+{\small Dif grandes se mueve hacia la der, dif chicas hacia la izq.\par
+\textbf{v=k-1} grados de libertad\par}
+\end{minipage}
+\begin{minipage}{0.29\textwidth}
+{\small fracasos esperados $n_i(1-\widehat{p}\,)$\par
+éxitos esperados $n_i\widehat{p}$\par}
+\end{minipage}
+
+\begin{center}
+\vspace{-6pt}
+\begin{tikzpicture}
+\begin{axis}[
+  width=6.4cm, height=3.0cm,
+  axis lines=left, axis line style={-},
+  xmin=0, xmax=15, ymin=0, ymax=0.21,
+  xtick=\empty, ytick=\empty,
+  clip=false
+]
+\addplot[domain=0.05:14.5, samples=120, thick, blue] {x*exp(-x/2)/4};
+\draw[thick] (axis cs:8.4,0) -- (axis cs:8.4,0.09);
+\node[above, font=\scriptsize] at (axis cs:8.4,0.09) {$\chi^2_{\alpha}$};
+\node[font=\tiny] at (axis cs:9.1,0.012) {$\alpha$};
+\node[align=left, font=\tiny, text=blue!60!violet] at (axis cs:4.4,0.035) {valores chicos\\ caen acá};
+\node[align=left, font=\tiny, text=violet] at (axis cs:12.3,0.065) {valores grandes\\ caen acá};
+\end{axis}
+\end{tikzpicture}
+\vspace{-8pt}
+\end{center}
+
+\begin{center}
+\vspace{-4pt}
+\begin{tabular}{l r r r r}
+\toprule
+\rowcolor{cyan!10} \textbf{Resultado} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{Total} \\
+Desmoronado & 41 & 27 & 22 & 90 \\
+Resto intacto & 79 & 53 & 78 & 210 \\
+\midrule
+Total & 120 & 80 & 100 & 300 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Se quiere determinar si la probabilidad de desmoronamiento es la misma para los materiales \textbf{A}, \textbf{B} y \textbf{C}. En cada material hay dos resultados posibles: desmoronado o resto intacto.
+
+\textbf{metodo 1}
+\[
+\chi^2 = \sum_{i=1}^{3} \frac{\left(x_i - n_i\widehat{p}\,\right)^2}{n_i\widehat{p}\,(1-\widehat{p}\,)}
+\qquad
+\chi^2 = \frac{(x_1-n_1p)^2}{n_1p(1-p)} + \frac{(x_2-n_2p)^2}{n_2p(1-p)} + \frac{(x_3-n_3p)^2}{n_3p(1-p)}
+\qquad
+\nu = k-1 = 3-1 = 2.
+\]
+
+\textbf{Método 2:} para simplificar el cálculo de chi cuadrado se hace una tabla
+
+\begin{center}
+\vspace{-4pt}
+\begin{tabular}{l | c | c | c | c | l}
+ & Muestra 1 & Muestra 2 & $\cdots$ & Muestra k & Total \\
+\cline{2-5}
+éxitos & $x_1$ & $x_2$ & $\cdots$ & $x_k$ & $x$ \\
+\cline{2-5}
+fallas & $n_1 - x_1$ & $n_2 - x_2$ & $\cdots$ & $n_k - x_k$ & $n-x$ \\
+\cline{2-5}
+Total & $n_1$ & $n_2$ & $\cdots$ & $n_k$ & $n$ \\
+\end{tabular}
+\vspace{-6pt}
+\end{center}
+
+$\bullet$ Cada celda es una frecuencia observada.
+
+\begin{minipage}{0.55\textwidth}
+\textbf{Frecuencias esperadas}
+\[
+\text{Éxitos } \ \frac{n_j\cdot x}{n}
+\qquad\quad
+\text{Fracasos } \ \frac{n_j\cdot (n-x)}{n}
+\]
+\[
+\chi^2 = \sum_{i=1}^{2}\sum_{j=1}^{k} \frac{\left(o_{i,j} - e_{i,j}\right)^2}{e_{i,j}}
+\qquad \textbf{v=k-1} \text{ GL}
+\]
+\end{minipage}\hfill
+\begin{minipage}{0.40\textwidth}
+{\small
+$n_j$ = total columna j \\
+$x$ = total de la fila exitos \\
+$n-x$ = total fila fallas \\
+$n$ = total final
+}
+\end{minipage}
+
+$\bullet$ Este método es lo mismo que aplicar la fórmula del chi cuadrado que se vió más arriba.
+
+\textbf{Este método organiza los mismos datos en una tabla $2\times 3$: dos resultados y tres materiales} \hfill $\nu = k-1 = 3-1 = 2.$
+
+\textbf{metodo 2}
+\[
+\chi^2 = \sum_{i=1}^{2}\sum_{j=1}^{3} \frac{\left(O_{ij} - E_{ij}\right)^2}{E_{ij}},
+\qquad
+E_{ij} = \frac{(\text{total fila } i)(\text{total columna } j)}{\text{total general}}.
+\]
+
+\begin{center}
+\vspace{-4pt}
+\begin{tabular}{l r r r r}
+\toprule
+\rowcolor{cyan!10} \textbf{Esperadas} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{Total} \\
+Desmoronado & 36 & 24 & 30 & 90 \\
+Intacto & 84 & 56 & 70 & 210 \\
+\midrule
+Total & 120 & 80 & 100 & 300 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}
