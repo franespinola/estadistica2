@@ -1,0 +1,120 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{3pt}%
+  \setlength{\belowdisplayskip}{3pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+{\large\bfseries\uline{Estimacion de proporciones}\par}
+\vspace{2pt}
+
+\textbf{Ej:} Proporción de personas que toman \textbf{vino} en Mendoza
+\begin{itemize}[leftmargin=14pt,itemsep=1pt,topsep=1pt,parsep=0pt]
+  \item Tomo un muestra de \textbf{n=100} y encontré que \textbf{x=35} toman vino. Esto \textbf{no me permite concluir} que el 35\% toma vino. (Pq es 1 muestra y seguramente no representativa)
+  \item Debo establecer un inter. de conf. que me permita asegurar con cierto grado de confianza que la proporción real se encuentra en él.
+  \item Puedo estimar la proporción poblacional \textbf{p}, a través de la estimación puntual \textbf{x/n}
+\end{itemize}
+
+\[
+p = \frac{x}{n}
+\quad
+\begin{array}{l}
+\longrightarrow \quad \text{casos de éxito} \\
+\longrightarrow \quad \text{ensayos (muestra)}
+\end{array}
+\qquad\qquad q = 1-p \ \text{(fracasos)}
+\]
+
+Como \textbf{p} tiene \textbf{distribución binomial (dos resultados}: 1 o 0, éxito o fracaso, etc\textbf{)} se verifica:
+\[
+\mu = n\cdot p \qquad\qquad \sigma = \sqrt{n\cdot p\cdot (1-p)}
+\]
+
+{\footnotesize\itshape Al sumar todas esas respuestas individuales de 1 o 0, obtenés tu variable ``x'' (los casos de éxito, que en este ejemplo son 35). Es esta variable ``x'' la que sigue una \textbf{Distribución Binomial}, porque representa ``la cantidad de éxitos en ``n'' ensayos independientes''. \quad $\bullet$ \textbf{Éxito (1):} Si toma vino. \quad $\bullet$ \textbf{Fracaso (0):} No toma vino.\par}
+
+\textbf{2 formas de resolución:}
+\begin{itemize}[leftmargin=14pt,itemsep=1pt,topsep=1pt,parsep=0pt]
+  \item[a)] \textbf{Gráfica} (tablas) menos precisa
+  \item[b)] \textbf{Analítica}, se debe cumplir que: \\
+  Si \textbf{n.p} y \textbf{(1-p).n} mayores a \textbf{5}: \\
+  \textbf{la Dist Binom se aproxima a una Dist Normal}
+\end{itemize}
+
+Entonces Z es \quad (1)
+\[
+z = \frac{x - n{*}p}{\sqrt{n{*}p{*}(1-p)}}
+\]
+
+como resulta dificil despejar p, se reemplaza por x/n en el denominador
+
+(2)
+\[
+-z_{\frac{\alpha}{2}} \;<\; \frac{x - n\cdot p}{\sqrt{n\cdot p\cdot (1-p)}} \;<\; z_{\frac{\alpha}{2}}
+\qquad\qquad
+-z_{\frac{\alpha}{2}} \;<\; \frac{x - n\cdot p}{\sqrt{n\cdot \frac{x}{n}\cdot \left(1-\frac{x}{n}\right)}} \;<\; z_{\frac{\alpha}{2}}
+\]
+
+\uline{Intervalo de conf para \textbf{p}}
+
+(3)
+\[
+\underbrace{\frac{x}{n}}_{\text{pivote}} - \; z_{\frac{\alpha}{2}}\cdot \sqrt{\frac{\frac{x}{n}\cdot\left(1-\frac{x}{n}\right)}{n}}
+\;<\; p \;<\;
+\frac{x}{n} + \underbrace{z_{\frac{\alpha}{2}}\cdot \sqrt{\frac{\frac{x}{n}\cdot\left(1-\frac{x}{n}\right)}{n}}}_{\text{Error max de estimación}}
+\]
+
+\begin{itemize}[leftmargin=14pt,itemsep=1pt,topsep=1pt,parsep=0pt]
+  \item Cálculo de \textbf{n} para lograr un \textbf{grado de precisión}
+\end{itemize}
+\[
+n = p\cdot(1-p)\cdot \left(\frac{z_{\frac{\alpha}{2}}}{E}\right)^{2}
+\]
+
+Si no conozco p (da 1/4) $\rightarrow$ {\small si derivo e igualo a 0, obtengo p=0.5} \\
+Función \textbf{cóncava}, máximo
+
+\textbf{-p=0.5} es el peor de los casos ,ya que \textbf{n tiene que ser muy grande} pero asegura contener la proporción (\textbf{Es muy costoso}). Tanto a la \textbf{der} como a la \textbf{izq} de la parábola
+
+\textbf{Aumentar} el tamaño de la muestra reduce el margen de error (es decir, hace que el intervalo de confianza sea más estrecho) manteniendo el mismo nivel de confianza.
+
+\textbf{Mantener} el mismo tamaño de muestra pero aumentar el nivel de confianza hará que el intervalo de confianza se haga más pequeño, porque estás buscando mayor seguridad de que el valor real esté
+
+-Si \textbf{E} es muy chiquito entonces \textbf{n} va a ser grande
+
+-\textbf{E} es fijado por el cliente.
+
+-\textbf{Nivel de conf} es un acuerdo cliente-proveedor.
+
+\vspace{4pt}
+\textbf{Hipotesis relativa a una proporcion}
+
+\fbox{\begin{minipage}{0.72\textwidth}
+\textbf{H0: p = p0} \qquad \textbf{proporción}
+\[
+z = \frac{x - n\cdot p_0}{\sqrt{n\cdot p_0\cdot(1-p_0)}}
+\qquad
+\begin{array}{l}
+\text{\small considerando \textbf{n} grandes} \\
+\text{\small x = casos de éxito}
+\end{array}
+\]
+\end{minipage}}
+
+\end{document}
