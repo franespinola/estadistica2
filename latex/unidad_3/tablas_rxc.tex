@@ -1,0 +1,145 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array,multirow}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{3pt}%
+  \setlength{\belowdisplayskip}{3pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+{\large\bfseries\uline{Tablas RxC}\par}
+\vspace{2pt}
+
+\textbf{igual a anterior no mas que mas de 2 resultados posibles \\
+tenemos r filas x c columnas}
+\[
+\chi^2 = \sum_{i=1}^{r}\sum_{j=1}^{c} \frac{\left(o_{i,j} - e_{i,j}\right)^2}{e_{i,j}}
+\qquad
+\nu = (r-1)(c-1) \ \textbf{gl}
+\]
+
+Aprovechamiento en el programa de entrenamiento
+
+\begin{center}
+\vspace{-2pt}
+\begin{tabular}{l | c | c | c | c}
+ & Debajo del & Promedio & Sobre el & Total \\
+ & Promedio & & Promedio & \\
+\cline{2-4}
+Deficiente & 23 & 60 & 29 & 112 \\
+\cline{2-4}
+Promedio & 28 & 79 & 60 & 60 \\
+\cline{2-4}
+Muy buena & 9 & 49 & 63 & 63 \\
+\cline{2-4}
+Total & 60 & 188 & 152 & 400 \\
+\end{tabular}
+\end{center}
+
+\textbf{Bondad de ajuste}
+
+En la prueba chi-cuadrado de bondad de ajuste se compara la distribución observada en una muestra con una distribución teórica propuesta. El objetivo es determinar si las diferencias entre ambas pueden atribuirse al azar o si son suficientemente grandes como para concluir que el modelo teórico no ajusta a los datos.
+
+\textbf{Poisson} modela la cantidad de sucesos que ocurren en un intervalo fijo.\\
+\textbf{H0:} Los datos siguen la distribución de poisson\\
+\textbf{H1:} No la siguen.
+
+\begin{minipage}[t]{0.61\textwidth}
+\vspace{0pt}
+\begin{center}
+{\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{|c|c|c|c|c|c|}
+\multicolumn{6}{c}{\textbf{autos}} \\
+\hline
+\begin{tabular}{@{}c@{}}Número de mensajes\\ en interv. de 5 min.\end{tabular} & \begin{tabular}{@{}c@{}}Frecuencias\\ observadas\end{tabular} & & \begin{tabular}{@{}c@{}}Probabilidad\\ de Poisson\end{tabular} & \begin{tabular}{@{}c@{}}Frecuencias\\ esperadas\end{tabular} & \\
+\hline
+0 & 3 & \multirow{2}{*}{$\left.\rule{0pt}{11pt}\right\}18$} & 0.010 & 4.0 & \multirow{2}{*}{$\left.\rule{0pt}{11pt}\right\}22.4$} \\
+1 & 15 & & 0.046 & 18.4 & \\
+\hline
+2 & 47 & & 0.107 & 42.8 & \\
+\hline
+3 & 76 & & 0.163 & 65.2 & \\
+\hline
+4 & 68 & & 0.187 & 74.8 & \\
+\hline
+5 & 74 & & 0.173 & 69.2 & \\
+\hline
+6 & 46 & & 0.132 & 52.8 & \\
+\hline
+7 & 39 & & 0.087 & 34.8 & \\
+\hline
+8 & 15 & & 0.050 & 20.0 & \\
+\hline
+9 & 9 & & 0.025 & 10.0 & \\
+\hline
+10 & 5 & \multirow{4}{*}{$\left.\rule{0pt}{22pt}\right\}10$} & 0.012 & 4.8 & \multirow{4}{*}{$\left.\rule{0pt}{22pt}\right\}8.0$} \\
+11 & 2 & & 0.005 & 2.0 & \\
+12 & 2 & & 0.002 & 0.8 & \\
+13 & 1 & & 0.001 & 0.4 & \\
+\hline
+\end{tabular}
+}
+\end{center}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.36\textwidth}
+\vspace{10pt}
+{\footnotesize
+$\dashrightarrow$ hubieron 15 intervalos de 5 minutos en el q paso un solo auto
+
+\vspace{4pt}
+se analizan 400 intervalos de 5 minutos en el control de tráfico en cuanto al paso de autos, comparándola con una distribución de Poisson con $\lambda$=4.6.
+
+\vspace{4pt}
+en los extremos hay una forma acampanada, ya q los valores son mas bajos entonces se unen agrupandolos
+
+\vspace{4pt}
+se agrupan las frec esp. menos que 5, las agrupo con el siguiente valor. Voy a tener 10 grupos
+}
+\end{minipage}
+
+\vspace{2pt}
+Se usa el estadístico para ver si las diferencias entre lo que observamos y lo que esperamos son solo por casualidad:
+
+\begin{minipage}[t]{0.42\textwidth}
+\vspace{0pt}
+\[
+\chi^2 = \sum_{i=1}^{k} \frac{\left(o_i - e_i\right)^2}{e_i}
+\qquad \textbf{v=k-m-1} \text{ GL}
+\]
+{\small
+K= nºgrupos(10) \\
+m= 1 $\dashrightarrow$ Nº parametros (lamda) \\
+en dist. normal: m=2 $\Rightarrow$ $\mu$ y $\sigma$
+}
+\[
+\chi^2 = \frac{(18-22.4)^2}{22.4} + \cdots + \frac{(47-42.8)^2}{42.8} = 6.749
+\]
+\end{minipage}\hfill
+\begin{minipage}[t]{0.55\textwidth}
+\vspace{0pt}
+{\footnotesize
+Para cada cantidad posible de autos calculo la probabilidad teórica mediante la fórmula de Poisson, usando $\lambda = 4{,}6$. Por ejemplo, la probabilidad de observar cero autos es $e^{-4{,}6} = 0{,}010$. Luego multiplico cada probabilidad por los 400 intervalos para obtener la frecuencia esperada. Así, para cero autos, la frecuencia esperada es $400\cdot 0{,}010 = 4$. Como esta frecuencia es menor que 5, agrupo la categoría de cero autos con la de un auto. Finalmente comparo las frecuencias observadas con las esperadas mediante el estadístico chi-cuadrado.
+}
+\[
+\text{Poisson} \qquad P(X=x) = \frac{e^{-\lambda}\lambda^{x}}{x!}
+\]
+\end{minipage}
+
+\end{document}
