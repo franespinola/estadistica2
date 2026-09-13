@@ -1,0 +1,365 @@
+\documentclass[9pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[landscape,margin=0.6cm]{geometry}
+\usepackage{multicol}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array,multirow}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\setlength{\columnsep}{10pt}
+\setlength{\columnseprule}{0.3pt}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{1.5pt}%
+  \setlength{\belowdisplayskip}{1.5pt}%
+  \setlength{\abovedisplayshortskip}{1pt}%
+  \setlength{\belowdisplayshortskip}{1pt}%
+}
+
+\newcommand{\bodysize}{\fontsize{9.2}{10.8}\selectfont}
+\newcommand{\notesize}{\fontsize{7.8}{9.1}\selectfont}
+\newcommand{\subsize}{\fontsize{10.5}{12.3}\selectfont\bfseries}
+\newcommand{\unitsize}{\fontsize{13.5}{15.5}\selectfont\bfseries}
+
+\newcommand{\unithead}[2]{%
+  \par\vspace{2.5pt}
+  \noindent\colorbox{#1!22}{\textcolor{#1!65!black}{\unitsize\ #2}}%
+  \par\vspace{1.5pt}\hrule height 0.6pt \color{#1!55!black}\vspace{2pt}\color{black}%
+}
+\newcommand{\topic}[2]{\subsize\textcolor{#1!60!black}{#2}\par\vspace{0.5pt}\bodysize}
+
+\bodysize
+
+\begin{document}
+\bodysize
+
+\begin{multicols}{4}
+
+%======================= UNIDAD 2 =======================
+\unithead{blue}{UNIDAD 2 --- Hipótesis}
+
+\topic{blue}{Tema A: Marco general}
+$H_0$: contiene $=,\leq,\geq$. \quad $H_1$: contiene $<,>,\neq$ (según el signo define cola izq., der. o bilateral).
+
+\textbf{Procedimiento:} 1) qué demostrar 2) plantear $H_0,H_1$ 3) definir cola 4) fijar $\alpha$ 5) elegir estadístico 6) región de rechazo 7) calcular $z_{calc}$/$t_{calc}$ 8) comparar vs. crítico o $p$ vs $\alpha$ 9) decidir 10) interpretar.
+\[
+z_{calc} = \frac{\bar{x}-\mu_0}{\sigma/\sqrt{n}}
+\]
+
+\textbf{Elección de estadístico:}
+\begin{center}
+{\notesize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}ll c c@{}}
+\toprule
+Población & $n$ & $\sigma$ conocida & $\sigma$ desconocida \\
+\midrule
+\multirow{2}{*}{Normal} & $\geq30$ & $\bar{x}\pm z_\alpha\sigma_{\bar{x}}$ & $\bar{x}\pm z_\alpha s_{\bar{x}}$ \\
+ & $<30$ & $\bar{x}\pm z_\alpha\sigma_{\bar{x}}$ & $\bar{x}\pm t_\alpha s_{\bar{x}}$ \\
+\multirow{2}{*}{No normal} & $\geq30$ & $\bar{x}\pm z_\alpha\sigma_{\bar{x}}$ & $\bar{x}\pm z_\alpha s_{\bar{x}}$ \\
+ & $<30$ & \multicolumn{2}{c}{$\bar{x}\pm k\sigma_{\bar{x}}$ (Chebyshev, $1-1/k^2$)} \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\textbf{Errores:}
+\begin{center}
+{\notesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l c c@{}}
+\toprule
+ & Acepta $H$ & Rechaza $H$ \\
+\midrule
+$H$ verdadera & Correcta & Error I ($\alpha$) \\
+$H$ falsa & Error II ($\beta$) & Correcta \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\topic{blue}{Tema B: Hipótesis relativa a 2 medias}
+$H_0: \mu_1-\mu_2=\delta$. Colas: $<\delta$ izq., $>\delta$ der., $\neq\delta$ bil.
+
+\textbf{n$>$30, $\sigma^2$ conocido} (sustituir por $s_1,s_2$ si desconocido):
+\[
+z=\frac{(\bar{x}_1-\bar{x}_2)-\delta}{\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}}
+\]
+
+\textbf{n$<$30, $\sigma^2$ desc. (t-bimuestral, indep., $\sigma_1=\sigma_2$):}
+{\notesize
+\[
+t=\frac{(\bar{x}_1-\bar{x}_2)-\delta}{\sqrt{(n_1-1)s_1^2+(n_2-1)s_2^2}}\cdot\sqrt{\frac{n_1n_2(n_1+n_2-2)}{n_1+n_2}}
+\]
+}con $\nu=n_1+n_2-2$.
+
+\textbf{Muestras dependientes (pareadas):} $d_i=x_{1i}-x_{2i}$;
+\[
+s=\sqrt{\frac{\sum d_i^2-n\bar{d}^2}{n-1}} \qquad t=\frac{\bar{d}-\mu_0}{s/\sqrt{n}} \ (\nu=n-1)
+\]
+
+%======================= UNIDAD 3 =======================
+\unithead{teal}{UNIDAD 3 --- Estimación}
+
+\topic{teal}{Estimación de la varianza (muestras chicas)}
+$R$=rango=máx$-$mín. $d_2,d_3$ de tabla según $n$; $\mu_R=d_2\sigma$, $\sigma_R=d_3\sigma$.
+\[
+\hat{\sigma}=\frac{R}{d_2}
+\]
+Uso: Control de Calidad.
+
+\textbf{IC $\sigma^2$, $n<30$:} $\chi^2=\dfrac{(n-1)s^2}{\sigma^2}$, $\nu=n-1$.
+\[
+\frac{(n-1)s^2}{\chi^2_{1-\alpha/2}}<\sigma^2<\frac{(n-1)s^2}{\chi^2_{\alpha/2}}
+\]
+(raíz cuadrada para IC de $\sigma$)
+
+\textbf{IC $\sigma$, $n>30$:} $z=\dfrac{s-\sigma}{\sigma/\sqrt{2n}}$
+\[
+\frac{s}{1+z_{\alpha/2}/\sqrt{2n}}<\sigma<\frac{s}{1-z_{\alpha/2}/\sqrt{2n}}
+\]
+
+\textbf{Hipótesis $\sigma^2=\sigma_0^2$:} cola der.=variabilidad aumentó, izq.=disminuyó, bil.=cualquier alteración.
+\[
+n<30:\ \chi^2=\frac{(n-1)s^2}{\sigma_0^2}
+\]
+\[
+n>30:\ z=\frac{s-\sigma_0}{\sigma_0/\sqrt{2n}}
+\]
+
+\topic{teal}{Estimación de proporciones}
+$p=x/n$ (éxitos/ensayos), $q=1-p$. $\mu=np$, $\sigma=\sqrt{np(1-p)}$. Aprox. normal si $np>5$ y $n(1-p)>5$.
+\[
+z=\frac{x-np}{\sqrt{np(1-p)}}
+\]
+{\notesize (se sustituye $p$ por $x/n$ en el denominador)\par}\bodysize
+\textbf{IC para p:}
+\[
+\frac{x}{n}\pm z_{\alpha/2}\sqrt{\frac{(x/n)(1-x/n)}{n}}
+\]
+\textbf{Tamaño de muestra:} $n=p(1-p)\left(\dfrac{z_{\alpha/2}}{E}\right)^2$; si $p$ desconocido usar $p=0.5$ (peor caso, $n$ máximo, función cóncava). $E$ lo fija el cliente; nivel de conf. es acuerdo cliente-proveedor.
+
+\textbf{Hipótesis 1 proporción:} $H_0: p=p_0$
+\[
+z=\frac{x-np_0}{\sqrt{np_0(1-p_0)}}
+\]
+
+\topic{teal}{Varias proporciones ($\chi^2$)}
+$H_0: p_1=\cdots=p_k=p$. $z_i=\dfrac{x_i-n_ip_i}{\sqrt{n_ip_i(1-p_i)}}$, $Z_i^2\sim\chi_1^2$.
+\[
+\hat{p}=\frac{\sum x_i}{\sum n_i} \qquad
+\chi^2=\sum_{i=1}^{k}\frac{(x_i-n_i\hat{p})^2}{n_i\hat{p}(1-\hat{p})}, \ \nu=k-1
+\]
+\textbf{Método 2 (tabla $2\times k$):}
+\begin{center}
+{\notesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}l c c c c c@{}}
+\toprule
+ & M.1 & M.2 & $\cdots$ & M.$k$ & Total \\
+\midrule
+éxitos & $x_1$ & $x_2$ & $\cdots$ & $x_k$ & $x$ \\
+fallas & $n_1-x_1$ & $n_2-x_2$ & $\cdots$ & $n_k-x_k$ & $n-x$ \\
+Total & $n_1$ & $n_2$ & $\cdots$ & $n_k$ & $n$ \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+$\chi^2=\sum\sum\dfrac{(o_{ij}-e_{ij})^2}{e_{ij}}$, \ $e_{ij}=\dfrac{(\text{total fila})(\text{total col})}{\text{total gral.}}$, $\nu=k-1$.
+
+\topic{teal}{Tablas RxC y bondad de ajuste}
+\[
+\chi^2=\sum_{i=1}^{r}\sum_{j=1}^{c}\frac{(o_{ij}-e_{ij})^2}{e_{ij}}, \quad \nu=(r-1)(c-1)
+\]
+\textbf{Bondad de ajuste (ej. Poisson):} $H_0$: los datos siguen la distribución propuesta. Agrupar categorías con frec. esperada $<5$.
+\[
+\chi^2=\sum_{i=1}^{k}\frac{(o_i-e_i)^2}{e_i}, \quad \nu=k-m-1
+\]
+$k$=nº grupos, $m$=nº parámetros estimados (Poisson $m=1$; Normal $m=2$: $\mu,\sigma$). $P(X=x)=\dfrac{e^{-\lambda}\lambda^x}{x!}$
+
+%======================= UNIDAD 4 =======================
+\unithead{violet}{UNIDAD 4 --- No Param.}
+
+\topic{violet}{Prueba del Signo (1 muestra o apareadas)}
+Alternativa no paramétrica a t-Unimuestral. Reemplazar cada valor por $+$/$-$ según sea mayor/menor a la media o mediana (se ignora si es igual); prob. $p=0.5$ siempre. $x$=cant. de signos $+$, $n$=total de signos.
+Se calcula $P(X\geq x)$ (dbinom) y si es $\leq \alpha$ se rechaza $H_0$.
+
+\topic{violet}{Prueba U (Wilcoxon, 2 muestras indep.)}
+Alternativa no paramétrica a t-bimuestral. Unir y ordenar ambas muestras; asignar rango (posición, promedio si hay empate); sumar $R_1, R_2$ y elegir el $R_i$ menor.
+\[
+U_i = n_1n_2+\frac{n_i(n_i+1)}{2}-R_i
+\]
+Si $n_1,n_2>8$: $U_i$ es aprox. normal (2 colas).
+\[
+z=\frac{U_i-\mu_{U_i}}{\sigma_{U_i}}
+\]
+\[
+\mu_{U1}=\frac{n_1n_2}{2} \qquad
+\sigma_{U1}=\sqrt{\frac{n_1n_2(n_1+n_2+1)}{12}}
+\]
+
+\topic{violet}{Prueba H (Kruskal-Wallis, $k\geq3$ muestras indep.)}
+Alternativa no paramétrica a ANOVA. $H_0: \mu_1=\cdots=\mu_k$. Unir las $k$ muestras, ordenar creciente, asignar rango (promedio en empates), sumar $R_i$ por muestra.
+\[
+H=\frac{12}{n(n+1)}\sum_{i=1}^{k}\frac{R_i^2}{n_i}-3(n+1)
+\]
+Válido si $n_i>5$. $H\sim\chi^2_{k-1}$. $n$=suma de todos los tamaños muestrales.
+
+\topic{violet}{Pruebas de aleatoriedad (corridas)}
+$H_0$: la secuencia es aleatoria. $H_1$: no aleatoria (bil.) / demasiadas corridas (unil. der.) / muy pocas corridas (unil. izq.). Corrida=secuencia de letras iguales consecutivas.
+Datos binarios: cadena a/b directa. Numéricos: $a$ si $>$mediana, $b$ si $<$mediana, se omiten los iguales, se mantiene el orden original.
+$n_1$=cant. de $a$, $n_2$=cant. de $b$, $u$=cant. total de corridas.
+\[
+\mu_u=\frac{2n_1n_2}{n_1+n_2}+1
+\]
+\[
+\sigma_u=\sqrt{\frac{2n_1n_2(2n_1n_2-n_1-n_2)}{(n_1+n_2)^2(n_1+n_2-1)}}
+\]
+Si $n_1,n_2>10$: $Z_{calc}=(u-\mu_u)/\sigma_u$. $u$ grande = alternancia excesiva; $u$ chico = valores agrupados; $u\approx\mu_u$ = compatible con aleatoriedad.
+
+%======================= UNIDAD 5 =======================
+\unithead{orange}{UNIDAD 5 --- Regresión}
+
+\topic{orange}{Método de los mínimos cuadrados}
+Recta poblacional $y=\alpha+\beta x$ estimada por $\hat{y}=a+bx$; $e_i=y_i-\hat{y}_i$ (diferencias verticales). Se minimiza $\sum[y_i-(a+bx_i)]^2$ (al cuadrado para que no se cancelen $+$ y $-$).
+
+\textbf{Ecuaciones normales} (derivando e igualando a 0):
+{\notesize
+\[
+\sum y_i=an+b\sum x_i
+\]
+\[
+\sum y_ix_i=a\sum x_i+b\sum x_i^2
+\]
+}
+{\notesize
+\[
+\begin{bmatrix} n & \sum x_i \\ \sum x_i & \sum x_i^2 \end{bmatrix}
+\begin{pmatrix} a\\b \end{pmatrix} =
+\begin{bmatrix} \sum y_i \\ \sum y_ix_i \end{bmatrix}
+\]
+}
+$a$=\texttt{intercept(x,y)}, $b$=\texttt{slope(x,y)}.
+
+\topic{orange}{Correlación}
+\[
+r=\frac{s_{xy}}{s_x\cdot s_y}=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum(x_i-\bar{x})^2\cdot\sum(y_i-\bar{y})^2}}
+\]
+$-1\leq r\leq1$. $r=1$: recta pendiente positiva perfecta. $r=-1$: recta pendiente negativa perfecta. $r=0$: sin asociación lineal apreciable (puede haber relación no lineal). $r$ mide la relación entre 2 variables; \textbf{no} permite explicar una en función de la otra (no es causalidad).
+
+\topic{orange}{Inferencias basadas en mínimos cuadrados}
+\[
+b=\frac{S_{xy}}{S_{xx}} \qquad a=\bar{Y}-b\bar{X}
+\]
+\[
+s_e^2=\frac{S_{xx}S_{yy}-S_{xy}^2}{n(n-2)S_{xx}} \ (\nu=n-2) \qquad s_e=\sqrt{s_e^2}
+\]
+\textbf{IC:}
+\[
+a\pm t_{\alpha/2}s_e\sqrt{\frac{nS_{xx}}{S_{xx}+(n\bar{x})^2}} \qquad
+b\pm t_{\alpha/2}s_e\sqrt{\frac{n}{S_{xx}}}
+\]
+\textbf{$H_0:\beta=0$ vs $H_1:\beta\neq0$} (la más importante: indica si $X$ influye linealmente en $Y$; si $\beta=0$, $Y$ no depende de $X$). Estimación puntual en $x_0$: $\hat{y}_0=a+bx_0$.
+
+\topic{orange}{Regresión curvilínea (linealizar)}
+\textbf{Exponencial} $y=\alpha\beta^x \Rightarrow y^*=\log_{10}y=a+bx$, $\alpha=10^a$, $\beta=10^b$.
+\textbf{Potencial} $y=\alpha x^\beta \Rightarrow y^*=\log_{10}y,\ x^*=\log_{10}x: y^*=a+Bx^*$.
+\textbf{Recíproca} $y=\dfrac{1}{\alpha+\beta x} \Rightarrow y^*=\dfrac{1}{y}=\alpha+\beta x$.
+
+\topic{orange}{Ajuste polinómico y varianza residual}
+Grado $p$, coeficientes $b_0,\ldots,b_p$; minimizar $\sum[y_i-(b_0+b_1x_i+\cdots+b_px_i^p)]^2$ y armar sistema de $p+1$ ecuaciones normales (matriz de sumas de potencias de $x$).
+\[
+\sigma_{res}^2=\frac{\sum(y_i-\hat{y}_i)^2}{n-(p+1)}
+\]
+Se prueba grado 1 (recta), 2 (parábola), 3, \ldots y se elige el grado donde se observa la mayor caída de $\sigma_{res}^2$; subir más el grado aumenta el riesgo de sobreajuste.
+
+\topic{orange}{Regresión múltiple}
+Incorpora $x_1,\ldots,x_k$ variables independientes para explicar $Y$; se estima un plano (o hiperplano) de regresión en vez de una recta.
+
+%======================= UNIDAD 6 =======================
+\unithead{green}{UNIDAD 6 --- ANOVA}
+
+\topic{green}{Diseño completamente aleatorio (1 vía)}
+$H_0:\mu_1=\cdots=\mu_k$; $H_1$: al menos una distinta. $k$ tratamientos, $n$ obs. c/u. $\alpha_i=\bar{y}_{i.}-\bar{y}_{..}$ (si $H_0$ cierta, todos $\alpha_i=0$).
+\[
+C=\frac{T_{..}^2}{kn} \qquad SST=\sum\sum y_{ij}^2-C
+\]
+\[
+SS(Tr)=\frac{1}{n}\sum T_{i.}^2-C=n\sum(\bar{y}_{i.}-\bar{y}_{..})^2
+\]
+\[
+SSE=SST-SS(Tr)
+\]
+\[
+F=\frac{SS(Tr)/(k-1)}{SSE/[k(n-1)]}=\frac{\hat{\sigma}_H^2}{\hat{\sigma}_W^2}
+\]
+
+\begin{center}
+{\notesize
+\begin{tabular}{@{}l c c c@{}}
+\toprule
+Fuente & gl & SC & MC \\
+\midrule
+Tratam. & $k-1$ & $SS(Tr)$ & $SS(Tr)/(k-1)$ \\
+Error & $k(n-1)$ & $SSE$ & $SSE/[k(n-1)]$ \\
+Total & $nk-1$ & $SST$ & \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\topic{green}{Diseño en bloques aleatorios}
+$y_{ij}=\mu+\alpha_i+\beta_j+\epsilon_{ij}$, con $\sum\alpha_i=0$, $\sum\beta_j=0$; $\epsilon_{ij}\sim iid\,N(0,\sigma^2)$. $a$=nº tratamientos, $b$=nº bloques.
+\[
+C=\frac{T_{..}^2}{ab} \qquad SST=\sum\sum y_{ij}^2-C
+\]
+\[
+SS(Tr)=\frac{1}{b}\sum T_{i.}^2-C\ (a{-}1\text{ gl})
+\]
+\[
+SS(Bl)=\frac{1}{a}\sum T_{.j}^2-C\ (b{-}1\text{ gl})
+\]
+{\notesize
+\[
+SSE=SST-SS(Tr)-SS(Bl) \ \ [(a-1)(b-1)\text{ gl}]
+\]
+}
+\[
+F_{Tr}=\frac{MS(Tr)}{MSE} \qquad F_{Bl}=\frac{MS(Bl)}{MSE}
+\]
+
+\begin{center}
+\begin{tabular}{@{}l c c@{}}
+\toprule
+Fuente & gl & SC \\
+\midrule
+Tratam. & $a-1$ & $SS(Tr)$ \\
+Bloques & $b-1$ & $SS(Bl)$ \\
+Error & $(a{-}1)(b{-}1)$ & $SSE$ \\
+Total & $ab-1$ & $SST$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\topic{green}{Tamaños muestrales distintos ($n_i$)}
+Cambios respecto al diseño 1 vía: usar $n_i$ (no $n$) en $SST$, $SS(Tr)$ y $T$; usar $N=\sum n_i$ (no $k\cdot n$) en $C$.
+\[
+C=\frac{T_{..}^2}{N} \qquad SST=\sum\sum y_{ij}^2-C
+\]
+{\notesize
+\[
+SS(Tr)=\sum\frac{T_{i.}^2}{n_i}-C \qquad SSE=SST-SS(Tr)
+\]
+}
+gl: Tratamientos $k-1$, Error $N-k$, Total $N-1$.
+
+\end{multicols}
+\end{document}
