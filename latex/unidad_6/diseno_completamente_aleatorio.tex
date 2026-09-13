@@ -1,0 +1,210 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+\usepackage[most]{tcolorbox}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{3pt}%
+  \setlength{\belowdisplayskip}{3pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+\shorthandoff{<>}
+
+\begin{center}
+{\large\bfseries Diseños completamente aleatorios}
+\end{center}
+\vspace{-2pt}
+
+La prueba ANOVA busca evaluar si las $k$ medias poblacionales $\mu_1,\mu_2,\ldots,\mu_k$ son todas iguales entre sí:
+
+\begin{center}
+$H_0: \ \mu_1=\mu_2=\cdots=\mu_k$ \hspace{1cm} (Todas las medias poblacionales son iguales)\\
+$H_1: \ $ Al menos una media $\mu_i$ es distinta \hspace{0.5cm} (Existe al menos un par $\mu_i \neq \mu_j$ para $i\neq j$)
+\end{center}
+
+Suponemos poblaciones normales con misma varianza, observaciones independientes. Podemos construir una matriz con k filas y n columnas
+
+Primero considero el diseño completamente aleatorio con tamaños muestrales iguales. Tengo k tratamientos y cada uno tiene la misma cantidad n de observaciones. Las unidades experimentales se asignan aleatoriamente a cada tratamiento.
+
+\begin{center}
+\vspace{-2pt}
+{\small
+\begin{tabular}{l c c c c c c | c c}
+\toprule
+Tratamiento / Muestra & Obs. 1 & Obs. 2 & $\ldots$ & Obs. $j$ & $\ldots$ & Obs. $n$ & Total ($T_{i.}$) & Media ($\bar{y}_{i.}$) \\
+\midrule
+Muestra 1 & $y_{11}$ & $y_{12}$ & $\ldots$ & $y_{1j}$ & $\ldots$ & $y_{1n}$ & $T_{1.}$ & $\bar{y}_{1.}$ \\
+Muestra 2 & $y_{21}$ & $y_{22}$ & $\ldots$ & $y_{2j}$ & $\ldots$ & $y_{2n}$ & $T_{2.}$ & $\bar{y}_{2.}$ \\
+$\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ \\
+Muestra $i$ & $y_{i1}$ & $y_{i2}$ & $\ldots$ & $y_{ij}$ & $\ldots$ & $y_{in}$ & $T_{i.}$ & $\bar{y}_{i.}$ \\
+$\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ \\
+Muestra $k$ & $y_{k1}$ & $y_{k2}$ & $\ldots$ & $y_{kj}$ & $\ldots$ & $y_{kn}$ & $T_{k.}$ & $\bar{y}_{k.}$ \\
+\midrule
+Total / Gran Media & & & & & & & $T_{..}$ & $\bar{y}_{..}$ \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+Donde:
+\begin{itemize}[leftmargin=16pt,itemsep=0pt,topsep=1pt,parsep=0pt]
+  \item $y_{ij}$: $j$-ésima observación en el $i$-ésimo tratamiento ($i=1,\ldots,k$; $j=1,\ldots,n$).
+  \item $T_{i.} = \sum_{j=1}^{n} y_{ij}$: Suma total de las observaciones del tratamiento $i$.
+  \item $\bar{y}_{i.} = \frac{T_{i.}}{n}$: Media muestral del tratamiento $i$.
+  \item $T_{..} = \sum_{i=1}^{k}\sum_{j=1}^{n} y_{ij}$: Suma total de todas las $k\cdot n$ observaciones.
+  \item $\bar{y}_{..} = \frac{T_{..}}{k\cdot n}$: Gran media global de todo el experimento.
+\end{itemize}
+
+\vspace{2pt}
+\hrule
+\vspace{4pt}
+
+\begin{tcolorbox}[colback=blue!5, colframe=blue!45!black, title={\small\bfseries Análisis Profundo del Efecto del Tratamiento ($\alpha_i$)}, boxsep=1pt, left=4pt, right=4pt, top=2pt, bottom=2pt]
+{\small
+Supongamos que investigamos el poder de limpieza de 3 marcas de detergente ($A, B, C$) en una escala de blancura de 0 a 100 puntos, con una media global experimental de $\bar{y}_{..} = 70$ puntos:
+\begin{itemize}[leftmargin=14pt,itemsep=1pt,topsep=1pt,parsep=0pt]
+  \item \textbf{Detergente A (Excelente):} Su media dio $\bar{y}_{1.} = 85$. Efecto: $\alpha_1 = 85-70 = +15$. \textit{Conclusión:} Aporta +15 puntos por encima del promedio. Posee un \textbf{efecto positivo alto}.
+  \item \textbf{Detergente B (Deficiente):} Su media dio $\bar{y}_{2.} = 50$. Efecto: $\alpha_2 = 50-70 = -20$. \textit{Conclusión:} Resta 20 puntos respecto al promedio. Posee un \textbf{efecto negativo drástico}.
+  \item \textbf{Detergente C (Estándar):} Su media dio $\bar{y}_{3.} = 70$. Efecto: $\alpha_3 = 70-70 = 0$. \textit{Conclusión:} Su rendimiento coincide con la media general. Su efecto es \textbf{nulo}.
+\end{itemize}
+Si $H_0$ es cierta, todas las marcas rinden igual que el promedio global, por lo que todos los efectos $\alpha_i$ valen exactamente cero.
+}
+\end{tcolorbox}
+
+\textbf{Efecto tratamiento ($\alpha$) Interpretacion}
+
+Si $\bar{y}_{i.}$ (media muestra 1) tienen un valor mas grande que $\bar{y}_{..}$ (media global) poniendo como ejemplo los detergente quiere decir q ese detergente es positivo o mejor
+
+Decir q las medias son iguales, los efectos serian 0.
+
+\textbf{Para el calculo final del estadistico se realizan los sig calculos}
+
+1ero: vamos a definir un valor constante que es la suma de los elementos de la matriz elevado al cuadrado, multiplicado por 1/k.n
+\[
+C = \frac{1}{k\cdot n}\left(\sum_{i=1}^{k}\sum_{j=1}^{n} y_{ij}\right)^2
+\qquad \text{o simplemente haciendo} \rightarrow \qquad
+C = \frac{(T_{..})^2}{k\cdot n}
+\qquad \textbf{C= termino de correccion}
+\]
+
+2do: vamos a calcular la suma de cuadrados total SST, tomando cada elemento de la matriz y elevando al cuadrado y sumando todo y restando el valor de ``C'' que calculamos recien. Es el primer miembro de la expresion.
+\[
+SST = \sum_{i=1}^{k}\sum_{j=1}^{n} \left(y_{ij}\right)^2 - C
+\]
+
+3ro: vamos a calcular una sumatoria llamada \textbf{suma de cuadrados de tratamientos}. Pertenece al ultimo termino de mi expresion. $T_i$ es la suma de todos los elementos de una fila de la matriz
+\[
+SS(Tr) = n\sum_{i=1}^{k} (\bar{y}_{i.}-\bar{y}_{..})^2
+\qquad \text{o} \qquad
+SS(Tr) = \frac{1}{n}\sum_{i=1}^{k} (T_{i.})^2 - C
+\]
+
+4to: podemos calcular la suma de cuadrados de error SSE con el SST y SS(Tr) calculados anteriormente
+\[
+SSE = SST - SS(Tr)
+\]
+
+5to: finalmente defino el estadistico F, para zona critica
+\[
+F = \frac{\dfrac{SS(Tr)}{k-1}}{\dfrac{SSE}{k\cdot(n-1)}}
+= \frac{\hat{\sigma}_H^2}{\hat{\sigma}_W^2}
+\]
+
+\begin{minipage}[t]{0.32\textwidth}
+\vspace{0pt}
+{\small
+media cuad. tratamiento(MS(Tr)) \\
+media cuadr.error (MSE)
+}
+\end{minipage}
+\begin{minipage}[t]{0.30\textwidth}
+\vspace{0pt}
+{\small
+n1=k-1 gl \\
+n2=k(n-1) gl
+}
+\end{minipage}
+\begin{minipage}[t]{0.34\textwidth}
+\vspace{0pt}
+{\small
+$\hat{\sigma}_H^2 \rightarrow$ Estima varianza a lo alto \\
+$\hat{\sigma}_W^2 \rightarrow$ Estima varianza a lo ancho \\
+k= nº tratamientos
+}
+\end{minipage}
+
+\vspace{2pt}
+\hrule
+\vspace{4pt}
+
+\begin{center}
+{\small
+\begin{tabular}{l c c c c}
+\toprule
+\textbf{Fuentes de Variación} & \textbf{Grados de Libertad} & \textbf{Suma de Cuadrados} & \textbf{Media Cuadrada} & \textbf{F} \\
+\midrule
+Tratamientos & $k-1$ & $SS(Tr)$ & $MS(Tr)=SS(Tr)/(k-1)$ & $MS(Tr)/MSE$ \\
+Error & $k\cdot(n-1)$ & $SSE$ & $MSE=SSE/k\cdot(n-1)$ & \\
+\midrule
+Total & $n\cdot k-1$ & $SST$ & & \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\begin{minipage}[t]{0.42\textwidth}
+\vspace{4pt}
+\textbf{PARA k=4; n=12}
+
+Error=total-tratamientos
+\begin{align*}
+&= (n\cdot k-1)-(k-1) \\
+&= nk-1-k+1 \\
+&= nk-k \\
+&= k(n-1)
+\end{align*}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.54\textwidth}
+\vspace{6pt}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=7.8cm, height=4.1cm,
+  xlabel={\small $F$}, ylabel={\small $dF(t,n_1,n_2)$},
+  xmin=0, xmax=5, ymin=0, ymax=1,
+  xtick={0,1,3,4,5}, ytick={0,0.2,0.4,0.6,0.8,1},
+  tick label style={font=\scriptsize},
+  label style={font=\scriptsize},
+  clip=false
+]
+\addplot[domain=2.2:5, samples=60, draw=none, fill=gray!40] {2.2*x^1.2*exp(-1.7*x)} \closedcycle;
+\addplot[domain=0.02:5, samples=150, thick, red] {2.2*x^1.2*exp(-1.7*x)};
+\draw[thick] (axis cs:2.2,0) -- (axis cs:2.2,0.66);
+\node[font=\scriptsize] at (axis cs:1.0,0.55) {Aceptación};
+\node[font=\scriptsize] at (axis cs:3.2,0.55) {Rechazo};
+\node[below, font=\scriptsize] at (axis cs:2.2,0) {$F_{\alpha}$};
+\draw[->, gray] (axis cs:3.6,0.35) -- (axis cs:2.9,0.10);
+\node[font=\scriptsize] at (axis cs:3.7,0.42) {$\alpha$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+\end{document}
