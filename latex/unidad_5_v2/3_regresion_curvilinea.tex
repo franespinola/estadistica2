@@ -1,0 +1,83 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.6cm,right=1.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{14pt}
+\pagestyle{empty}
+
+\newcommand{\cuerpo}{\fontsize{16.8}{20.5}\selectfont}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{10pt}%
+  \setlength{\belowdisplayskip}{10pt}%
+  \setlength{\abovedisplayshortskip}{5pt}%
+  \setlength{\belowdisplayshortskip}{5pt}%
+  \cuerpo
+}
+
+\begin{document}
+
+{\fontsize{18}{22}\selectfont\bfseries Regresion curvilinea\par}
+
+\hspace{16pt}\begin{minipage}{0.94\linewidth}
+Ahora que pasa si al graficar el diagrama de dispersion vemos que los datos no siguen una trayectoria recta? queremos ajustar con linea recta pero el modelo no va a ser el mas adecuado ya q no representa la naturaleza del fenomeno. Es por esto q usamos un modelo curvilineo. Para lograr este modelo y que se comporte de manera lineal debemos aplicar una transformacion matematica a los datos originales y asi poder aplicar el metodo de los minimos cuadrados que ya veniamos trabajando.
+\end{minipage}
+
+\hspace{16pt}\textbf{Exponencial}
+
+\begin{center}
+$y = \alpha\cdot\beta^x$
+\quad \textbf{=$>$} \quad
+$\log_{10}(y) = \log_{10}(\alpha\cdot\beta^x)$
+\quad \textbf{=$>$} \quad
+$\log_{10}(y) = \log_{10}(\alpha) + x\cdot\log_{10}(\beta)$
+
+\vspace{8pt}
+$y^{*} = \log_{10}(y), \qquad a = \log_{10}(\alpha), \qquad b = \log_{10}(\beta)$
+
+\vspace{8pt}
+\textbf{=$>$} \quad $y^{*} = a + b\cdot x$
+\hspace{1.6cm}
+$\alpha = 10^a$ \hspace{1.0cm} $\beta = 10^b$
+\end{center}
+
+\hspace{16pt}\textbf{Potencial}
+
+\begin{center}
+$y = \alpha\cdot x^{\beta}$
+\quad \textbf{=$>$} \quad
+$\log_{10}(y) = \log_{10}(\alpha) + \beta\cdot\log_{10}(x)$
+
+\vspace{8pt}
+\textbf{=$>$} \quad $y^{*} = \log_{10}(y), \quad x^{*} = \log_{10}(x), \quad a = \log_{10}(\alpha), \quad B = \beta$
+
+\vspace{8pt}
+\textbf{=$>$} \ $y^{*} = a + Bx^{*}$
+\hspace{2.2cm}
+$\alpha = 10^a$ \hspace{1.0cm} $\beta = 10^b$
+\end{center}
+
+\hspace{16pt}\textbf{Reciprocos}
+
+\begin{center}
+$y = \dfrac{1}{\alpha+\beta\cdot x}$
+\quad \textbf{=$>$} \quad
+$\dfrac{1}{y} = \alpha + \beta\cdot x$
+
+\vspace{10pt}
+\textbf{=$>$} \ $y^{*} = \dfrac{1}{y}$
+\hspace{1.2cm}
+$a=\alpha$ \quad $b=\beta$
+
+\vspace{10pt}
+\textbf{=$>$} \ $y^{*} = \alpha + \beta x$
+\end{center}
+
+\end{document}

@@ -1,0 +1,56 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{16pt}
+\pagestyle{empty}
+
+\newcommand{\cuerpo}{\fontsize{17.8}{21.6}\selectfont}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{9pt}%
+  \setlength{\belowdisplayskip}{9pt}%
+  \setlength{\abovedisplayshortskip}{4pt}%
+  \setlength{\belowdisplayshortskip}{4pt}%
+  \cuerpo
+}
+
+\begin{document}
+\shorthandoff{<>}
+
+{\fontsize{17}{21}\selectfont\bfseries Correlacion\par}
+
+La correlacion nos dice con q grado de intensidad se relacionan 2 variables cuantitativas.
+
+el mismo va entre $-1 \leq r \leq 1$
+
+\begin{itemize}[leftmargin=20pt,itemsep=10pt,topsep=4pt,parsep=0pt]
+  \item \textbf{r=1(Relación lineal positiva perfecta)} -$>$ todos los puntos caen sobre una recta de pendiente positiva. Cuando X aumenta Y tambien lo hace
+  \item \textbf{r=-1(Relación Lineal Negativa Perfecta):} todos los puntos estan sobre una recta de pendiente negativa. Cuando X aumenta Y disminuye
+  \item \textbf{r = 0 (Incorrelación Lineal):} En la muestra no se observa asociación lineal apreciable. Puede existir una relación no lineal. La nube de puntos adopta una forma caotica.Simplemente al fenomeno no lo podemos describir con una linea recta.
+  \item \textbf{0 $<$ r $<$ 1 (Relación Lineal Positiva):} Cuanto mas se acerca a 1, mayor es el alineamiento ascendente
+  \item \textbf{$-1 <$ r $< 0$ (Relación Lineal Negativa):} Cuanto más se acerca a $-1$ mayor es el alineamiento descendente
+\end{itemize}
+
+\textbf{En conclusion el coef. de corr. mide la relacion entre 2 variables, no permite explicar una en funcion de la otra.}
+
+\hspace{16pt}\begin{minipage}{0.94\linewidth}
+Matemáticamente, el coeficiente de correlación $r$ se define como el cociente entre la \textbf{covarianza muestral} de las dos variables y el producto de sus respectivas \textbf{desviaciones estándar}:
+\[
+r = \frac{s_{xy}}{s_x \cdot s_y} \tag{2}
+\]
+
+\hspace{16pt}Desarrollando los estimadores muestrales de cada término, obtenemos la fórmula teórica del coeficiente de Pearson:
+\[
+r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n}(x_i-\bar{x})^2 \cdot \sum_{i=1}^{n}(y_i-\bar{y})^2}} \tag{3}
+\]
+\end{minipage}
+
+\end{document}

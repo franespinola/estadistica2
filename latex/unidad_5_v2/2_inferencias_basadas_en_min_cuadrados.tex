@@ -1,0 +1,135 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.0cm,bottom=1.0cm,left=1.3cm,right=1.3cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+\usepackage{tikz}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{11pt}
+\pagestyle{empty}
+
+\newcommand{\cuerpo}{\fontsize{15.4}{18.8}\selectfont}
+\newcommand{\paso}[1]{\tikz[baseline=(n.base)]{\node[draw, dashed, circle, inner sep=1.2pt, font=\footnotesize\bfseries] (n) {#1};}}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{6pt}%
+  \setlength{\belowdisplayskip}{6pt}%
+  \setlength{\abovedisplayshortskip}{3pt}%
+  \setlength{\belowdisplayshortskip}{3pt}%
+  \cuerpo
+}
+
+\begin{document}
+\shorthandoff{<>}
+
+{\fontsize{18}{22}\selectfont\bfseries Inferencias basadas en min cuadrados\par}
+
+Una vez que calculamos a y b para nuestra muestra, la inferencia basada en min cuadrados nos permetiran saber que tan confiable es ese modelo para toda la poblacion y no para una muestra en particular. La inferencia sirve para pasar de los estimadores muestrales \textbf{a} y \textbf{b} a conclusiones sobre los parametros poblacionales $\boldsymbol{\alpha}$ y $\boldsymbol{\beta}$.
+
+\textbf{Sxy (varianza de xy)}, \textbf{Sxx(varianza de x)} me van a permitir estimar la pendiente b y la ordenada al origen a. Con \textbf{Syy(varianza de y)} voy a poder calcular la varianza residual muestral
+
+\begin{minipage}[t]{0.36\linewidth}
+\vspace{0pt}
+\paso{1} \ \ Calc.-{-}$>$\textbf{Sxy, Sxx, Syy}
+
+\vspace{10pt}
+\paso{3} \ \
+\begin{minipage}[t]{0.72\linewidth}
+\vspace{-16pt}
+\[
+b = \frac{S_{xy}}{S_{xx}}
+\]
+\[
+a = \bar{Y} - b\bar{X}
+\]
+\end{minipage}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.38\linewidth}
+\vspace{0pt}
+\paso{2} \ \
+\begin{minipage}[t]{0.80\linewidth}
+\vspace{-14pt}
+\[
+\bar{y} = \frac{\sum y_i}{n} \qquad \bar{x} = \frac{\sum x_i}{n}
+\]
+\end{minipage}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.23\linewidth}
+\vspace{0pt}
+{\small
+$s_e^2 \longrightarrow$ Varianza residual muestral
+
+\vspace{6pt}
+$s_e \longrightarrow$ Error estandar de estimacion
+
+\vspace{6pt}
+\textbf{n-{-}$>$}cant. puntos
+}
+\end{minipage}
+
+\vspace{4pt}
+\paso{4} \ \
+\begin{minipage}[t]{0.42\linewidth}
+\vspace{-16pt}
+\[
+s_e^2 = \frac{S_{xx}\cdot S_{yy} - S_{xy}^2}{n(n-2)\cdot S_{xx}}
+\]
+\[
+s_e = \sqrt{s_e^2}
+\]
+\end{minipage}
+\begin{minipage}[t]{0.30\linewidth}
+\vspace{-4pt}
+\textbf{n--2 gl}
+\end{minipage}
+
+\vspace{2pt}
+Intervalos de conf. $\alpha$ y $\beta$
+
+\begin{center}
+\begin{minipage}{0.36\linewidth}
+\begin{center}
+$\alpha$
+\[
+t = \frac{a-\alpha}{s_e}\cdot \sqrt{\frac{n\cdot S_{xx}}{S_{xx}+(n\cdot\bar{x})^2}}
+\]
+\end{center}
+\end{minipage}
+\begin{minipage}{0.26\linewidth}
+\begin{center}
+$\beta$
+\[
+t = \frac{b-\beta}{s_e}\cdot \sqrt{\frac{S_{xx}}{n}}
+\]
+\end{center}
+\end{minipage}
+\begin{minipage}{0.34\linewidth}
+$\longrightarrow$ Se compara con el t.crit
+\end{minipage}
+\end{center}
+
+\[
+a - t_{\frac{\alpha}{2}}\cdot s_e\cdot\sqrt{\frac{n\cdot S_{xx}}{S_{xx}+(n\cdot\bar{x})^2}}
+\;<\; \alpha \;<\;
+a + t_{\frac{\alpha}{2}}\cdot s_e\cdot\sqrt{\frac{n\cdot S_{xx}}{S_{xx}+(n\cdot\bar{x})^2}}
+\]
+
+\[
+b - t_{\frac{\alpha}{2}}\cdot s_e\cdot\sqrt{\frac{n}{S_{xx}}}
+\;<\; \beta \;<\;
+b + t_{\frac{\alpha}{2}}\cdot s_e\cdot\sqrt{\frac{n}{S_{xx}}}
+\qquad
+\textcolor{red}{\text{\footnotesize Errores máximos de estimación de a y b}}
+\]
+
+Las pruebas de hipotesis con \textbf{$\boldsymbol{\beta}$} son muy importantes, pq indica el cambio promedio de \textbf{Y} cuando \textbf{X} aumenta 1 unidad. Si $\beta$=0: \textbf{y} no depende de \textbf{x (recta horizontral)}, si \ $\beta \neq 0$ \ : \textbf{y} depende de \textbf{x} por lo que existe relacion lineal.
+
+Habiendo comprobado q \ $\beta \neq 0$ \ osea que existe relacion lineal, podemos utilizar dicha recta ajustada para realizar estimaciones. Podemos ver q pasa en un punto especifico X0
+
+\end{document}

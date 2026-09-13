@@ -1,0 +1,153 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.0cm,bottom=1.0cm,left=1.3cm,right=1.3cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4.5pt}
+\pagestyle{empty}
+
+\newcommand{\cuerpo}{\fontsize{12.6}{15.4}\selectfont}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{6pt}%
+  \setlength{\belowdisplayskip}{6pt}%
+  \setlength{\abovedisplayshortskip}{3pt}%
+  \setlength{\belowdisplayshortskip}{3pt}%
+  \cuerpo
+}
+
+\begin{document}
+\shorthandoff{<>}
+
+{\fontsize{18}{22}\selectfont\bfseries Metodos de los minimos cuadrados\par}
+
+Se requiere analizar la \textbf{relación} entre dos \textbf{variables cuantitativas, para} determinar si están asociadas, y si una puede predecir el valor de otra.
+
+\textbf{El coefic. de corr. no sirve:} no explica una variable respecto de otra
+
+\uline{Regresion lineal}
+
+\textbf{1)} Tenemos un diagrama de dispersión donde hay dos variables relacionadas:
+
+\hspace{18pt}\begin{minipage}{0.93\linewidth}
+- La independiente o \textbf{explicativa ``x''} \quad ej: edad \\
+- La dependiente o \textbf{explicada ``y''} \qquad ej: tensión arterial
+\end{minipage}
+
+\textbf{2)} Queremos encontrar la recta que mejor ajuste los valores, y que pueda ser utilizada para predecir los valores:
+
+\hspace{18pt}\begin{minipage}{0.93\linewidth}
+- Para esto usamos el \textbf{método de los mínimos cuadrados}, que elige la recta de regresión que minimiza los errores de las diferencias vertices.
+\end{minipage}
+
+\textbf{3)} La recta que mejor se ajusta es: y=$\alpha$ + $\beta$.x , que será estimada por:
+
+\begin{minipage}[t]{0.30\linewidth}
+\vspace{2pt}
+\[
+\widehat{y} = a + b\cdot x
+\]
+\end{minipage}\hfill
+\begin{minipage}[t]{0.68\linewidth}
+\vspace{6pt}
+a y b (parámetros muestrales) son estimadores de $\alpha$ y $\beta$ (parámetros poblacionales)
+\end{minipage}
+
+\begin{minipage}[t]{0.30\linewidth}
+\vspace{2pt}
+\[
+e_i = y_i - \widehat{y}_i
+\]
+\end{minipage}\hfill
+\begin{minipage}[t]{0.68\linewidth}
+\vspace{6pt}
+diferencias verticales $\longleftarrow$ (regresión y sobre x)
+\end{minipage}
+
+\vspace{2pt}
+\begin{minipage}[t]{0.46\linewidth}
+\vspace{0pt}
+{\footnotesize Regresión lineal simple: valor observado, valor estimado y residuo}
+
+\vspace{2pt}
+\begin{center}
+\begin{tikzpicture}[scale=0.68, every node/.style={font=\scriptsize}]
+  \draw[->, gray] (0,0) -- (7.6,0) node[right, black] {$x$};
+  \draw[->, gray] (0,0) -- (0,4.9) node[above, black] {$y$};
+  \draw[thick, blue] (0.4,0.75) -- (7.1,4.35);
+  \foreach \p in {(0.9,0.75),(1.9,1.35),(2.6,1.5),(3.55,2.95),(4.5,2.55),(5.9,3.6),(6.7,3.9)}
+    \fill[black] \p circle (1.5pt);
+  \draw[dotted, gray] (3.55,0) -- (3.55,2.95);
+  \draw[dashed, gray] (0,2.95) -- (3.55,2.95);
+  \draw[dashed, blue!60] (0,2.28) -- (3.55,2.28);
+  \fill[blue] (3.55,2.28) circle (1.5pt);
+  \draw[<->, very thick, red] (3.62,2.30) -- (3.62,2.93);
+  \node[red, right] at (3.78,2.05) {$e_i = y_i - \widehat{y}_i$};
+  \node[blue, above] at (4.7,3.45) {$\widehat{y} = a + b\,x$};
+  \node[left] at (0,2.95) {$y_i$};
+  \node[left, blue] at (0,2.28) {$\widehat{y}_i$};
+  \node[below] at (3.55,0) {$x_i$};
+\end{tikzpicture}
+\end{center}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.50\linewidth}
+\vspace{34pt}
+No es viable la suma de los errores, pq se cancelan los (+) con los ($-$)
+\end{minipage}
+
+\textbf{4)} Se busca \textbf{minimizar la suma de los cuadrados de las diferencias} entre los valores reales y los valores estimados $\Rightarrow$ \textbf{a y b se eligirán con:} \hfill \textbf{SCE}
+
+\begin{minipage}[t]{0.34\linewidth}
+\vspace{0pt}
+\[
+\sum_{i=1}^{n} \left[ y_i - \left(a+b\cdot x_i\right) \right]^2
+\]
+\end{minipage}\hfill
+\begin{minipage}[t]{0.64\linewidth}
+\vspace{6pt}
+\begin{center}
+Al cuadrado para que los errores no se cancelen, no utilizamos el valor absoluto debido a un problema de amiguedad en el f(x)' = 0
+\end{center}
+\end{minipage}
+
+\textbf{5)} Para minimizar la suma debemos hacer las \textbf{derivadas parciales} de los coeficientes \textbf{a y b, e igualarlos a 0}. Esto es debido a que la función es convexa entonces al igualar a 0 se encuentra el \textbf{mínimo} de la función
+\[
+\sum_{i=1}^{n} y_i = a\cdot n + b\cdot\sum_{i=1}^{n} x_i
+\qquad\qquad
+\sum_{i=1}^{n} y_i\cdot x_i = a\cdot\sum_{i=1}^{n} x_i + b\cdot\sum_{i=1}^{n} (x_i)^2
+\]
+
+\textbf{6)} Formamos un Sist de Ecuaciones Normales con las derivadas:
+
+\begin{minipage}[t]{0.55\linewidth}
+\vspace{0pt}
+\[
+\begin{bmatrix}
+n & \displaystyle\sum_{i=1}^{n} x_i \\[10pt]
+\displaystyle\sum_{i=1}^{n} x_i & \displaystyle\sum_{i=1}^{n} (x_i)^2
+\end{bmatrix}
+\begin{pmatrix} a \\ b \end{pmatrix}
+=
+\begin{bmatrix}
+\displaystyle\sum_{i=1}^{n} y_i \\[10pt]
+\displaystyle\sum_{i=1}^{n} \left(y_i\cdot x_i\right)
+\end{bmatrix}
+\]
+\end{minipage}\hfill
+\begin{minipage}[t]{0.43\linewidth}
+\vspace{10pt}
+Resolviendo el SEN por determinantes \textbf{obtenemos los valores de a y b que mejor se ajustan a la recta}
+
+Se puede calcular a con \textbf{intercept(x,y)} y b con \textbf{slope(x,y)}
+\end{minipage}
+
+\end{document}
