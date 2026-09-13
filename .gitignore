@@ -26,3 +26,6 @@ tmp/
 .tmp/
 
 CLAUDE.md
+
+.agents/**
+.claude/**

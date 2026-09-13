@@ -1,0 +1,69 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{4pt}%
+  \setlength{\belowdisplayskip}{4pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+\textbf{Ejemplo:} \textit{Las siguiente muestra aleatoria son mediciones de la capacidad de producción de calor (en millones de calorías por tonelada) de especímenes de carbón de una mina:}
+
+\begin{center}
+\textit{8260 \quad 8130 \quad 8350 \quad 8070 \quad 8340}
+\end{center}
+
+\textit{usar el rango de la muestra para estima $\sigma$ de la capacidad de producción de calor del carbón de la mina.}
+
+\vspace{4pt}
+
+1) Busco primero el mayor de los valores (8360) y los resto con el menor (8070), entonces el rango R me queda:
+\[
+R = 8350 - 8070 = 280
+\]
+
+2) busco en la tabla $d_2$ a cuanto equivale para $n=5$
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+$d_2$ & 1.128 & 1.693 & 2.054 & 2.326 & 2.534 & 2.704 & 2.847 & 2.970 & 3.078 \\
+\hline
+$d_3$ & 0.853 & 0.888 & 0.880 & 0.864 & 0.848 & 0.833 & 0.830 & 0.808 & 0.797 \\
+\hline
+N & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+\hline
+\end{tabular}
+\end{center}
+
+Luego la estimación de $\sigma$ queda:
+\[
+\sigma = \frac{R}{d_2} = \frac{280}{2.326} = 120.378
+\]
+
+mientras que calculado directamente da:
+\[
+s = \sqrt{\frac{8260^2 + 8130^2 + 8350^2 + 8070^2 + 8340^2 - 5\cdot 8230^2}{4}} = 125.499
+\]
+
+Es mucho mas confiable estimar por el R ya q me da menos
+\[
+s = \sqrt{\frac{\sum (x_i^2) - n\cdot \bar{x}^2}{n-1}}
+\]
+
+\end{document}
