@@ -1,0 +1,102 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{3pt}%
+  \setlength{\belowdisplayskip}{3pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+{\large\bfseries Diseño en bloques aleatorios}
+\vspace{2pt}
+
+El experimentador tiene a disposicion mediciones relativas a ``a'' tratamientos distribuidos en b bloques. Vamos a considerar el caso en q hay una observacion en cada tratamiento de cada bloque.
+
+\begin{center}
+\vspace{-2pt}
+{\small
+\begin{tabular}{l c c c c | c c c}
+\toprule
+Tratamiento & Bloque 1 & Bloque 2 & $\ldots$ & Bloque $b$ & Total ($T_{i.}$) & Media ($\bar{y}_{i.}$) & Efecto ($\alpha_i$) \\
+\midrule
+Tratamiento 1 & $y_{11}$ & $y_{12}$ & $\ldots$ & $y_{1b}$ & $T_{1.}$ & $\bar{y}_{1.}$ & $\alpha_1=\bar{y}_{1.}-\bar{y}_{..}$ \\
+Tratamiento 2 & $y_{21}$ & $y_{22}$ & $\ldots$ & $y_{2b}$ & $T_{2.}$ & $\bar{y}_{2.}$ & $\alpha_2=\bar{y}_{2.}-\bar{y}_{..}$ \\
+$\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ \\
+Tratamiento $a$ & $y_{a1}$ & $y_{a2}$ & $\ldots$ & $y_{ab}$ & $T_{a.}$ & $\bar{y}_{a.}$ & $\alpha_a=\bar{y}_{a.}-\bar{y}_{..}$ \\
+\midrule
+Total Bloque & $T_{.1}$ & $T_{.2}$ & $\ldots$ & $T_{.b}$ & $T_{..}$ & & \\
+Media Bloque & $\bar{y}_{.1}$ & $\bar{y}_{.2}$ & $\ldots$ & $\bar{y}_{.b}$ & & $\bar{y}_{..}$ & \\
+Efecto Bloque & $\beta_1$ & $\beta_2$ & $\ldots$ & $\beta_b$ & & & \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\hfill {\small a=numero de tratamiento \quad b=numero de bloque}
+
+El modelo matemático aditivo sin interacción es:
+\[
+y_{ij} = \mu + \alpha_i + \beta_j + \epsilon_{ij} \qquad \text{para } i=1,\ldots,a; \quad j=1,\ldots,b
+\]
+
+Con las restricciones $\sum_{i=1}^{a}\alpha_i=0$ y $\sum_{j=1}^{b}\beta_j=0$, donde:
+\begin{itemize}[leftmargin=16pt,itemsep=0pt,topsep=1pt,parsep=0pt]
+  \item $\mu$: Gran media general.
+  \item $\alpha_i=\bar{y}_{i.}-\bar{y}_{..}$: Efecto fijo del $i$-ésimo tratamiento.
+  \item $\beta_j=\bar{y}_{.j}-\bar{y}_{..}$: Efecto fijo del $j$-ésimo bloque.
+  \item $\epsilon_{ij} \sim iid\ N(0,\sigma^2)$: Error aleatorio.
+\end{itemize}
+
+\hfill {\small $\alpha_i$ =efecto de la fila \quad $\beta_j$= efecto de la columna \quad $\varepsilon_{ij}$ = ruido o error que tiene media cero o varianza comun $\sigma^2$}
+
+\[
+C = \frac{T_{..}^2}{a\cdot b}
+\]
+\[
+SST = \sum_{i=1}^{a}\sum_{j=1}^{b} y_{ij}^2 - C
+\]
+\[
+SS(Tr) = \frac{1}{b}\sum_{i=1}^{a} T_{i.}^2 - C \qquad \text{con } a-1 \text{ gl}
+\]
+\[
+SS(Bl) = \frac{1}{a}\sum_{j=1}^{b} T_{.j}^2 - C \qquad \text{con } b-1 \text{ gl}
+\]
+\[
+SSE = SST - SS(Tr) - SS(Bl) \qquad \text{con } (a-1)(b-1) \text{ gl}
+\]
+
+\begin{center}
+\vspace{-2pt}
+{\footnotesize
+\begin{tabular}{l c c c c}
+\toprule
+\textbf{Fuentes de Variación} & \textbf{Grados de Libertad} & \textbf{Suma de Cuadrados} & \textbf{Media Cuadrada} & \textbf{F} \\
+\midrule
+Tratamientos & $a-1$ & $SS(Tr)$ & $MS(Tr)=SS(Tr)/(a-1)$ & $F_{Tr}=MS(Tr)/MSE$ \\
+Bloques & $b-1$ & $SS(Bl)$ & $MS(Bl)=SS(Bl)/(b-1)$ & $F_{Bl}=MS(Bl)/MSE$ \\
+Error & $(a-1)\cdot(b-1)$ & $SSE$ & $MSE=SSE/(a-1)\cdot(b-1)$ & \\
+Total & $a\cdot b-1$ & $SST$ & & \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+para llegar al error hicimos: \quad Error = total-tratamientos-bloques
+
+\end{document}
