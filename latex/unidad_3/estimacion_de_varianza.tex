@@ -1,0 +1,129 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{3pt}%
+  \setlength{\belowdisplayskip}{3pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+{\large\bfseries\uline{Estimacion de la varianza}\par}
+\vspace{2pt}
+
+En muestras pequeñas no resulta adecuado hacer la estimacion del sigma con el s, para ello se recurre al rango muestral R. El rango de un conjunto de valores es el maximo valor - el minimo valor.
+
+Voy a tener una poblacion normal con media mu y desviacion estandar sigma. Tomo muestras aleatorias de tamaño n y les calculo el rango R. Si encuentro la funcion densidad de probabilidad de esos rangos veo q tienen una distribucion normal cuya media vale $d_2\cdot\sigma$ y cuya desviacion estandar es $d_3\cdot\sigma$. Siendo $d_2$ y $d_3$ valores q tomo de una tabla para estos tamaños muestrales.
+
+$d_2$ $\rightarrow$ estimo la desviacion estandar poblacional $\sigma$
+\[
+\hat{\sigma} = \frac{R}{d_2}
+\qquad\qquad
+\boldsymbol{\mu_R = d_2\,\sigma} \qquad \boldsymbol{\sigma_R = d_3\,\sigma}
+\]
+
+Se usa en \textbf{\uline{Control de Calidad}}
+
+\vspace{2pt}
+\textbf{3) Para n chico ($\mathbf{n<30}$)} \,$\dashrightarrow$\, Dist Chi cuadrado
+
+\noindent
+\begin{minipage}[t]{0.58\textwidth}
+\[
+\chi^2 = \frac{(n-1)\cdot s^2}{\sigma^2} \qquad \text{con } \nu = n-1 \text{ grados de libertad}
+\]
+{\footnotesize\textit{inter. confianz para $\sigma^2$}}
+\[
+(\chi^2)_{\frac{\alpha}{2}} \;<\; \frac{(n-1)\,s^2}{\sigma^2} \;<\; (\chi^2)_{1-\frac{\alpha}{2}}
+\]
+\[
+\frac{(n-1)\cdot s^2}{(\chi^2)_{1-\frac{\alpha}{2}}} \;<\; \sigma^2 \;<\; \frac{(n-1)\cdot s^2}{(\chi^2)_{\frac{\alpha}{2}}}
+\]
+\end{minipage}\hfill
+\begin{minipage}[t]{0.40\textwidth}
+\vspace{2pt}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=6.2cm, height=3.4cm,
+  axis lines=left, axis line style={-},
+  xmin=0, xmax=15, ymin=0, ymax=0.21,
+  xtick=\empty, ytick=\empty,
+  clip=false
+]
+\addplot[domain=0.05:14.5, samples=120, thick] {x*exp(-x/2)/4};
+\draw (axis cs:1.2,0) -- (axis cs:1.2,0.035);
+\draw (axis cs:9.5,0) -- (axis cs:9.5,0.035);
+\node[below, font=\scriptsize] at (axis cs:1.2,0) {$\chi^2_{\frac{\alpha}{2}}$};
+\node[below, font=\scriptsize] at (axis cs:9.5,0) {$\chi^2_{1-\frac{\alpha}{2}}$};
+\node[font=\scriptsize] at (axis cs:5.2,0.115) {$1-\alpha$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\vspace{-4pt}
+{\footnotesize
+$(\chi^2)_{\frac{\alpha}{2}}$ \,$\dashrightarrow$\, \texttt{qchisq(0.025, $\nu$)}\\
+$(\chi^2)_{1-\frac{\alpha}{2}}$ \,$\dashrightarrow$\, \texttt{qchisq(0.975, $\nu$)}
+}
+\end{minipage}
+
+{\footnotesize\textit{inter. confienz para $\sigma$ (aplicamos raiz)}}
+\[
+\sqrt{\frac{(n-1)\,s^2}{\chi^2_{1-\frac{\alpha}{2}}}} \;<\; \sigma \;<\; \sqrt{\frac{(n-1)\,s^2}{\chi^2_{\frac{\alpha}{2}}}}
+\]
+
+\textbf{4) Para n grande ($\mathbf{n>30}$)} \,$\dashrightarrow$\, Dist Z y Chi cuadrado (innecesario)
+
+a)
+\[
+z = \frac{s-\sigma}{\dfrac{\sigma}{\sqrt{2\cdot n}}}
+\qquad
+\text{Con desv. estándar } \frac{\sigma}{\sqrt{2*n}} \text{ y media sigma } \sigma \text{ (distrib. norm estánd.)}
+\]
+lo que supone una desigualdad, para un intervalo de confianza $(1-\alpha)$
+
+{\footnotesize\textit{inter. confianz para $\sigma$}}
+\[
+-z_{\alpha/2} \;<\; \frac{s-\sigma}{\dfrac{\sigma}{\sqrt{2n}}} \;<\; z_{\alpha/2}
+\]
+\[
+\frac{s}{1+\dfrac{z_{\frac{\alpha}{2}}}{\sqrt{2\cdot n}}} \;<\; \sigma \;<\; \frac{s}{1-\dfrac{z_{\frac{\alpha}{2}}}{\sqrt{2\cdot n}}}
+\]
+
+También se podría usar la chi cuadrado ya que con $n > 30$ se aproxima a una dist. normal.
+
+\vspace{4pt}
+\hrule
+\vspace{4pt}
+
+{\large\bfseries Hipotesis referida a una varianza\par}
+\vspace{2pt}
+
+Se quiere probar H0 de que la varianza de una población es igual a una determinada, contra una H1 unilateral o bilateral.\\
+*cola derecha$\rightarrow$ Detectar si la variabilidad del proceso \textbf{aumentó} (ej. máquina descalibrada).\\
+*izquierda$\rightarrow$Demostrar que la variabilidad \textbf{disminuyó} (ej. nuevo método más preciso).\\
+*bilateral$\rightarrow$Detectar \textbf{cualquier alteración} respecto a un estándar fijo (sea que la varianza suba o baje).
+
+\[
+\textbf{n<30:}\quad \chi^2 = \frac{(n-1)\cdot s^2}{\left(\sigma_0\right)^2}
+\qquad\qquad
+\textbf{n>30:}\quad z = \frac{s-\sigma_0}{\dfrac{\sigma_0}{\sqrt{2\cdot n}}}
+\]
+
+\end{document}
