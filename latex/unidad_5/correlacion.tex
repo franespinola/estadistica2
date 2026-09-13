@@ -1,0 +1,118 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{groupplots}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{3pt}%
+  \setlength{\belowdisplayskip}{3pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+{\large\bfseries\uline{Correlacion}}
+\vspace{2pt}
+
+Matemáticamente, el coeficiente de correlación $r$ se define como el cociente entre la \textbf{covarianza muestral} de las dos variables y el producto de sus respectivas \textbf{desviaciones estándar}:
+\[
+r = \frac{s_{xy}}{s_x \cdot s_y} \tag{2}
+\]
+
+Desarrollando los estimadores muestrales de cada término, obtenemos la fórmula teórica del coeficiente de Pearson:
+\[
+r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n}(x_i-\bar{x})^2 \cdot \sum_{i=1}^{n}(y_i-\bar{y})^2}} \tag{3}
+\]
+
+\begin{minipage}[t]{0.56\textwidth}
+\vspace{0pt}
+{\footnotesize
+$r$: Coeficiente de correlación lineal de Pearson.
+
+$x_i, y_i$: Los valores individuales de las dos variables de la muestra para una observación específica $i$.
+
+$\bar{x}$: La media aritmética de la variable $x$.
+
+$\bar{y}$: La media aritmética de la variable $y$.
+
+$n$: El número total de pares de datos o el tamaño de la muestra.
+
+$\sum_{i=1}^{n}$: Símbolo de sumatoria, que indica que debes sumar todos los valores resultantes de la expresión que le sigue, comenzando desde el primer valor ($i=1$) hasta el último ($n$).
+
+$(x_i - \bar{x})$: La diferencia (o desviación) de un valor individual de $x$ respecto a su media.
+
+$(y_i - \bar{y})$: La diferencia (o desviación) de un valor individual de $y$ respecto a su media.
+}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.40\textwidth}
+\vspace{0pt}
+\textbf{Correlacion}
+
+{\small
+La correlacion nos dice con q grado de intensidad se relacionan 2 variables cuantitativas.
+
+el mismo va entre $-1 \leq r \leq 1$
+\begin{itemize}[leftmargin=10pt,itemsep=1pt,topsep=1pt,parsep=0pt]
+  \item \textbf{r=1(Relación lineal positiva perfecta)} -> todos los puntos caen sobre una recta de pendiente positiva. Cuando X aumenta Y tambien lo hace
+  \item \textbf{r=-1(Relación Lineal Negativa Perfecta):} todos los puntos estan sobre una recta de pendiente negativa. Cuando X aumenta Y disminuye
+  \item \textbf{r = 0 (Incorrelación Lineal):} En la muestra no se observa asociación lineal apreciable. Puede existir una relación no lineal. La nube de puntos adopta una forma caotica. Simplemente al fenómeno no lo podemos describir con una linea recta.
+  \item \textbf{0 < r < 1 (Relación Lineal Positiva):} Cuanto mas se acerca a 1, mayor es el alineamiento ascendente
+  \item \textbf{$-1<r<0$ (Relación Lineal Negativa):} Cuanto más se acerca a $-1$ mayor es el alineamiento descendente
+\end{itemize}
+
+\textbf{En conclusion el coef. de corr. mide la relacion entre 2 variables, no permite explicar una en función de la otra.}
+}
+\end{minipage}
+
+\vspace{2pt}
+\begin{center}
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=5 by 1, horizontal sep=0.55cm},
+  width=3.55cm, height=3.1cm,
+  tick label style={font=\tiny},
+  title style={font=\tiny},
+  xmin=0, xmax=10, ymin=0, ymax=27,
+]
+\nextgroupplot[title={\shortstack{Perfecta Positiva\\$r=1.00$}}]
+\addplot[thick, gray!40!black, domain=0:10, samples=2] {2*x+5};
+\nextgroupplot[title={\shortstack{Fuerte Positiva\\$r=0.91$}}]
+\addplot[only marks, mark=*, mark size=0.9pt, blue!60!black] table[row sep=\\] {
+x y \\
+0.3 4.8 \\ 0.8 6.1 \\ 1.4 5.5 \\ 1.9 7.9 \\ 2.4 9.5 \\ 2.9 8.1 \\ 3.4 11.0 \\
+3.9 12.5 \\ 4.4 11.8 \\ 4.9 13.9 \\ 5.4 15.1 \\ 5.9 14.2 \\ 6.4 17.0 \\ 6.9 18.6 \\
+7.4 17.9 \\ 7.9 20.5 \\ 8.4 21.9 \\ 8.9 22.5 \\ 9.4 24.0 \\ 9.9 25.0 \\
+};
+\addplot[dashed, orange, domain=0:10, samples=2] {2.05*x+4.5};
+\nextgroupplot[title={\shortstack{Perfecta Negativa\\$r=-1.00$}}]
+\addplot[thick, gray!40!black, domain=0:10, samples=2] {-2*x+25};
+\nextgroupplot[title={\shortstack{Incorrelación (Ruido)\\$r=0.0062$}}]
+\addplot[only marks, mark=*, mark size=0.9pt, blue!60!black] table[row sep=\\] {
+x y \\
+0.2 12 \\ 0.6 6 \\ 1.1 15 \\ 1.5 3 \\ 2.0 18 \\ 2.4 9 \\ 2.9 14 \\ 3.3 5 \\
+3.8 19 \\ 4.2 8 \\ 4.7 16 \\ 5.1 4 \\ 5.6 11 \\ 6.0 20 \\ 6.5 7 \\ 6.9 13 \\
+7.4 2 \\ 7.8 17 \\ 8.3 10 \\ 8.7 6 \\ 9.2 15 \\ 9.6 9 \\
+};
+\addplot[dashed, orange, domain=0:10, samples=2] {10 + 0*x};
+\nextgroupplot[title={\shortstack{Relación Parabólica\\$r=-0.0063$\\{\tiny(¡Hay relación, pero no lineal!)}}}, xmin=-5, xmax=5]
+\addplot[only marks, mark=*, mark size=0.9pt, blue!60!black, domain=-4.5:4.5, samples=40] {x^2 + 0.3*sin(deg(5*x))};
+\addplot[dashed, orange, domain=-5:5, samples=2] {8.5+0*x};
+\end{groupplot}
+\end{tikzpicture}
+\end{center}
+
+\end{document}

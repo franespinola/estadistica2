@@ -1,0 +1,69 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{3pt}%
+  \setlength{\belowdisplayskip}{3pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+\begin{center}
+{\large\bfseries Ajuste polinomico}
+\end{center}
+\vspace{-2pt}
+
+Si no sabemos cómo es la relación entre x e y (luego de haber probado con regresion curvilinea y regresion lineal), se busca el mejor ajuste a través de un polinomio de grado p (grado mínimo para no sobreajust.)
+
+\textbf{(1)} Para estimar los $p+1$ coeficientes óptimos (denotados en la muestra como $b_0, b_1, \ldots, b_p$), aplicamos el método de \textbf{Mínimos Cuadrados Ordinarios}. El objetivo es encontrar aquellos estimadores que minimicen de forma conjunta la Suma de Cuadrados de Error (SCE), definida como:
+\[
+S(b_0,b_1,\ldots,b_p) = \sum_{i=1}^{n} e_i^2 = \sum_{i=1}^{n} [y_i-\hat{y}_i]^2 = \sum_{i=1}^{n} \left[ y_i - (b_0+b_1 x_i + b_2 x_i^2 + \cdots + b_p x_i^p) \right]^2
+\]
+
+\textbf{(2)} Derivamos e igualamos a 0 los p+1 valor (b0,b1,b2....)
+\[
+\frac{\partial S}{\partial b_0} = \sum_{i=1}^{n} \underbrace{2}_{\text{Baja el exponente}} \cdot \underbrace{\left[y_i - (b_0+b_1 x_i+b_2 x_i^2+\cdots+b_p x_i^p)\right]}_{\text{Lo de adentro intacto}} \cdot \underbrace{(-1)}_{\text{Derivada respecto a } b_0} = 0
+\]
+\[
+\frac{\partial S}{\partial b_k} = \sum_{i=1}^{n} \underbrace{2}_{\text{Baja el exponente}} \cdot \underbrace{\left[y_i - (b_0+b_1 x_i+b_2 x_i^2+\cdots+b_p x_i^p)\right]}_{\text{Lo de adentro intacto}} \cdot \underbrace{(-x_i^k)}_{\text{Derivada respecto a } b_k} = 0
+\]
+\[
+\underbrace{b_0\sum_{i=1}^{n} x_i^k + b_1\sum_{i=1}^{n} x_i^{k+1} + b_2\sum_{i=1}^{n} x_i^{k+2} + \cdots + b_p\sum_{i=1}^{n} x_i^{k+p}}_{\text{Fila de incógnitas}} = \underbrace{\sum_{i=1}^{n}(x_i^k y_i)}_{\text{Término independiente}}
+\]
+
+\textbf{(3)} Armamos sist. ec. y matriz
+\begin{align*}
+\text{Para } k=0: &\quad n\cdot b_0 + b_1\sum x_i + b_2\sum x_i^2 + \cdots + b_p\sum x_i^p = \sum y_i \\
+\text{Para } k=1: &\quad b_0\sum x_i + b_1\sum x_i^2 + b_2\sum x_i^3 + \cdots + b_p\sum x_i^{p+1} = \sum (x_i y_i) \\
+\text{Para } k=2: &\quad b_0\sum x_i^2 + b_1\sum x_i^3 + b_2\sum x_i^4 + \cdots + b_p\sum x_i^{p+2} = \sum (x_i^2 y_i) \\
+&\qquad\qquad\qquad\qquad\qquad \vdots \\
+\text{Para } k=p: &\quad b_0\sum x_i^p + b_1\sum x_i^{p+1} + b_2\sum x_i^{p+2} + \cdots + b_p\sum x_i^{2p} = \sum (x_i^p y_i)
+\end{align*}
+
+\[
+\begin{bmatrix}
+n & \sum x_i & \sum x_i^2 & \cdots & \sum x_i^p \\
+\sum x_i & \sum x_i^2 & \sum x_i^3 & \cdots & \sum x_i^{p+1} \\
+\sum x_i^2 & \sum x_i^3 & \sum x_i^4 & \cdots & \sum x_i^{p+2} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+\sum x_i^p & \sum x_i^{p+1} & \sum x_i^{p+2} & \cdots & \sum x_i^{2p}
+\end{bmatrix}
+\begin{bmatrix} b_0 \\ b_1 \\ b_2 \\ \vdots \\ b_p \end{bmatrix}
+=
+\begin{bmatrix} \sum y_i \\ \sum (x_i y_i) \\ \sum (x_i^2 y_i) \\ \vdots \\ \sum (x_i^p y_i) \end{bmatrix}
+\]
+
+\end{document}

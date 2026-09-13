@@ -1,0 +1,74 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{4pt}%
+  \setlength{\belowdisplayskip}{4pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+{\large\bfseries Regresion curvilinea}
+\vspace{2pt}
+
+Ahora que pasa si al graficar el diagrama de dispersion vemos que los datos no siguen una trayectoria recta? queremos ajustar con linea recta pero el modelo no va a ser el mas adecuado ya q no representa la naturaleza del fenomeno. Es por esto q usamos un modelo curvilineo. Para lograr este modelo y que se comporte de manera lineal debemos aplicar una transformacion matematica a los datos originales y asi poder aplicar el metodo de los minimos cuadrados que ya veniamos trabajando.
+
+\textbf{Exponencial}
+\[
+y = \alpha\cdot\beta^x
+\;\Rightarrow\;
+\log_{10}(y) = \log_{10}(\alpha\cdot\beta^x)
+\;\Rightarrow\;
+\log_{10}(y) = \log_{10}(\alpha) + x\cdot\log_{10}(\beta)
+\]
+\[
+y^{*} = \log_{10}(y), \qquad a = \log_{10}(\alpha), \qquad b = \log_{10}(\beta)
+\]
+\[
+\Rightarrow \quad y^{*} = a + b\cdot x
+\qquad\qquad\qquad
+\alpha = 10^a \qquad \beta = 10^b
+\]
+
+\textbf{Potencial}
+\[
+y = \alpha\cdot x^{\beta}
+\;\Rightarrow\;
+\log_{10}(y) = \log_{10}(\alpha) + \beta\cdot\log_{10}(x)
+\]
+\[
+\Rightarrow \quad y^{*} = \log_{10}(y), \quad x^{*} = \log_{10}(x), \quad a = \log_{10}(\alpha), \quad B = \beta
+\]
+\[
+\Rightarrow \; y^{*} = a + Bx^{*}
+\qquad\qquad\qquad
+\alpha = 10^a \qquad \beta = 10^b
+\]
+
+\textbf{Reciprocos}
+\[
+y = \frac{1}{\alpha+\beta\cdot x}
+\;\Rightarrow\;
+\frac{1}{y} = \alpha + \beta\cdot x
+\]
+\[
+\Rightarrow \; y^{*} = \frac{1}{y} \qquad a=\alpha \quad b=\beta
+\]
+\[
+\Rightarrow \; y^{*} = \alpha + \beta x
+\]
+
+\end{document}

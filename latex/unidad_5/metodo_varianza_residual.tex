@@ -1,0 +1,77 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.5cm,right=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{4pt}%
+  \setlength{\belowdisplayskip}{4pt}%
+  \setlength{\abovedisplayshortskip}{2pt}%
+  \setlength{\belowdisplayshortskip}{2pt}%
+}
+
+\begin{document}
+
+\begin{center}
+{\large\bfseries Metodo de la varianza residual}
+\end{center}
+\vspace{-2pt}
+
+Para evitar el sobreajuste, se calcula la \textbf{varianza residual}:
+\[
+\sigma_{\text{res}}^2 = \frac{\displaystyle\sum_{i=1}^{n} (y_i-\hat{y}_i)^2}{n-(p+1)}
+\]
+
+Donde:
+\begin{itemize}[leftmargin=16pt,itemsep=1pt,topsep=1pt,parsep=0pt]
+  \item $n$ es la cantidad de puntos de la muestra.
+  \item $p$ es el grado del polinomio.
+  \item $p+1$ es la cantidad de coeficientes estimados.
+  \item $n-p-1$ representa los \textbf{grados de libertad del modelo}.
+  \item $y_i - \hat{y}_i$ es el residuo, es decir, la diferencia entre el valor observado y el valor estimado.
+\end{itemize}
+
+\textbf{Se comienza por :}
+\begin{itemize}[leftmargin=16pt,itemsep=0pt,topsep=1pt,parsep=0pt]
+  \item una recta, grado 1
+  \item se sigue parabola, grado 2,
+  \item luego polinomio, grado 3
+  \item polinomio de grados superiores si fuera necesario
+\end{itemize}
+Para cada uno se calcula la varianza residual y se compara los resultados.
+La suma de cuadrados de error vista en el numerador de la formula tiende a disminuir porque la curva se adapta mejor a los puntos
+Tambien disminyen los grados de libertad, porque se estiman mas coeficientes
+
+\textbf{Para la seleccion:}
+Se selecciona el grado en el q se observa la mayor caida. Despues de este punto aumentar el grado puede ser innecesario ya q puede aumenta el riesgo de sobreajuste
+
+\textbf{Ej:}
+
+Dada una muestra de $n=10$ mediciones industriales, se evalúa el ajuste de polinomios de grados sucesivos obteniéndose los siguientes resultados reales:
+
+\begin{center}
+{\small
+\begin{tabular}{c c c c p{3.6cm}}
+\toprule
+\textbf{Grado (p)} & \textbf{SCE Muestral} & \textbf{GL ($n-p-1$)} & \textbf{Var. Residual ($s^2$)} & \textbf{¿Se justifica?} \\
+\midrule
+1 (Lineal) & 57.655 & 8 & \textbf{7.207} & Modelo Base \\
+2 (Cuadrático) & 53.059 & 7 & \textbf{7.580} & No, la varianza aumentó \\
+3 (Cúbico) & 6.124 & 6 & \textbf{1.021} & \textbf{Sí, salto decreciente masivo} \\
+4 (Cuártico) & 4.959 & 5 & \textbf{0.992} & No, reducción insignificante \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\end{document}
