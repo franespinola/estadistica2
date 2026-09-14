@@ -1,0 +1,100 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=1.1cm,bottom=1.1cm,left=1.2cm,right=1.2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{16pt}
+\pagestyle{empty}
+
+\newcommand{\cuerpo}{\fontsize{16}{19.4}\selectfont}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{10pt}%
+  \setlength{\belowdisplayskip}{10pt}%
+  \setlength{\abovedisplayshortskip}{5pt}%
+  \setlength{\belowdisplayshortskip}{5pt}%
+  \cuerpo
+}
+
+\begin{document}
+
+\begin{center}
+{\fontsize{16}{20}\selectfont\bfseries Tamaños muestrales distintos}
+\end{center}
+
+\begin{center}
+cada fila tiene distintas cantidad de columnas
+\end{center}
+
+\begin{center}
+{\fontsize{12}{14.5}\selectfont
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{|l|c c c c c c|c|c|c|}
+\hline
+\textbf{Tratamiento} & \textbf{Obs. 1} & \textbf{Obs. 2} & $\ldots$ & \textbf{Obs. $j$} & $\ldots$ & \textbf{Obs. $n_i$} & \textbf{Tamaño ($n_i$)} & \textbf{Total ($T_{i.}$)} & \textbf{Media ($\bar{y}_{i.}$)} \\
+\hline
+Muestra 1 & $y_{11}$ & $y_{12}$ & $\ldots$ & $y_{1j}$ & $\ldots$ & $y_{1n_1}$ & $n_1$ & $T_{1.}$ & $\bar{y}_{1.}$ \\
+Muestra 2 & $y_{21}$ & $y_{22}$ & $\ldots$ & $y_{2j}$ & -- & -- & $n_2$ & $T_{2.}$ & $\bar{y}_{2.}$ \\
+$\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ \\
+Muestra $k$ & $y_{k1}$ & $y_{k2}$ & $\ldots$ & $y_{kn_k}$ & -- & -- & $n_k$ & $T_{k.}$ & $\bar{y}_{k.}$ \\
+\hline
+\textbf{Total Global} & & & & & & & $N=\sum n_i$ & $T_{..}$ & $\bar{y}_{..}$ \\
+\hline
+\end{tabular}
+}
+\end{center}
+
+\begin{center}
+\begin{minipage}{0.62\linewidth}
+Se deben hacer los siguientes cambios:
+\begin{enumerate}[leftmargin=26pt,itemsep=2pt,topsep=2pt,parsep=0pt]
+  \item Cambiar \textbf{n} por \textbf{ni} en: SST, SS(Tr) , C y T
+  \item Cambiar \textbf{k.n} por \textbf{N} en: C (N es $=\Sigma$ni)
+\end{enumerate}
+Se usa \textbf{ni (tamaño de cada muestra)} en lugar de \textbf{n (tamaño de todas las muestras)}
+\end{minipage}
+\end{center}
+
+\begin{center}
+$\nu 1 := k-1 = $ \hspace{2.2cm} $\nu := N-1 = $
+
+\vspace{6pt}
+$\nu 2 := \nu - \nu 1$
+\end{center}
+
+\[
+C = \frac{T_{..}^2}{N} \quad \text{donde } N=\sum_{i=1}^{k} n_i
+\]
+\[
+SST = \sum_{i=1}^{k}\sum_{j=1}^{n_i} y_{ij}^2 - C
+\]
+\[
+SS(Tr) = \sum_{i=1}^{k} \frac{T_{i.}^2}{n_i} - C
+\]
+\[
+SSE = SST - SS(Tr)
+\]
+
+\begin{center}
+{\fontsize{12.5}{15}\selectfont
+\begin{tabular}{l c c c c}
+\toprule
+\textbf{Fuente de Variación} & \textbf{gl} & \textbf{Suma de Cuadrados} & \textbf{Media Cuadrada (MS)} & $F_{calc}$ \\
+\midrule
+Tratamientos & $k-1$ & $SS(Tr)$ & $MS(Tr)=\frac{SS(Tr)}{k-1}$ & $\frac{MS(Tr)}{MSE}$ \\
+Error Aleatorio & $N-k$ & $SSE$ & $MSE=\frac{SSE}{N-k}$ & \\
+\midrule
+Total & $N-1$ & $SST$ & & \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\end{document}

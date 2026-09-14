@@ -1,0 +1,191 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=0.9cm,bottom=0.9cm,left=1.0cm,right=1.0cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2.5pt}
+\pagestyle{empty}
+
+\newcommand{\cuerpo}{\fontsize{9.2}{11.1}\selectfont}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{6pt}%
+  \setlength{\belowdisplayskip}{6pt}%
+  \setlength{\abovedisplayshortskip}{3pt}%
+  \setlength{\belowdisplayshortskip}{3pt}%
+  \cuerpo
+}
+
+\begin{document}
+\shorthandoff{<>}
+
+\hfill{\bfseries\footnotesize Analisis de varianza}
+
+\vspace{-4pt}
+\begin{center}
+{\fontsize{15}{18}\selectfont\bfseries Diseños completamente aleatorios}
+\end{center}
+
+La prueba ANOVA busca evaluar si las $k$ medias poblacionales $\mu_1,\mu_2,\ldots,\mu_k$ son todas iguales entre sí:
+
+\begin{center}
+\begin{tabular}{@{}l l@{}}
+$H_0: \ \mu_1=\mu_2=\cdots=\mu_k$ & \hspace{0.6cm}(Todas las medias poblacionales son iguales) \\
+$H_1: \ $ Al menos una media $\mu_i$ es distinta & \hspace{0.6cm}(Existe al menos un par $\mu_i \neq \mu_j$ para $i\neq j$) \\
+\end{tabular}
+\end{center}
+
+\hspace{16pt}\begin{minipage}{0.94\linewidth}
+Suponemos poblaciones normales con misma varianza, observaciones independientes. Podemos construir una matriz con k filas y n columnas
+
+\vspace{6pt}
+Primero considero el diseño completamente aleatorio con tamaños muestrales iguales. Tengo k tratamientos y cada uno tiene la misma cantidad n de observaciones. Las unidades experimentales se asignan aleatoriamente a cada tratamiento.
+\end{minipage}
+
+\begin{center}
+{\fontsize{8.8}{10.6}\selectfont
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{l c c c c c c | c c}
+\toprule
+Tratamiento / Muestra & Obs. 1 & Obs. 2 & $\ldots$ & Obs. $j$ & $\ldots$ & Obs. $n$ & Total ($T_{i.}$) & Media ($\bar{y}_{i.}$) \\
+\midrule
+Muestra 1 & $y_{11}$ & $y_{12}$ & $\ldots$ & $y_{1j}$ & $\ldots$ & $y_{1n}$ & $T_{1.}$ & $\bar{y}_{1.}$ \\
+Muestra 2 & $y_{21}$ & $y_{22}$ & $\ldots$ & $y_{2j}$ & $\ldots$ & $y_{2n}$ & $T_{2.}$ & $\bar{y}_{2.}$ \\
+$\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ \\
+Muestra $i$ & $y_{i1}$ & $y_{i2}$ & $\ldots$ & $y_{ij}$ & $\ldots$ & $y_{in}$ & $T_{i.}$ & $\bar{y}_{i.}$ \\
+$\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ \\
+Muestra $k$ & $y_{k1}$ & $y_{k2}$ & $\ldots$ & $y_{kj}$ & $\ldots$ & $y_{kn}$ & $T_{k.}$ & $\bar{y}_{k.}$ \\
+\midrule
+Total / Gran Media & & & & & & & $T_{..}$ & $\bar{y}_{..}$ \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\textbf{Efecto tratamiento ($\alpha$)} Interpretacion
+
+\begin{minipage}[t]{0.60\linewidth}
+\vspace{0pt}
+Si \ $\bar{y}_{i.}$ \ (media muestra 1) tienen un valor mas grande que \ $\bar{y}_{..}$
+\end{minipage}\hfill
+\begin{minipage}[t]{0.38\linewidth}
+\vspace{0pt}
+{\small (media global o gran media) poniendo como ejemplo los detergente quiere decir q ese detergente es positivo o mejor}
+\end{minipage}
+
+Decir q las medias son iguales, los efectos serian 0.
+
+\textbf{Para el calculo final del estadistico se realizan los sig calculos}
+
+\textbf{1)} vamos a definir un valor constante que es la suma de los elementos de la matriz elevado al cuadrado, multiplicado por 1/k.n
+
+\begin{center}
+$\displaystyle C = \frac{1}{k\cdot n}\left(\sum_{i=1}^{k}\sum_{j=1}^{n} y_{ij}\right)^2$
+\quad \textbf{o simplemente haciendo-{-}$>$} \quad
+$\displaystyle C = \frac{(T_{..})^2}{k\cdot n}$
+\hfill \textbf{C= termino de correccion}
+\end{center}
+
+\textbf{2)} vamos a calcular la suma de cuadrados total SST, tomando cada elemento de la matriz y elevando al cuadrado y sumando todo y restando el valor de ``C'' que calculamos recien. Es el primer miembro de la expresion.
+\[
+SST = \sum_{i=1}^{k}\sum_{j=1}^{n} \left(y_{ij}\right)^2 - C
+\]
+
+\textbf{3)} vamos a calcular una sumatoria llamada \textbf{suma de cuadrados de tratamientos}. Pertenece al ultimo termino de mi expresion. $T_i$ es la suma de todos los elementos de una fila de la matriz
+\[
+SS(Tr) = n\sum_{i=1}^{k} (\bar{y}_{i.}-\bar{y}_{..})^2
+\qquad \textbf{o} \qquad
+SS(Tr) = \frac{1}{n}\sum_{i=1}^{k} (T_{i.})^2 - C
+\]
+
+\textbf{4)} podemos calcular la suma de cuadrados de error SSE con el SST y SS(Tr) calculados anteriormente
+\[
+SSE = SST - SS(Tr)
+\]
+
+\textbf{5)} finalmente defino el estadistico F , para zona critica
+
+\vspace{2pt}
+\begin{center}
+\begin{minipage}[c]{0.22\linewidth}
+{\small
+media cuad.\\ tratamiento(MS(Tr)) $\searrow$
+
+\vspace{10pt}
+media\\ cuadr.error\\ (MSE) $\nearrow$
+}
+\end{minipage}
+\begin{minipage}[c]{0.26\linewidth}
+\[
+F = \frac{\dfrac{SS(Tr)}{k-1}}{\dfrac{SSE}{k\cdot(n-1)}}
+\ = \
+\frac{\hat{\sigma}_H^2}{\hat{\sigma}_W^2}
+\]
+\end{minipage}
+\begin{minipage}[c]{0.20\linewidth}
+{\small
+$\longrightarrow$ n1=k-1 gl
+
+\vspace{10pt}
+$\longrightarrow$ n2=k(n-1) gl
+}
+\end{minipage}
+\begin{minipage}[c]{0.30\linewidth}
+{\small
+$\hat{\sigma}_H^2 \longrightarrow$ Estima varianza a lo alto
+
+\vspace{6pt}
+$\hat{\sigma}_W^2 \longrightarrow$ Estima varianza a lo ancho
+
+\vspace{6pt}
+\hspace{14pt} k= nº tratamientos
+}
+\end{minipage}
+\end{center}
+
+\begin{minipage}[t]{0.26\linewidth}
+\vspace{14pt}
+{\small
+\textbf{PARA k=4; n=12}
+
+Error=total-tratamientos
+\begin{align*}
+&= (n.k-1)-(k-1) \\[-1pt]
+&= nk-1-k+1 \\[-1pt]
+&= nk-k \\[-1pt]
+&= k(n-1)
+\end{align*}
+\vspace{-14pt}
+
+$\longrightarrow$
+}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.72\linewidth}
+\vspace{0pt}
+{\fontsize{8.8}{10.6}\selectfont
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{|l|c|c|l|c|}
+\hline
+\textbf{Fuentes de} & \textbf{Grados de} & \textbf{Suma de} & \textbf{Media Cuadrada} & \textbf{F} \\
+\textbf{Variación} & \textbf{Libertad} & \textbf{Cuadrados} & & \\
+\hline
+\textbf{Tratamientos} & k-1 & $SS(Tr)$ & MS(Tr)=SS(Tr)/(k-1) & MS(Tr)/MSE \\
+\hline
+\textbf{Error} & $k.(n-1)$ & $SSE$ & MSE=SSE/k.(n-1) & \\
+\hline
+\textbf{Total} & $n.k-1$ & $SST$ & & \\
+\hline
+\end{tabular}
+}
+\end{minipage}
+
+\end{document}
