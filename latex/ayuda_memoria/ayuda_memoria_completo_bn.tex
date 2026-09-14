@@ -1,0 +1,1214 @@
+\documentclass[10pt,a4paper,landscape]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=0.4cm,bottom=0.4cm,left=0.4cm,right=0.4cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array,multirow}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage[normalem]{ulem}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,shapes.geometric}
+
+\pgfmathdeclarefunction{gauss}{3}{%
+  \pgfmathparse{1/(#3*sqrt(2*pi))*exp(-((#1-#2)^2)/(2*#3^2))}%
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.8pt}
+\setlength{\columnsep}{0.26cm}
+\setlength{\columnseprule}{0.3pt}
+\setlength{\tabcolsep}{1.6pt}
+\pagestyle{empty}
+\sloppy
+\hyphenpenalty=50
+\tolerance=3000
+
+\newcommand{\cuerpo}{\fontsize{4.8}{5.5}\selectfont}
+\newcommand{\chico}{\fontsize{4.2}{4.8}\selectfont}
+\newcommand{\fig}{\fontsize{3.4}{3.8}\selectfont}
+
+% Separador de unidad (sin titulo): doble filete a todo el ancho de columna
+\newcommand{\unidad}[1]{%
+  \par\vspace{3.5pt}%
+  \noindent\rule{\linewidth}{1.3pt}\par\vspace{1.1pt}%
+  \noindent\rule{\linewidth}{0.4pt}%
+  \par\vspace{2.5pt}}
+
+% Titulo de tema (gris claro)
+\newcommand{\tema}[1]{%
+  \par\vspace{2pt}%
+  \noindent\colorbox{black!16}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+    \fontsize{5.7}{6.6}\selectfont\bfseries #1\strut}}%
+  \par\vspace{0.8pt}}
+
+% Subtitulo dentro de un tema
+\newcommand{\sub}[1]{\par\vspace{0.8pt}{\fontsize{5.3}{6.1}\selectfont\bfseries #1}\par\vspace{0.4pt}}
+
+% Encabezado de ejemplo resuelto
+\newcommand{\ej}[1]{\par\vspace{0.8pt}\noindent{\fontsize{5.3}{6.1}\selectfont\bfseries\itshape #1}\par\vspace{0.4pt}}
+
+% Ajusta una tabla al ancho de columna solo si se pasa
+\newcommand{\fit}[1]{\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{#1}}
+% Formula ancha: se encoge al ancho de columna si hace falta
+\newcommand{\fitm}[1]{\par\vspace{0.6pt}\centerline{\fit{$\displaystyle #1$}}\vspace{0.6pt}}
+
+\newenvironment{lista}{\begin{itemize}[leftmargin=7pt,itemsep=0pt,topsep=0.5pt,parsep=0pt,labelsep=2pt]}{\end{itemize}}
+\newenvironment{listan}{\begin{enumerate}[leftmargin=9pt,itemsep=0pt,topsep=0.5pt,parsep=0pt,labelsep=2pt]}{\end{enumerate}}
+
+% Sumatorias: glifo de tamano texto (mas chico) pero con limites arriba/abajo
+\let\origsum\sum
+\renewcommand{\sum}{\mathop{\textstyle\origsum}\limits}
+
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{1pt}%
+  \setlength{\belowdisplayskip}{1pt}%
+  \setlength{\abovedisplayshortskip}{0.5pt}%
+  \setlength{\belowdisplayshortskip}{0.5pt}%
+  \cuerpo
+}
+
+\begin{document}
+\shorthandoff{<>}
+
+\begin{multicols}{4}
+
+%=====================================================================
+\unidad{UNIDAD 2 --- PRUEBA DE HIPÓTESIS}
+%=====================================================================
+
+\tema{2.A \ Tema A --- Hipótesis, procedimiento y errores}
+
+\textbf{Hipótesis nula ($H_0$).} Es el punto de partida y se asume temporalmente para confrontarla con los datos. Contiene la igualdad: $=$, $\leq$ o $\geq$.
+
+\textbf{Hipótesis alternativa ($H_a$ o $H_1$).} Expresa lo que se concluirá si existe evidencia suficiente para rechazar $H_0$. Se formula con $<$, $>$ o $\neq$.
+
+\sub{Procedimiento prueba hipotesis}
+\begin{enumerate}[label=\textbf{Paso \arabic*.},leftmargin=24pt,itemsep=0pt,topsep=0.5pt,parsep=0pt,labelsep=2pt]
+  \item Preguntar qué quiere demostrar el problema.
+  \item Formular $H_0$ y $H_1$.
+  \item Mirar el signo de $H_1$ y determinar si la prueba es derecha, izquierda o bilateral.
+  \item Fijar el nivel de significancia $\alpha$.
+  \item Elegir el estadístico: $Z$, $t$, $Z_{\bar{X}_1-\bar{X}_2}$, $t_{\bar{X}_1-\bar{X}_2}$ u otro que corresponda: $z_{\text{calc}} = \frac{\bar{x}-\mu_0}{\sigma/\sqrt{n}}$.
+  \item Encontrar el valor crítico y construir la región de rechazo.
+  \item Calcular $z_{calc}$ o $t_{calc}$ con los datos de la muestra.
+  \item Comparar el estadístico calculado con el valor crítico, o comparar el $p$-valor con $\alpha$.
+  \item Decidir: rechazar $H_0$ o no rechazar $H_0$.
+  \item Interpretar la decisión con las palabras del problema.
+\end{enumerate}
+
+\sub{Eleccion estadistico}
+\begin{center}
+{\chico
+\renewcommand{\arraystretch}{1.0}
+\begin{tabular}{|p{6.2em}|p{4.6em}|p{9.5em}|p{9.5em}|}
+\hline
+Población & Tamaño de la muestra & $\sigma$ conocida & $\sigma$ desconocida \\
+\hline
+\multirow{2}{=}{Normalmente Distribuida}
+  & Grande ($n \geq 30$) & \centering $\bar{x} \pm z_\alpha \cdot \sigma_{\bar{x}}$ & \centering\arraybackslash $\bar{x} \pm z_\alpha \cdot s_{\bar{x}}$ \\
+\cline{2-4}
+  & Chica ($n < 30$) & \centering $\bar{x} \pm z_\alpha \cdot \sigma_{\bar{x}}$ & \centering\arraybackslash $\bar{x} \pm t_\alpha \cdot s_{\bar{x}}$ \\
+\hline
+\multirow{2}{=}{No Normalmente Distribuida}
+  & Grande ($n \geq 30$) & \centering $\bar{x} \pm z_\alpha \cdot \sigma_{\bar{x}}$ & \centering\arraybackslash $\bar{x} \pm z_\alpha \cdot s_{\bar{x}}$ \\
+\cline{2-4}
+  & Chica ($n < 30$) & $\bar{x} \pm k \cdot \sigma_{\bar{x}}$ \newline donde $1-1/k^2$ se define por medio del Teorema de Chebyshev
+                     & $\bar{x} \pm k \cdot s_{\bar{x}}$ \newline donde $1-1/k^2$ se define por medio del Teorema de Chebyshev \\
+\hline
+\end{tabular}
+}
+\end{center}
+
+\begin{center}
+{\chico
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{|c|c|c|}
+\hline
+ & Se Acepta H & Se Rechaza H \\
+\hline
+H es Verdadera & Decisión Correcta & Error de Tipo I \\
+\hline
+H es Falsa & Error de Tipo II & Decisión Correcta \\
+\hline
+\end{tabular}
+}
+\end{center}
+
+\textbf{fabricante afirma q el secado es 20m, el comprador pinta tableros y lo rechaza si es mayor a 20.75min}
+
+\begin{lista}
+  \item 20,75 es mi límite (elegido arbitrariamente)
+  \item $\leftarrow$ hacia la izquierda del límite se acepta \ $\rightarrow$ hacia la derecha del límite se rechaza
+  \item El area gris es la probabilidad de rechazar algo correcto (error tipo I)
+  \item El area amarillo es la probabildiad de aceptar algo incorrecto (error tipo II)
+\end{lista}
+
+\textbf{En el caso de q no lo elija arbitrariamente recurro al nivel de significancia $\alpha$}
+
+\tema{2.B \ Tema B --- Hipótesis relativa a 2 medias}
+
+Se comparan 2 medias poblaciones $u_1$--$u_2$
+
+\textbf{$H_0 : \mu_1 - \mu_2 = \delta$,} \ $\delta$ \textbf{diferencia propuesta}
+
+$\mu_1-\mu_2<\delta$ \textbf{cola izq.} \ $\mu_1-\mu_2>\delta$ \textbf{cola der.} \ $\mu_1-\mu_2<>\delta$ \textbf{bil}
+\[
+z = \frac{(x_{m1} - x_{m2}) - \delta}{\sigma_{xm1} - \sigma_{xm2}} \quad \text{\textbf{dif. entre medias muestrales}}
+\]
+
+Si las poblaciones son normales, \textbf{se define un estadístico:}
+
+\textbf{1) Para n grande ($n>30$):} $\sigma^2$ \textit{conocido}
+\[
+z = \frac{\left[\bar{x}_1 - \bar{x}_2\right] - \delta}{\sqrt{\dfrac{\sigma_1^2}{n_1} + \dfrac{\sigma_2^2}{n_2}}}
+\quad {\chico \downarrow \textit{varianza de la media muestral}}
+\]
+
+$\sigma^2$ \textit{desconocido:} \textit{sustituyendo $\sigma_1$ y $\sigma_2$ por $s_1$ y $s_2$}
+
+\textbf{2) Para n chico ($n<30$) con $\sigma^2$ desconocida:} ``\textbf{Prueba t-bimuestral}'' \textit{(muestras independientes)} suponemos $\sigma_1 = \sigma_2$ ($=\sigma$)
+\[
+{\chico t = \frac{\left[\left(\overline{x_1} - \overline{x_2}\right) - \delta\right]}{\sqrt{(n_1-1)\cdot(s_1)^2 + (n_2-1)\cdot(s_2)^2}} \cdot \sqrt{\frac{n_1 \cdot n_2 \cdot (n_1+n_2-2)}{n_1+n_2}}}
+\]
+\centerline{con $\nu = n_1 + n_2 - 2$}
+
+\textbf{3) Si las 2 poblac. no son independientes:} La muestra es la diferencia entre las 2 poblaciones relacionadas, con su signo.
+
+\begin{center}
+{\chico Horas-hombre perdidas antes y después del programa.}
+
+\fit{{\chico
+\begin{tabular}{l r r r r r r r r r r l}
+\toprule
+Planta & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & \\
+\midrule
+Antes & 45 & 73 & 46 & 124 & 33 & 57 & 83 & 34 & 26 & 17 & \textbf{h0:} $\mu = 0$ \\
+Después & 36 & 60 & 44 & 119 & 35 & 51 & 77 & 29 & 24 & 11 & \textbf{h1:} $\mu > 0$ \\
+$d_i$ & 9 & 13 & 2 & 5 & $-2$ & 6 & 6 & 5 & 2 & 6 & \\
+\bottomrule
+\end{tabular}
+}}
+\end{center}
+\[
+\bar{x} = \frac{9 + 13 + 2 + 5 - 2 + 6 + 6 + 5 + 2 + 6}{10} = 5.2
+\]
+\[
+s = \sqrt{\frac{\sum d_i^2 - n \cdot \bar{x}^2}{n-1}} \quad \text{\textbf{n-1 para quitar sesgo}}
+\]
+\[
+t = \frac{\bar{x} - \mu_0}{s/\sqrt{n}} \quad \text{\textbf{Aplica t-unimuestral}}
+\]
+\centerline{conclus-$>$\textbf{eficaz} \qquad $qt(0.95,\ df = 9)$ \qquad \textbf{Se rechaza h0}}
+
+\ej{Ejemplo (fertilizante sobre producción de trigo):}
+En una estación agrícola se deseaba ensayar el efecto de un determinado fertilizante sobre la producción de trigo. Para ello se eligieron 24 parcelas de terreno de igual superficie; la mitad de ellas fueron tratadas con el fertilizante y la otra mitad no (grupo control). Todas las demás condiciones fueron las mismas. La media de trigo conseguida fue de 0.264 m$^3$ con una desviación estándar de 0.02 m$^3$, mientras que la media en las parcelas tratadas fue de 0.28 m$^3$ con una desviación estándar de 0.022 m$^3$. ¿Puede decirse que hay un incremento significativo en la producción de trigo por el empleo del fertilizante al nivel de significación del 5\%?
+
+\begin{lista}
+  \item[\textbf{1 --}] Hipótesis Nula $\mu_1 - \mu_2 = 0$, la diferencia se debe al azar. Hipótesis Alternativa $\mu_1 > \mu_2$ (unilateral cola derecha), el fertilizante incrementa significativamente la producción.
+  \item[\textbf{2 -}] Nivel de significancia: $\alpha = 0.05$. $t_\alpha = 1.717$ con $\nu = 22$ grados de libertad.
+  \item[\textbf{3 -}] Para trabajar con tablas normalizadas:
+\end{lista}
+\[
+{\chico t = \frac{\left[\left(\overline{x_1} - \overline{x_2}\right) - \delta\right]}{\sqrt{(n_1-1)\cdot(s_1)^2 + (n_2-1)\cdot(s_2)^2}} \cdot \sqrt{\frac{n_1 \cdot n_2 \cdot (n_1+n_2-2)}{n_1+n_2}}}
+\]
+\fitm{t = \frac{\left[(0.28 - 0.264) - 0\right]}{\sqrt{(12-1)\cdot 0.022^2 + (12-1)\cdot(0.02)^2}} \cdot \sqrt{\frac{12 \cdot 12 \cdot (12+12-2)}{12+12}} = 1.849}
+\textbf{5-} Dado que $1.849 > t_{0.05}$ ($t_{0.05} = 1.717$) se Rechaza la Hipótesis Nula $\mu_1 - \mu_2 = 0$. Vale decir, hay un incremento significativo en la producción de trigo por el empleo del fertilizante.
+
+%=====================================================================
+\unidad{UNIDAD 3 --- VARIANZA, PROPORCIONES Y $\chi^2$}
+%=====================================================================
+
+\tema{3.1 \ Estimacion de la varianza}
+
+En muestras pequeñas no resulta adecuado hacer la estimacion del sigma con el s, para ello se recurre al rango muestral R. El rango de un conjunto de valores es el maximo valor - el minimo valor.
+
+Voy a tener una poblacion normal con media mu y desviacion estandar sigma. Tomo muestras aleatorias de tamaño n y les calculo el rango R. Si encuentro la funcion densidad de probabilidad de esos rangos veo q tienen una distribucion normal cuya media vale $d_2\cdot\sigma$ y cuya desviacion estandar es $d_3\cdot\sigma$. Siendo $d_2$ y $d_3$ valores q tomo de una tabla para estos tamaños muestrales.
+
+$d_2 \rightarrow$ estimo la desviacion estandar poblacional $\sigma$
+\[
+\hat{\sigma} = \frac{R}{d_2} \qquad \boldsymbol{\mu_R = d_2\,\sigma} \qquad \boldsymbol{\sigma_R = d_3\,\sigma}
+\]
+Se usa en \textbf{\uline{Control de Calidad}}
+
+\textbf{3) Para n chico ($\mathbf{n<30}$)} $\dashrightarrow$ Dist Chi cuadrado
+\[
+\chi^2 = \frac{(n-1)\cdot s^2}{\sigma^2} \quad \text{con } \nu = n-1 \text{ gl}
+\]
+{\chico\textit{inter. confianz para $\sigma^2$}}
+\[
+(\chi^2)_{\frac{\alpha}{2}} \;<\; \frac{(n-1)\,s^2}{\sigma^2} \;<\; (\chi^2)_{1-\frac{\alpha}{2}}
+\]
+\[
+\frac{(n-1)\cdot s^2}{(\chi^2)_{1-\frac{\alpha}{2}}} \;<\; \sigma^2 \;<\; \frac{(n-1)\cdot s^2}{(\chi^2)_{\frac{\alpha}{2}}}
+\]
+
+{\chico
+$(\chi^2)_{\frac{\alpha}{2}}$ $\dashrightarrow$ \texttt{qchisq(0.025, $\nu$)} \quad
+$(\chi^2)_{1-\frac{\alpha}{2}}$ $\dashrightarrow$ \texttt{qchisq(0.975, $\nu$)}\par}
+
+{\chico\textit{inter. confienz para $\sigma$ (aplicamos raiz)}}
+\[
+\sqrt{\frac{(n-1)\,s^2}{\chi^2_{1-\frac{\alpha}{2}}}} \;<\; \sigma \;<\; \sqrt{\frac{(n-1)\,s^2}{\chi^2_{\frac{\alpha}{2}}}}
+\]
+
+\textbf{4) Para n grande ($\mathbf{n>30}$)} $\dashrightarrow$ Dist Z y Chi cuadrado (innecesario) \ a)
+\[
+z = \frac{s-\sigma}{\dfrac{\sigma}{\sqrt{2\cdot n}}}
+\]
+Con desv. estándar $\frac{\sigma}{\sqrt{2*n}}$ y media sigma $\sigma$ (distrib. norm estánd.). lo que supone una desigualdad, para un intervalo de confianza $(1-\alpha)$
+
+{\chico\textit{inter. confianz para $\sigma$}}
+\[
+-z_{\alpha/2} \;<\; \frac{s-\sigma}{\dfrac{\sigma}{\sqrt{2n}}} \;<\; z_{\alpha/2}
+\]
+\[
+\frac{s}{1+\dfrac{z_{\frac{\alpha}{2}}}{\sqrt{2\cdot n}}} \;<\; \sigma \;<\; \frac{s}{1-\dfrac{z_{\frac{\alpha}{2}}}{\sqrt{2\cdot n}}}
+\]
+También se podría usar la chi cuadrado ya que con $n > 30$ se aproxima a una dist. normal.
+
+\sub{Hipotesis referida a una varianza}
+Se quiere probar H0 de que la varianza de una población es igual a una determinada, contra una H1 unilateral o bilateral.\\
+*cola derecha$\rightarrow$ Detectar si la variabilidad del proceso \textbf{aumentó} (ej. máquina descalibrada).\\
+*izquierda$\rightarrow$Demostrar que la variabilidad \textbf{disminuyó} (ej. nuevo método más preciso).\\
+*bilateral$\rightarrow$Detectar \textbf{cualquier alteración} respecto a un estándar fijo (sea que la varianza suba o baje).
+\[
+\textbf{n<30:}\ \chi^2 = \frac{(n-1)\cdot s^2}{\left(\sigma_0\right)^2}
+\qquad
+\textbf{n>30:}\ z = \frac{s-\sigma_0}{\dfrac{\sigma_0}{\sqrt{2\cdot n}}}
+\]
+
+\tema{3.2 \ Ejemplo --- estimacion de la varianza}
+
+\textit{Las siguiente muestra aleatoria son mediciones de la capacidad de producción de calor (en millones de calorías por tonelada) de especímenes de carbón de una mina:} \ \textit{8260 \ 8130 \ 8350 \ 8070 \ 8340}. \textit{usar el rango de la muestra para estima $\sigma$ de la capacidad de producción de calor del carbón de la mina.}
+
+1) Busco primero el mayor de los valores (8360) y los resto con el menor (8070), entonces el rango R me queda:
+\[
+R = 8350 - 8070 = 280
+\]
+2) busco en la tabla $d_2$ a cuanto equivale para $n=5$
+\begin{center}
+{\chico
+\setlength{\tabcolsep}{1pt}
+\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+$d_2$ & 1.128 & 1.693 & 2.054 & 2.326 & 2.534 & 2.704 & 2.847 & 2.970 & 3.078 \\
+\hline
+$d_3$ & 0.853 & 0.888 & 0.880 & 0.864 & 0.848 & 0.833 & 0.830 & 0.808 & 0.797 \\
+\hline
+N & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+\hline
+\end{tabular}
+}
+\end{center}
+Luego la estimación de $\sigma$ queda:
+\[
+\sigma = \frac{R}{d_2} = \frac{280}{2.326} = 120.378
+\]
+mientras que calculado directamente da:
+\[
+{\chico s = \sqrt{\frac{8260^2 + 8130^2 + 8350^2 + 8070^2 + 8340^2 - 5\cdot 8230^2}{4}} = 125.499}
+\]
+Es mucho mas confiable estimar por el R ya q me da menos
+\[
+s = \sqrt{\frac{\sum (x_i^2) - n\cdot \bar{x}^2}{n-1}}
+\]
+
+\tema{3.3 \ Estimacion de proporciones}
+
+\textbf{Ej:} Proporción de personas que toman \textbf{vino} en Mendoza
+\begin{lista}
+  \item Tomo un muestra de \textbf{n=100} y encontré que \textbf{x=35} toman vino. Esto \textbf{no me permite concluir} que el 35\% toma vino. (Pq es 1 muestra y seguramente no representativa)
+  \item Debo establecer un inter. de conf. que me permita asegurar con cierto grado de confianza que la proporción real se encuentra en él.
+  \item Puedo estimar la proporción poblacional \textbf{p}, a través de la estimación puntual \textbf{x/n}
+\end{lista}
+\[
+p = \frac{x}{n}
+\ \begin{array}{l}
+\rightarrow \text{\chico casos de éxito} \\[-1pt]
+\rightarrow \text{\chico ensayos (muestra)}
+\end{array}
+\ q = 1-p
+\]
+\centerline{(fracasos)}
+Como \textbf{p} tiene \textbf{distribución binomial (dos resultados}: 1 o 0, éxito o fracaso, etc\textbf{)} se verifica:
+\[
+\mu = n\cdot p \qquad \sigma = \sqrt{n\cdot p\cdot (1-p)}
+\]
+{\chico\itshape Al sumar todas esas respuestas individuales de 1 o 0, obtenés tu variable ``x'' (los casos de éxito, que en este ejemplo son 35). Es esta variable ``x'' la que sigue una \textbf{Distribución Binomial}, porque representa ``la cantidad de éxitos en ``n'' ensayos independientes''. $\bullet$ \textbf{Éxito (1):} Si toma vino. $\bullet$ \textbf{Fracaso (0):} No toma vino.\par}
+
+\textbf{2 formas de resolución:}
+\begin{lista}
+  \item[a)] \textbf{Gráfica} (tablas) menos precisa
+  \item[b)] \textbf{Analítica}, se debe cumplir que: Si \textbf{n.p} y \textbf{(1-p).n} mayores a \textbf{5}: \textbf{la Dist Binom se aproxima a una Dist Normal}
+\end{lista}
+Entonces Z es \quad (1)
+\[
+z = \frac{x - n{*}p}{\sqrt{n{*}p{*}(1-p)}}
+\]
+como resulta dificil despejar p, se reemplaza por x/n en el denominador \quad (2)
+\[
+{\chico -z_{\frac{\alpha}{2}} < \frac{x - n\cdot p}{\sqrt{n\cdot p\cdot (1-p)}} < z_{\frac{\alpha}{2}}
+\quad
+-z_{\frac{\alpha}{2}} < \frac{x - n\cdot p}{\sqrt{n\cdot \frac{x}{n}\cdot \left(1-\frac{x}{n}\right)}} < z_{\frac{\alpha}{2}}}
+\]
+\uline{Intervalo de conf para \textbf{p}} \quad (3)
+\[
+{\chico \underbrace{\frac{x}{n}}_{\text{pivote}} - z_{\frac{\alpha}{2}}\sqrt{\frac{\frac{x}{n}\left(1-\frac{x}{n}\right)}{n}}
+< p <
+\frac{x}{n} + \underbrace{z_{\frac{\alpha}{2}}\sqrt{\frac{\frac{x}{n}\left(1-\frac{x}{n}\right)}{n}}}_{\text{Error max de estimación}}}
+\]
+\begin{lista}
+  \item Cálculo de \textbf{n} para lograr un \textbf{grado de precisión}
+\end{lista}
+\[
+n = p\cdot(1-p)\cdot \left(\frac{z_{\frac{\alpha}{2}}}{E}\right)^{2}
+\]
+\sub{Hipotesis relativa a una proporcion}
+\fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+\textbf{H0: p = p0} \quad \textbf{proporción}
+\[
+z = \frac{x - n\cdot p_0}{\sqrt{n\cdot p_0\cdot(1-p_0)}}
+\ \begin{array}{l}
+\text{\chico considerando \textbf{n} grandes} \\[-1pt]
+\text{\chico x = casos de éxito}
+\end{array}
+\]}}
+
+\tema{3.4 \ Hipotesis relativa a varias proporciones}
+
+Se prueba que todas las proporciones de distintas poblaciones binomiales sean significativamente iguales:
+
+\textbf{H0:} $p_1 = p_2 = \ldots = p_k = p$ \quad \textbf{H1:} que al menos 1 no lo sea
+
+\textbf{Método 1:} Si \textbf{n.p} y \textbf{(1-p).n} mayores a \textbf{5}: La D.Binomial se aproxima a D.Normal, entonces, \uline{se calcula para cada población}:
+\[
+z_i = \frac{x_i - n_i\cdot p_i}{\sqrt{n_i\cdot p_i\cdot\left(1-p_i\right)}}
+\qquad Z_i^2 \sim \chi_1^2
+\]
+- El cuadrado de una v. aleatoria con dist. normal, es una v. aleatoria con dist. \textbf{chi-cuadrado} con 1 gl. - La suma de \textbf{k} v aleatorias con distribuciones \textbf{chi-cuadrado} con 1gl dan otra v. aleatoria \textbf{chi-cuadrado} con \textbf{k} gl. \ gl=grados de libertad
+
+Dado que las $p_i$ son todas iguales por hipótesis nula y $p_n = x_n/n_n$, se pueden sustituir por:
+\[
+\widehat{p} = \frac{x_1 + x_2 + \cdots + x_k}{n_1 + n_2 + \cdots + n_k} \quad \text{\chico suma de proporciones}
+\]
+$\bullet$ Obteniendo el estadístico:
+\[
+{\chico \chi^2 = \sum_{i=1}^{k} \frac{\left(x_i - n_i\cdot\widehat{p}\,\right)^2}{n_i\cdot\widehat{p}\cdot\left(1-\widehat{p}\,\right)}}
+\]
+{\chico Dif grandes se mueve hacia la der, dif chicas hacia la izq. \textbf{v=k-1} grados de libertad. fracasos esperados $n_i(1-\widehat{p}\,)$; éxitos esperados $n_i\widehat{p}$\par}
+
+\begin{center}
+{\chico
+\begin{tabular}{l r r r r}
+\toprule
+\textbf{Resultado} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{Total} \\
+Desmoronado & 41 & 27 & 22 & 90 \\
+Resto intacto & 79 & 53 & 78 & 210 \\
+\midrule
+Total & 120 & 80 & 100 & 300 \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+Se quiere determinar si la probabilidad de desmoronamiento es la misma para los materiales \textbf{A}, \textbf{B} y \textbf{C}. En cada material hay dos resultados posibles: desmoronado o resto intacto.
+
+\textbf{metodo 1}
+\fitm{\chi^2 = \sum_{i=1}^{3} \frac{\left(x_i - n_i\widehat{p}\,\right)^2}{n_i\widehat{p}\,(1-\widehat{p}\,)}
+= \frac{(x_1-n_1p)^2}{n_1p(1-p)} + \frac{(x_2-n_2p)^2}{n_2p(1-p)} + \frac{(x_3-n_3p)^2}{n_3p(1-p)}}
+\centerline{$\nu = k-1 = 3-1 = 2.$}
+
+\textbf{Método 2:} para simplificar el cálculo de chi cuadrado se hace una tabla
+\begin{center}
+\fit{{\chico
+\begin{tabular}{l | c | c | c | c | l}
+ & Muestra 1 & Muestra 2 & $\cdots$ & Muestra k & Total \\
+\cline{2-5}
+éxitos & $x_1$ & $x_2$ & $\cdots$ & $x_k$ & $x$ \\
+\cline{2-5}
+fallas & $n_1 - x_1$ & $n_2 - x_2$ & $\cdots$ & $n_k - x_k$ & $n-x$ \\
+\cline{2-5}
+Total & $n_1$ & $n_2$ & $\cdots$ & $n_k$ & $n$ \\
+\end{tabular}
+}}
+\end{center}
+$\bullet$ Cada celda es una frecuencia observada. \textbf{Frecuencias esperadas}
+\[
+\text{Éxitos } \frac{n_j\cdot x}{n} \qquad \text{Fracasos } \frac{n_j\cdot (n-x)}{n}
+\]
+\[
+{\chico \chi^2 = \sum_{i=1}^{2}\sum_{j=1}^{k} \frac{\left(o_{i,j} - e_{i,j}\right)^2}{e_{i,j}} \quad \textbf{v=k-1 GL}}
+\]
+{\chico $n_j$ = total columna j; $x$ = total de la fila exitos; $n-x$ = total fila fallas; $n$ = total final\par}
+
+$\bullet$ Este método es lo mismo que aplicar la fórmula del chi cuadrado que se vió más arriba.
+
+\textbf{Este método organiza los mismos datos en una tabla $2\times 3$: dos resultados y tres materiales} \ $\nu = k-1 = 3-1 = 2.$
+
+\textbf{metodo 2}
+\[
+{\chico \chi^2 = \sum_{i=1}^{2}\sum_{j=1}^{3} \frac{\left(O_{ij} - E_{ij}\right)^2}{E_{ij}},
+\quad
+E_{ij} = \frac{(\text{total fila } i)(\text{total columna } j)}{\text{total general}}.}
+\]
+\begin{center}
+{\chico
+\begin{tabular}{l r r r r}
+\toprule
+\textbf{Esperadas} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{Total} \\
+Desmoronado & 36 & 24 & 30 & 90 \\
+Intacto & 84 & 56 & 70 & 210 \\
+\midrule
+Total & 120 & 80 & 100 & 300 \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\tema{3.5 \ Tablas RxC y bondad de ajuste}
+
+\textbf{igual a anterior no mas que mas de 2 resultados posibles. tenemos r filas x c columnas}
+\[
+{\chico \chi^2 = \sum_{i=1}^{r}\sum_{j=1}^{c} \frac{\left(o_{i,j} - e_{i,j}\right)^2}{e_{i,j}}
+\quad \nu = (r-1)(c-1) \ \textbf{gl}}
+\]
+Aprovechamiento en el programa de entrenamiento
+\begin{center}
+\fit{{\chico
+\begin{tabular}{l | c | c | c | c}
+ & Debajo del & Promedio & Sobre el & Total \\
+ & Promedio & & Promedio & \\
+\cline{2-4}
+Deficiente & 23 & 60 & 29 & 112 \\
+\cline{2-4}
+Promedio & 28 & 79 & 60 & 60 \\
+\cline{2-4}
+Muy buena & 9 & 49 & 63 & 63 \\
+\cline{2-4}
+Total & 60 & 188 & 152 & 400 \\
+\end{tabular}
+}}
+\end{center}
+
+\textbf{Bondad de ajuste.} En la prueba chi-cuadrado de bondad de ajuste se compara la distribución observada en una muestra con una distribución teórica propuesta. El objetivo es determinar si las diferencias entre ambas pueden atribuirse al azar o si son suficientemente grandes como para concluir que el modelo teórico no ajusta a los datos.
+
+\textbf{Poisson} modela la cantidad de sucesos que ocurren en un intervalo fijo.\\
+\textbf{H0:} Los datos siguen la distribución de poisson. \textbf{H1:} No la siguen.
+
+\begin{center}
+{\chico\textbf{autos}}
+
+\fit{{\chico
+\setlength{\tabcolsep}{1.6pt}
+\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\begin{tabular}{@{}c@{}}Número de mensajes\\ en interv. de 5 min.\end{tabular} & \begin{tabular}{@{}c@{}}Frecuencias\\ observadas\end{tabular} & & \begin{tabular}{@{}c@{}}Probabilidad\\ de Poisson\end{tabular} & \begin{tabular}{@{}c@{}}Frecuencias\\ esperadas\end{tabular} & \\
+\hline
+0 & 3 & \multirow{2}{*}{$\left.\rule{0pt}{5.5pt}\right\}18$} & 0.010 & 4.0 & \multirow{2}{*}{$\left.\rule{0pt}{5.5pt}\right\}22.4$} \\
+1 & 15 & & 0.046 & 18.4 & \\
+\hline
+2 & 47 & & 0.107 & 42.8 & \\
+\hline
+3 & 76 & & 0.163 & 65.2 & \\
+\hline
+4 & 68 & & 0.187 & 74.8 & \\
+\hline
+5 & 74 & & 0.173 & 69.2 & \\
+\hline
+6 & 46 & & 0.132 & 52.8 & \\
+\hline
+7 & 39 & & 0.087 & 34.8 & \\
+\hline
+8 & 15 & & 0.050 & 20.0 & \\
+\hline
+9 & 9 & & 0.025 & 10.0 & \\
+\hline
+10 & 5 & \multirow{4}{*}{$\left.\rule{0pt}{11pt}\right\}10$} & 0.012 & 4.8 & \multirow{4}{*}{$\left.\rule{0pt}{11pt}\right\}8.0$} \\
+11 & 2 & & 0.005 & 2.0 & \\
+12 & 2 & & 0.002 & 0.8 & \\
+13 & 1 & & 0.001 & 0.4 & \\
+\hline
+\end{tabular}
+}}
+\end{center}
+
+{\chico $\dashrightarrow$ hubieron 15 intervalos de 5 minutos en el q paso un solo auto. se analizan 400 intervalos de 5 minutos en el control de tráfico en cuanto al paso de autos, comparándola con una distribución de Poisson con $\lambda$=4.6. en los extremos hay una forma acampanada, ya q los valores son mas bajos entonces se unen agrupandolos. se agrupan las frec esp. menos que 5, las agrupo con el siguiente valor. Voy a tener 10 grupos\par}
+
+Se usa el estadístico para ver si las diferencias entre lo que observamos y lo que esperamos son solo por casualidad:
+\[
+{\chico \chi^2 = \sum_{i=1}^{k} \frac{\left(o_i - e_i\right)^2}{e_i} \quad \textbf{v=k-m-1 GL}}
+\]
+{\chico K= nºgrupos(10); m= 1 $\dashrightarrow$ Nº parametros (lamda); en dist. normal: m=2 $\Rightarrow$ $\mu$ y $\sigma$\par}
+\[
+{\chico \chi^2 = \frac{(18-22.4)^2}{22.4} + \cdots + \frac{(47-42.8)^2}{42.8} = 6.749}
+\]
+{\chico Para cada cantidad posible de autos calculo la probabilidad teórica mediante la fórmula de Poisson, usando $\lambda = 4{,}6$. Por ejemplo, la probabilidad de observar cero autos es $e^{-4{,}6} = 0{,}010$. Luego multiplico cada probabilidad por los 400 intervalos para obtener la frecuencia esperada. Así, para cero autos, la frecuencia esperada es $400\cdot 0{,}010 = 4$. Como esta frecuencia es menor que 5, agrupo la categoría de cero autos con la de un auto. Finalmente comparo las frecuencias observadas con las esperadas mediante el estadístico chi-cuadrado.\par}
+\[
+\text{Poisson} \qquad P(X=x) = \frac{e^{-\lambda}\lambda^{x}}{x!}
+\]
+
+%=====================================================================
+\unidad{UNIDAD 4 --- PRUEBAS NO PARAMÉTRICAS}
+%=====================================================================
+
+\tema{4.1 \ Prueba del Signo \hfill (Una muestra)}
+
+Sirve como \textbf{alternativa no paramétrica} a \textbf{T-Unimuestral (pueden ser apareadas o no}, osea datos de antes y después) donde \textbf{H0:} $\mu = \mu 0$. Se aplica cuando se muestrea de una \textbf{población simétrica} (elementos con misma probabilidad de ser mayor o menor a la media)
+\[
+t = \frac{\bar{x}-\mu_0}{s/\sqrt{n}}
+\]
+El \textbf{criterio} que se utiliza es reemplazar cada valor por los signos ``+'' o ``-'' según sea mayor o menor que la media (o mediana en su defecto), si es igual se ignora. Se considera siempre una prob \textbf{p=0.5.}
+
+\textbf{Ejemplo:} $\mu 0 = 98$ y la alternativa $\mu > \mu 0$. Se coloca + si es mayor a 98, - si no lo es, nada si es igual. Queda una cadena de signos: $+++\cdot+++\cdot+++++$
+
+Para \textbf{muest apareadas (A y D)}: una H0 puede ser u1-u2=0 \ si u1$>$u2 es + \ y si u1$<$u2 es -
+
+\textbf{x} es la cant de signos +. \textbf{n} la cantidad de signos totales. \textbf{Se calcula la prob de obtener ``x'' o más signos y si menor o igual a un $\boldsymbol{\alpha}$ (ej: 0.01) se rechaza H0.}
+\[
+\colorbox{black!10}{$\displaystyle \sum_{k=9}^{10} \text{dbinom}(k,n,0.5) = 0.011$}
+\]
+{\chico k:num de exitos \quad n: total de signos \quad 0,5: probabilidad\par}
+
+\ej{octanaje lote nafta se quiere saber si el promedio supera los 98, con n=10}
+\centerline{99.0 \ 102.3 \ 99.8 \ 100.5 \ 99.7 \ 96.2 \ 99.1 \ 102.5 \ 103.3}
+
+\ej{Apareadas --- Caso Práctico:}
+Un ingeniero industrial evalúa la eficacia de un nuevo programa de seguridad para reducir los accidentes de trabajo en 10 plantas de fabricación. Se registran los accidentes antes y después del programa: Probar si el programa es eficaz para reducir la cantidad de
+
+\begin{center}
+{\chico Tabla 1: Accidentes registrados en 10 plantas industriales}
+
+\fit{{\chico
+\begin{tabular}{l r r r r r r r r r r}
+\toprule
+\textbf{Planta} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} \\
+\midrule
+Antes & 45 & 73 & 46 & 124 & 33 & 57 & 83 & 34 & 26 & 17 \\
+Después & 36 & 60 & 44 & 119 & 35 & 51 & 77 & 29 & 24 & 11 \\
+\bottomrule
+\end{tabular}
+}}
+\end{center}
+
+$H_0 : \tilde{\mu}_D = 0$ (La mediana de las diferencias es cero, el programa no tiene efecto)
+
+$H_1 : \tilde{\mu}_D > 0$ (Los accidentes antes son mayores que después, el programa es eficaz)
+
+Resultados: $n = 10$ diferencias efectivas, $x = 9$ signos positivos. La cadena de signos es:
+\centerline{$+\ +\ +\ +\ -\ +\ +\ +\ +\ +$}
+
+\tema{4.2.1 \ Prueba U \hfill (2 muestras indep.)}
+
+Existen dos pruebas: la U y la H.
+
+\textbf{Prueba U (Wilcoxon) - Alternativa no param. de t bimuestral.} Se quiere probar si las medias de dos muestras son significativamente iguales. Se busca probar si las muestras vienen de poblaciones idénticas (Misma distribución: misma forma, $\mu$ y varianza)
+
+\textbf{Pasos} \hfill {\chico qnorm para las absicas}
+
+1.Unimos las muestras y las ordenamos de menor a mayor. (Rango=Sum de la posic.)
+
+2. A cada valor se le indica a que muestra pertenece (I, II) y se le asigna un rango (posición). Si dos valores son iguales, se asigna un promedio de sus rangos.
+
+3. Sumar los rangos de cada muestra R1 y R2. se comparan y se elije el Ri menor.
+
+4. Se define el estadístico:
+\[
+U_i = n_1.\, n_2 + \frac{ni.(ni+1)}{2} \; - \; Ri
+\]
+Si las n1 y n2 son $> 8$, Ui tiene una dist. normal. gralm. prueba 2 colas
+\[
+z = \frac{Ui - u_{U_i}}{\sigma_{U_i}}
+\qquad
+\mu_{U1} = \frac{n1\cdot n2}{2}
+\]
+\[
+\sigma_{U1} = \sqrt{\frac{n1\cdot n2\cdot(n1+n2+1)}{12}}
+\]
+
+\ej{Ejemplo (diámetro de arenas):}
+\textbf{1)} Se sospecha q ambos difieren en su diametro
+\begin{lista}
+  \item \textbf{Arena I} ($n_1 = 15$): 0.63, 0.17, 0.35, 0.49, 0.18, 0.43, 0.12, 0.20, 0.47, 1.36, 0.51, 0.84, 0.32, 0.40, 0.45.
+  \item \textbf{Arena II} ($n_2 = 14$): 1.13, 0.54, 0.96, 0.26, 0.39, 0.88, 0.92, 0.53, 1.01, 0.48, 0.89, 1.07, 1.11, 0.58.
+\end{lista}
+\textbf{2)} $0.12$ (I) $\rightarrow$ Rango 1 \quad $0.17$ (I) $\rightarrow$ Rango 2 \quad $0.20$ (I) $\rightarrow$ Rango 4 \quad $0.26$ (II) $\rightarrow$ Rango 5 \qquad \textbf{3)} $\sum R$
+
+\tema{4.2.2 \ Prueba H \hfill (3 o mas muestras indep.)}
+
+\textbf{Prueba H (Kruskal Wallis).} Alternativa no paramétrica de \textbf{Anova.} Comparo que \textbf{k} medias poblacionales (de k muestras) sean significativamente iguales. \textbf{H0:} u1=u2=...=uk
+
+1.Unimos las k muestras y las ordenamos de forma creciente.
+
+2. A cada valor se le indica a que muestra pertenece (I, II,k) y se le asigna un rango (posición). Si dos valores son iguales, se asigna un promedio de sus rangos.
+
+3. Sumamos los rangos de cada muestra (R1, R2, .., Rk)
+
+4. Aplicamos la fórmula H, si \textbf{ni$>$5.} Aceptamos o rechazamos H0
+\[
+H = \frac{12}{n\cdot(n+1)}\cdot \sum_{i=1}^{k} \frac{\left(R_i\right)^2}{\left(n_i\right)} - 3\cdot(n+1)
+\]
+Distribución chi cuadrado con \textbf{k-1 grados de libertad. k} el numero de poblaciones. \textbf{n} es la suma de todos los tamaños muest
+
+\ej{Caso Práctico (corrosión en cables):}
+Se evalúa la eficacia de tres tratamientos preventivos anticorrosión midiendo la profundidad máxima de las cavidades (en milésimas de pulgada) en piezas de cable sometidas a un ensayo acelerado:
+\begin{lista}
+  \item \textbf{Método A} ($n_1 = 6$): 77, 54, 67, 74, 71, 66
+  \item \textbf{Método B} ($n_2 = 7$): 60, 41, 59, 65, 62, 64, 52
+  \item \textbf{Método C} ($n_3 = 5$): 49, 52, 69, 47, 56
+\end{lista}
+{\chico $H_0$ : Las poblaciones de los tres tratamientos son idénticas ($\tilde{\mu}_A = \tilde{\mu}_B = \tilde{\mu}_C$). $H_1$ : Al menos uno de los tratamientos difiere en su localización central (distinta eficacia)\par}
+
+\begin{center}
+{\chico
+\setlength{\tabcolsep}{1.4pt}
+\begin{tabular}{|l c c c|l c c c|}
+\hline
+Valor & Grupo & \multicolumn{2}{c|}{Rango} & Valor & Grupo & \multicolumn{2}{c|}{Rango} \\
+\hline
+41 & B & \multicolumn{2}{c|}{1} & 60 & B & \multicolumn{2}{c|}{9} \\
+47 & C & \multicolumn{2}{c|}{2} & 62 & B & \multicolumn{2}{c|}{10} \\
+49 & C & \multicolumn{2}{c|}{3} & 64 & B & \multicolumn{2}{c|}{11} \\
+52 & B & \multicolumn{2}{c|}{\textbf{4.5}} & 65 & B & \multicolumn{2}{c|}{12} \\
+52 & C & \multicolumn{2}{c|}{\textbf{4.5}} & 66 & A & \multicolumn{2}{c|}{13} \\
+54 & A & \multicolumn{2}{c|}{6} & 67 & A & \multicolumn{2}{c|}{14} \\
+56 & C & \multicolumn{2}{c|}{7} & 69 & C & \multicolumn{2}{c|}{15} \\
+59 & B & \multicolumn{2}{c|}{8} & 71 & A & \multicolumn{2}{c|}{16} \\
+ & & \multicolumn{2}{c|}{} & 74 & A & \multicolumn{2}{c|}{17} \\
+ & & \multicolumn{2}{c|}{} & 77 & A & \multicolumn{2}{c|}{18} \\
+\hline
+\end{tabular}
+}
+\end{center}
+
+\tema{4.3 \ Pruebas de aleatoreidad --- Prueba de corridas}
+
+Sirven para comprobar si el orden de una muestra o proceso puede considerarse \textbf{aleatorio}. Se analiza si los valores se suceden sin un patrón sistemático. Una \textbf{corrida} o \textbf{racha} es una secuencia de una o más letras iguales consecutivas.
+\[
+a\,a \mid b\,b \mid a \mid b\,b\,b \quad \longrightarrow \quad \textbf{4 corridas}
+\]
+
+\sub{Hipotesis}
+H0:el arreglo o secuencia es aleatorio
+
+H1:el arreglo no es aleatorio $\Rightarrow$prueba bilateral\\
+H1:hay demasiadas corridas $\Rightarrow$prueba unilateral derecha\\
+H1:hay muy pocas corridas $\Rightarrow$prueba unilateral izquierda
+
+\sub{Pasos}
+\textbf{1. Construir la cadena de letras.} -Si los datos son \textbf{binarios} ---éxito/fracaso, 1/0, caro/barato---, se construye directamente una cadena de letras a y b. -Si los datos son \textbf{numéricos}:
+\begin{listan}
+  \item Calcular la mediana.
+  \item Asignar a a cada observación superior a la mediana.
+  \item Asignar b a cada observación inferior a la mediana.
+  \item Los valores iguales a la mediana se omiten.
+  \item Mantener el orden original de los datos.
+\end{listan}
+\textbf{2. Contar las cantidades.} n1=cantidad de letras a; n2=cantidad de letras b; u=cantidad total de corridas
+
+\textbf{3. Calcular los parámetros de la distribución de corridas}
+\[
+\mu_u = \frac{2n_1 n_2}{n_1+n_2} + 1
+\qquad
+\sigma_u = \sqrt{\frac{2n_1 n_2\,(2n_1 n_2 - n_1 - n_2)}{(n_1+n_2)^2\,(n_1+n_2-1)}}
+\]
+\textbf{4. Aproximacion normal.} si n1$>$10 y n2$>$10 la dist. del num de corridas \textbf{u} se aproxima a una dist. normal, aplico estadistico z
+\[
+Z_{\text{calc}} = \frac{u - \mu_u}{\sigma_u}
+\]
+\textbf{Interpretaciones}
+\begin{lista}
+  \item {\chico $u$ grande: demasiados cambios entre $a$ y $b$; alternancia excesiva.}
+  \item {\chico $u$ chico: pocas alternancias; los valores iguales tienden a agruparse.}
+  \item {\chico $u$ cercano a $\mu_u$: comportamiento compatible con aleatoriedad.}
+\end{lista}
+\textbf{Se usa en control de calidad para dar aleatoreidad a procesos}
+
+\begin{center}
+\fit{{\chico
+\begin{tabular}{l c c c c c c c c c c}
+\toprule
+\textbf{Dato} & .261 & .258 & .249 & .251 & .247 & .256 & .250 & .247 & .255 & .243 \\
+\textbf{Signo} & a & a & b & a & b & a & (Empate) & b & a & b \\
+\bottomrule
+\end{tabular}
+}}
+\end{center}
+$H_0$ : la secuencia es aleatoria \qquad $H_1$ : hay demasiadas corridas $(u > \mu_u)$
+
+%=====================================================================
+\unidad{UNIDAD 5 --- REGRESIÓN Y CORRELACIÓN}
+%=====================================================================
+
+\tema{5.1 \ Metodos de los minimos cuadrados}
+
+Se requiere analizar la \textbf{relación} entre dos \textbf{variables cuantitativas, para} determinar si están asociadas, y si una puede predecir el valor de otra. \textbf{El coefic. de corr. no sirve:} no explica una variable respecto de otra
+
+\uline{Regresion lineal}
+
+\textbf{1)} Tenemos un diagrama de dispersión donde hay dos variables relacionadas: - La independiente o \textbf{explicativa ``x''} ej: edad. - La dependiente o \textbf{explicada ``y''} ej: tensión arterial
+
+\textbf{2)} Queremos encontrar la recta que mejor ajuste los valores, y que pueda ser utilizada para predecir los valores: - Para esto usamos el \textbf{método de los mínimos cuadrados}, que elige la recta de regresión que minimiza los errores de las diferencias vertices.
+
+\textbf{3)} La recta que mejor se ajusta es: y=$\alpha$ + $\beta$.x , que será estimada por:
+\[
+\widehat{y} = a + b\cdot x
+\]
+a y b (parámetros muestrales) son estimadores de $\alpha$ y $\beta$ (parámetros poblacionales)
+\[
+e_i = y_i - \widehat{y}_i
+\]
+diferencias verticales $\longleftarrow$ (regresión y sobre x)
+
+\begin{center}
+{\chico Regresión lineal simple: valor observado, valor estimado y residuo}
+
+\begin{tikzpicture}[scale=0.33, every node/.style={font=\fig}]
+  \draw[->, gray] (0,0) -- (7.6,0) node[right, black] {$x$};
+  \draw[->, gray] (0,0) -- (0,4.9) node[above, black] {$y$};
+  \draw[thick, black] (0.4,0.75) -- (7.1,4.35);
+  \foreach \p in {(0.9,0.75),(1.9,1.35),(2.6,1.5),(3.55,2.95),(4.5,2.55),(5.9,3.6),(6.7,3.9)}
+    \fill[black] \p circle (2.2pt);
+  \draw[dotted] (3.55,0) -- (3.55,2.95);
+  \draw[dashed] (0,2.95) -- (3.55,2.95);
+  \draw[dashed] (0,2.28) -- (3.55,2.28);
+  \fill[black] (3.55,2.28) circle (2.2pt);
+  \draw[<->, very thick] (3.62,2.30) -- (3.62,2.93);
+  \node[right] at (3.78,1.95) {$e_i = y_i - \widehat{y}_i$};
+  \node[above] at (4.7,3.45) {$\widehat{y} = a + b\,x$};
+  \node[left] at (0,2.95) {$y_i$};
+  \node[left] at (0,2.28) {$\widehat{y}_i$};
+  \node[below] at (3.55,0) {$x_i$};
+\end{tikzpicture}
+\end{center}
+No es viable la suma de los errores, pq se cancelan los (+) con los ($-$)
+
+\textbf{4)} Se busca \textbf{minimizar la suma de los cuadrados de las diferencias} entre los valores reales y los valores estimados $\Rightarrow$ \textbf{a y b se eligirán con:} \hfill \textbf{SCE}
+\[
+\sum_{i=1}^{n} \left[ y_i - \left(a+b\cdot x_i\right) \right]^2
+\]
+{\chico Al cuadrado para que los errores no se cancelen, no utilizamos el valor absoluto debido a un problema de amiguedad en el f(x)' = 0\par}
+
+\textbf{5)} Para minimizar la suma debemos hacer las \textbf{derivadas parciales} de los coeficientes \textbf{a y b, e igualarlos a 0}. Esto es debido a que la función es convexa entonces al igualar a 0 se encuentra el \textbf{mínimo} de la función
+\[
+\sum_{i=1}^{n} y_i = a\cdot n + b\cdot\sum_{i=1}^{n} x_i
+\]
+\[
+\sum_{i=1}^{n} y_i\cdot x_i = a\cdot\sum_{i=1}^{n} x_i + b\cdot\sum_{i=1}^{n} (x_i)^2
+\]
+\textbf{6)} Formamos un Sist de Ecuaciones Normales con las derivadas:
+\[
+{\chico
+\begin{bmatrix}
+n & \displaystyle\sum_{i=1}^{n} x_i \\[6pt]
+\displaystyle\sum_{i=1}^{n} x_i & \displaystyle\sum_{i=1}^{n} (x_i)^2
+\end{bmatrix}
+\begin{pmatrix} a \\ b \end{pmatrix}
+=
+\begin{bmatrix}
+\displaystyle\sum_{i=1}^{n} y_i \\[6pt]
+\displaystyle\sum_{i=1}^{n} \left(y_i\cdot x_i\right)
+\end{bmatrix}}
+\]
+Resolviendo el SEN por determinantes \textbf{obtenemos los valores de a y b que mejor se ajustan a la recta}. Se puede calcular a con \textbf{intercept(x,y)} y b con \textbf{slope(x,y)}
+
+\tema{5.2 \ Inferencias basadas en min cuadrados}
+
+Una vez que calculamos a y b para nuestra muestra, la inferencia basada en min cuadrados nos permetiran saber que tan confiable es ese modelo para toda la poblacion y no para una muestra en particular. La inferencia sirve para pasar de los estimadores muestrales \textbf{a} y \textbf{b} a conclusiones sobre los parametros poblacionales $\boldsymbol{\alpha}$ y $\boldsymbol{\beta}$.
+
+\textbf{Sxy (varianza de xy)}, \textbf{Sxx(varianza de x)} me van a permitir estimar la pendiente b y la ordenada al origen a. Con \textbf{Syy(varianza de y)} voy a poder calcular la varianza residual muestral
+
+\textbf{(1)} Calc.-{-}$>$\textbf{Sxy, Sxx, Syy} \qquad \textbf{(2)} $\bar{y} = \frac{\sum y_i}{n}$ \ $\bar{x} = \frac{\sum x_i}{n}$
+
+\textbf{(3)} $b = \dfrac{S_{xy}}{S_{xx}}$ \qquad $a = \bar{Y} - b\bar{X}$
+
+\textbf{(4)}
+\[
+s_e^2 = \frac{S_{xx}\cdot S_{yy} - S_{xy}^2}{n(n-2)\cdot S_{xx}} \quad \textbf{n--2 gl}
+\qquad s_e = \sqrt{s_e^2}
+\]
+{\chico $s_e^2 \longrightarrow$ Varianza residual muestral; $s_e \longrightarrow$ Error estandar de estimacion; \textbf{n-{-}$>$}cant. puntos\par}
+
+Intervalos de conf. $\alpha$ y $\beta$
+\[
+\alpha:\ t = \frac{a-\alpha}{s_e}\cdot \sqrt{\frac{n\cdot S_{xx}}{S_{xx}+(n\cdot\bar{x})^2}}
+\qquad
+\beta:\ t = \frac{b-\beta}{s_e}\cdot \sqrt{\frac{S_{xx}}{n}}
+\]
+\centerline{$\longrightarrow$ Se compara con el t.crit}
+\[
+{\chico a - t_{\frac{\alpha}{2}} s_e\sqrt{\frac{n S_{xx}}{S_{xx}+(n\bar{x})^2}}
+< \alpha <
+a + t_{\frac{\alpha}{2}} s_e\sqrt{\frac{n S_{xx}}{S_{xx}+(n\bar{x})^2}}}
+\]
+\[
+{\chico b - t_{\frac{\alpha}{2}} s_e\sqrt{\frac{n}{S_{xx}}}
+< \beta <
+b + t_{\frac{\alpha}{2}} s_e\sqrt{\frac{n}{S_{xx}}}}
+\]
+\centerline{\chico Errores máximos de estimación de a y b}
+
+Las pruebas de hipotesis con $\boldsymbol{\beta}$ son muy importantes, pq indica el cambio promedio de \textbf{Y} cuando \textbf{X} aumenta 1 unidad. Si $\beta$=0: \textbf{y} no depende de \textbf{x (recta horizontral)}, si $\beta \neq 0$ : \textbf{y} depende de \textbf{x} por lo que existe relacion lineal.
+
+Habiendo comprobado q $\beta \neq 0$ osea que existe relacion lineal, podemos utilizar dicha recta ajustada para realizar estimaciones. Podemos ver q pasa en un punto especifico X0
+
+\tema{5.3 \ Regresion curvilinea}
+
+Ahora que pasa si al graficar el diagrama de dispersion vemos que los datos no siguen una trayectoria recta? queremos ajustar con linea recta pero el modelo no va a ser el mas adecuado ya q no representa la naturaleza del fenomeno. Es por esto q usamos un modelo curvilineo. Para lograr este modelo y que se comporte de manera lineal debemos aplicar una transformacion matematica a los datos originales y asi poder aplicar el metodo de los minimos cuadrados que ya veniamos trabajando.
+
+\textbf{Exponencial}
+\[
+y = \alpha\cdot\beta^x \ \textbf{=$>$} \ \log_{10}(y) = \log_{10}(\alpha\cdot\beta^x) \ \textbf{=$>$}
+\]
+\[
+\log_{10}(y) = \log_{10}(\alpha) + x\cdot\log_{10}(\beta)
+\]
+\[
+y^{*} = \log_{10}(y), \quad a = \log_{10}(\alpha), \quad b = \log_{10}(\beta)
+\]
+\[
+\textbf{=$>$} \ y^{*} = a + b\cdot x \qquad \alpha = 10^a \quad \beta = 10^b
+\]
+\textbf{Potencial}
+\[
+y = \alpha\cdot x^{\beta} \ \textbf{=$>$} \ \log_{10}(y) = \log_{10}(\alpha) + \beta\cdot\log_{10}(x)
+\]
+\[
+\textbf{=$>$} \ y^{*} = \log_{10}(y), \ x^{*} = \log_{10}(x), \ a = \log_{10}(\alpha), \ B = \beta
+\]
+\[
+\textbf{=$>$} \ y^{*} = a + Bx^{*} \qquad \alpha = 10^a \quad \beta = 10^b
+\]
+\textbf{Reciprocos}
+\[
+y = \frac{1}{\alpha+\beta\cdot x} \ \textbf{=$>$} \ \frac{1}{y} = \alpha + \beta\cdot x
+\]
+\[
+\textbf{=$>$} \ y^{*} = \frac{1}{y} \quad a=\alpha \ \ b=\beta
+\qquad
+\textbf{=$>$} \ y^{*} = \alpha + \beta x
+\]
+
+\tema{5.4 \ Ajuste polinomico}
+
+Si no sabemos cómo es la relación entre x e y (luego de haber probado con regresion curvilinea y regresion lineal), se busca el mejor ajuste a través de un polinomio de grado p (grado mínimo para no sobreajust.)
+
+\textbf{(1)} Para estimar los $p+1$ coeficientes óptimos (denotados en la muestra como $b_0, b_1, \ldots, b_p$), aplicamos el método de \textbf{Mínimos Cuadrados Ordinarios}. El objetivo es encontrar aquellos estimadores que minimicen de forma conjunta la \textbf{Suma de Cuadrados de Error (SCE)}, definida como:
+\fitm{S(b_0,\ldots,b_p) = \sum_{i=1}^{n} e_i^2 = \sum_{i=1}^{n} [y_i-\hat{y}_i]^2 = \sum_{i=1}^{n} \left[ y_i - (b_0+b_1 x_i + b_2 x_i^2 + \cdots + b_p x_i^p) \right]^2}
+\textbf{(2)} Derivamos e igualamos a 0 los p+1 valor (b0,b1,b2....)
+\[
+{\chico \frac{\partial S}{\partial b_0} = \sum_{i=1}^{n} \underbrace{2}_{\text{Baja el exp.}} \cdot \underbrace{\left[y_i - (b_0+b_1 x_i+\cdots+b_p x_i^p)\right]}_{\text{Lo de adentro intacto}} \cdot \underbrace{(-1)}_{\text{Deriv. resp. } b_0} = 0}
+\]
+\[
+{\chico \frac{\partial S}{\partial b_k} = \sum_{i=1}^{n} \underbrace{2}_{\text{Baja el exp.}} \cdot \underbrace{\left[y_i - (b_0+b_1 x_i+\cdots+b_p x_i^p)\right]}_{\text{Lo de adentro intacto}} \cdot \underbrace{(-x_i^k)}_{\text{Deriv. resp. } b_k} = 0}
+\]
+\[
+{\chico \underbrace{b_0\sum_{i=1}^{n} x_i^k + b_1\sum_{i=1}^{n} x_i^{k+1} + \cdots + b_p\sum_{i=1}^{n} x_i^{k+p}}_{\text{Fila de incógnitas}} = \underbrace{\sum_{i=1}^{n}(x_i^k y_i)}_{\text{Término indep.}}}
+\]
+\textbf{(3)} Armamos sist. ec. y matriz
+\[
+{\chico
+\begin{aligned}
+k=0: &\ n b_0 + b_1\textstyle\sum x_i + b_2\sum x_i^2 + \cdots + b_p\sum x_i^p = \sum y_i \\
+k=1: &\ b_0\textstyle\sum x_i + b_1\sum x_i^2 + b_2\sum x_i^3 + \cdots + b_p\sum x_i^{p+1} = \sum (x_i y_i) \\
+k=2: &\ b_0\textstyle\sum x_i^2 + b_1\sum x_i^3 + b_2\sum x_i^4 + \cdots + b_p\sum x_i^{p+2} = \sum (x_i^2 y_i) \\
+&\qquad\qquad \vdots \\
+k=p: &\ b_0\textstyle\sum x_i^p + b_1\sum x_i^{p+1} + \cdots + b_p\sum x_i^{2p} = \sum (x_i^p y_i)
+\end{aligned}}
+\]
+\fitm{
+\begin{bmatrix}
+n & \sum x_i & \sum x_i^2 & \cdots & \sum x_i^p \\
+\sum x_i & \sum x_i^2 & \sum x_i^3 & \cdots & \sum x_i^{p+1} \\
+\sum x_i^2 & \sum x_i^3 & \sum x_i^4 & \cdots & \sum x_i^{p+2} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+\sum x_i^p & \sum x_i^{p+1} & \sum x_i^{p+2} & \cdots & \sum x_i^{2p}
+\end{bmatrix}
+\begin{bmatrix} b_0 \\ b_1 \\ b_2 \\ \vdots \\ b_p \end{bmatrix}
+=
+\begin{bmatrix} \sum y_i \\ \sum (x_i y_i) \\ \sum (x_i^2 y_i) \\ \vdots \\ \sum (x_i^p y_i) \end{bmatrix}}
+
+\tema{5.5 \ Metodo de la varianza residual}
+
+Para evitar el sobreajuste, se calcula la \textbf{varianza residual}:
+\[
+\sigma_{\text{res}}^2 = \frac{\displaystyle\sum_{i=1}^{n} (y_i-\hat{y}_i)^2}{n-(p+1)}
+\]
+Donde:
+\begin{lista}
+  \item $n$ es la cantidad de puntos de la muestra.
+  \item $p$ es el grado del polinomio.
+  \item $p+1$ es la cantidad de coeficientes estimados.
+  \item $n-p-1$ representa los \textbf{grados de libertad del modelo}.
+  \item $y_i - \hat{y}_i$ es el residuo, es decir, la diferencia entre el valor observado y el valor estimado.
+\end{lista}
+\textbf{Se comienza por :}
+\begin{lista}
+  \item una recta, grado 1
+  \item se sigue parabola, grado 2,
+  \item luego polinomio, grado 3
+  \item polinomio de grados superiores si fuera necesario
+\end{lista}
+Para cada uno se calcula la varianza residual y se compara los resultados. La suma de cuadrados de error vista en el numerador de la formula tiende a disminuir porque la curva se adapta mejor a los puntos. Tambien disminuyen los grados de libertad, porque se estiman mas coeficientes
+
+\textbf{Para la seleccion:} Se selecciona el grado en el q se observa la mayor caida. Despues de este punto aumentar el grado puede ser innecesario ya q puede aumenta el riesgo de sobreajuste
+
+\ej{Ej:} Dada una muestra de $n=10$ mediciones industriales, se evalúa el ajuste de polinomios de grados sucesivos obteniéndose los siguientes resultados reales:
+\begin{center}
+{\chico
+\begin{tabular}{@{}c c c c p{9em}@{}}
+\toprule
+\textbf{Grado ($p$)} & \textbf{SCE} & \textbf{GL ($n{-}p{-}1$)} & \textbf{$s^2$} & \textbf{¿Se justifica?} \\
+\midrule
+1 (Lineal) & 57.655 & 8 & \textbf{7.207} & Modelo Base \\
+2 (Cuadrático) & 53.059 & 7 & \textbf{7.580} & No, la varianza aumentó \\
+3 (Cúbico) & 6.124 & 6 & \textbf{1.021} & \textbf{Sí, salto decreciente masivo} \\
+4 (Cuártico) & 4.959 & 5 & \textbf{0.992} & No, reducción insignificante \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\tema{5.6 \ Correlacion}
+
+La correlacion nos dice con q grado de intensidad se relacionan 2 variables cuantitativas. el mismo va entre $-1 \leq r \leq 1$
+\begin{lista}
+  \item \textbf{r=1(Relación lineal positiva perfecta)} -$>$ todos los puntos caen sobre una recta de pendiente positiva. Cuando X aumenta Y tambien lo hace
+  \item \textbf{r=-1(Relación Lineal Negativa Perfecta):} todos los puntos estan sobre una recta de pendiente negativa. Cuando X aumenta Y disminuye
+  \item \textbf{r = 0 (Incorrelación Lineal):} En la muestra no se observa asociación lineal apreciable. Puede existir una relación no lineal. La nube de puntos adopta una forma caotica.Simplemente al fenomeno no lo podemos describir con una linea recta.
+  \item \textbf{0 $<$ r $<$ 1 (Relación Lineal Positiva):} Cuanto mas se acerca a 1, mayor es el alineamiento ascendente
+  \item \textbf{$-1 <$ r $< 0$ (Relación Lineal Negativa):} Cuanto más se acerca a $-1$ mayor es el alineamiento descendente
+\end{lista}
+\textbf{En conclusion el coef. de corr. mide la relacion entre 2 variables, no permite explicar una en funcion de la otra.}
+
+Matemáticamente, el coeficiente de correlación $r$ se define como el cociente entre la \textbf{covarianza muestral} de las dos variables y el producto de sus respectivas \textbf{desviaciones estándar}:
+\[
+r = \frac{s_{xy}}{s_x \cdot s_y} \tag{2}
+\]
+Desarrollando los estimadores muestrales de cada término, obtenemos la fórmula teórica del coeficiente de Pearson:
+\[
+{\chico r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n}(x_i-\bar{x})^2 \cdot \sum_{i=1}^{n}(y_i-\bar{y})^2}}} \tag{3}
+\]
+
+%=====================================================================
+\unidad{UNIDAD 6 --- ANÁLISIS DE VARIANZA (ANOVA)}
+%=====================================================================
+
+\tema{6.1 \ Diseños completamente aleatorios}
+
+La prueba ANOVA busca evaluar si las $k$ medias poblacionales $\mu_1,\mu_2,\ldots,\mu_k$ son todas iguales entre sí:
+
+$H_0: \ \mu_1=\mu_2=\cdots=\mu_k$ (Todas las medias poblacionales son iguales)
+
+$H_1: \ $ Al menos una media $\mu_i$ es distinta (Existe al menos un par $\mu_i \neq \mu_j$ para $i\neq j$)
+
+Suponemos poblaciones normales con misma varianza, observaciones independientes. Podemos construir una matriz con k filas y n columnas
+
+Primero considero el diseño completamente aleatorio con tamaños muestrales iguales. Tengo k tratamientos y cada uno tiene la misma cantidad n de observaciones. Las unidades experimentales se asignan aleatoriamente a cada tratamiento.
+
+\begin{center}
+\fit{{\chico
+\setlength{\tabcolsep}{0.8pt}
+\begin{tabular}{l c c c c c c | c c}
+\toprule
+Tratamiento / Muestra & Obs. 1 & Obs. 2 & $\ldots$ & Obs. $j$ & $\ldots$ & Obs. $n$ & Total ($T_{i.}$) & Media ($\bar{y}_{i.}$) \\
+\midrule
+Muestra 1 & $y_{11}$ & $y_{12}$ & $\ldots$ & $y_{1j}$ & $\ldots$ & $y_{1n}$ & $T_{1.}$ & $\bar{y}_{1.}$ \\
+Muestra 2 & $y_{21}$ & $y_{22}$ & $\ldots$ & $y_{2j}$ & $\ldots$ & $y_{2n}$ & $T_{2.}$ & $\bar{y}_{2.}$ \\
+$\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ \\
+Muestra $i$ & $y_{i1}$ & $y_{i2}$ & $\ldots$ & $y_{ij}$ & $\ldots$ & $y_{in}$ & $T_{i.}$ & $\bar{y}_{i.}$ \\
+$\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ \\
+Muestra $k$ & $y_{k1}$ & $y_{k2}$ & $\ldots$ & $y_{kj}$ & $\ldots$ & $y_{kn}$ & $T_{k.}$ & $\bar{y}_{k.}$ \\
+\midrule
+Total / Gran Media & & & & & & & $T_{..}$ & $\bar{y}_{..}$ \\
+\bottomrule
+\end{tabular}
+}}
+\end{center}
+
+\textbf{Efecto tratamiento ($\alpha$)} Interpretacion. Si $\bar{y}_{i.}$ (media muestra 1) tienen un valor mas grande que $\bar{y}_{..}$ (media global o gran media) poniendo como ejemplo los detergente quiere decir q ese detergente es positivo o mejor. Decir q las medias son iguales, los efectos serian 0.
+
+\textbf{Para el calculo final del estadistico se realizan los sig calculos}
+
+\textbf{1)} vamos a definir un valor constante que es la suma de los elementos de la matriz elevado al cuadrado, multiplicado por 1/k.n
+\fitm{C = \frac{1}{k\cdot n}\left(\sum_{i=1}^{k}\sum_{j=1}^{n} y_{ij}\right)^2
+\ \text{\textbf{o simplemente haciendo-{-}$>$}} \
+C = \frac{(T_{..})^2}{k\cdot n}}
+\centerline{\textbf{C= termino de correccion}}
+
+\textbf{2)} vamos a calcular la suma de cuadrados total SST, tomando cada elemento de la matriz y elevando al cuadrado y sumando todo y restando el valor de ``C'' que calculamos recien. Es el primer miembro de la expresion.
+\[
+SST = \sum_{i=1}^{k}\sum_{j=1}^{n} \left(y_{ij}\right)^2 - C
+\]
+\textbf{3)} vamos a calcular una sumatoria llamada \textbf{suma de cuadrados de tratamientos}. Pertenece al ultimo termino de mi expresion. $T_i$ es la suma de todos los elementos de una fila de la matriz
+\[
+SS(Tr) = n\sum_{i=1}^{k} (\bar{y}_{i.}-\bar{y}_{..})^2
+\ \textbf{o} \
+SS(Tr) = \frac{1}{n}\sum_{i=1}^{k} (T_{i.})^2 - C
+\]
+\textbf{4)} podemos calcular la suma de cuadrados de error SSE con el SST y SS(Tr) calculados anteriormente
+\[
+SSE = SST - SS(Tr)
+\]
+\textbf{5)} finalmente defino el estadistico F , para zona critica
+\[
+F = \frac{\dfrac{SS(Tr)}{k-1}}{\dfrac{SSE}{k\cdot(n-1)}} \ = \ \frac{\hat{\sigma}_H^2}{\hat{\sigma}_W^2}
+\]
+{\chico media cuad. tratamiento(MS(Tr)) $\searrow$ \quad media cuadr.error (MSE) $\nearrow$ \quad $\longrightarrow$ n1=k-1 gl \quad $\longrightarrow$ n2=k(n-1) gl\par}
+{\chico $\hat{\sigma}_H^2 \longrightarrow$ Estima varianza a lo alto; $\hat{\sigma}_W^2 \longrightarrow$ Estima varianza a lo ancho; k= nº tratamientos\par}
+
+\begin{center}
+\fit{{\chico
+\setlength{\tabcolsep}{0.8pt}
+\begin{tabular}{|l|c|c|l|c|}
+\hline
+\textbf{Fuentes de} & \textbf{Grados de} & \textbf{Suma de} & \textbf{Media Cuadrada} & \textbf{F} \\
+\textbf{Variación} & \textbf{Libertad} & \textbf{Cuadrados} & & \\
+\hline
+\textbf{Tratamientos} & k-1 & $SS(Tr)$ & MS(Tr)=SS(Tr)/(k-1) & MS(Tr)/MSE \\
+\hline
+\textbf{Error} & $k.(n-1)$ & $SSE$ & MSE=SSE/k.(n-1) & \\
+\hline
+\textbf{Total} & $n.k-1$ & $SST$ & & \\
+\hline
+\end{tabular}
+}}
+\end{center}
+
+{\chico\textbf{PARA k=4; n=12} \quad Error=total-tratamientos $= (n.k-1)-(k-1) = nk-1-k+1 = nk-k = k(n-1)$\par}
+
+\tema{6.2 \ Tamaños muestrales distintos}
+
+cada fila tiene distintas cantidad de columnas
+
+\begin{center}
+\fit{{\chico
+\setlength{\tabcolsep}{0.8pt}
+\begin{tabular}{|l|c c c c c c|c|c|c|}
+\hline
+\textbf{Tratamiento} & \textbf{Obs. 1} & \textbf{Obs. 2} & $\ldots$ & \textbf{Obs. $j$} & $\ldots$ & \textbf{Obs. $n_i$} & \textbf{Tamaño ($n_i$)} & \textbf{Total ($T_{i.}$)} & \textbf{Media ($\bar{y}_{i.}$)} \\
+\hline
+Muestra 1 & $y_{11}$ & $y_{12}$ & $\ldots$ & $y_{1j}$ & $\ldots$ & $y_{1n_1}$ & $n_1$ & $T_{1.}$ & $\bar{y}_{1.}$ \\
+Muestra 2 & $y_{21}$ & $y_{22}$ & $\ldots$ & $y_{2j}$ & -- & -- & $n_2$ & $T_{2.}$ & $\bar{y}_{2.}$ \\
+$\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ \\
+Muestra $k$ & $y_{k1}$ & $y_{k2}$ & $\ldots$ & $y_{kn_k}$ & -- & -- & $n_k$ & $T_{k.}$ & $\bar{y}_{k.}$ \\
+\hline
+\textbf{Total Global} & & & & & & & $N=\sum n_i$ & $T_{..}$ & $\bar{y}_{..}$ \\
+\hline
+\end{tabular}
+}}
+\end{center}
+
+Se deben hacer los siguientes cambios:
+\begin{listan}
+  \item Cambiar \textbf{n} por \textbf{ni} en: SST, SS(Tr) , C y T
+  \item Cambiar \textbf{k.n} por \textbf{N} en: C (N es $=\Sigma$ni)
+\end{listan}
+Se usa \textbf{ni (tamaño de cada muestra)} en lugar de \textbf{n (tamaño de todas las muestras)}
+\[
+\nu 1 := k-1 = \qquad \nu := N-1 = \qquad \nu 2 := \nu - \nu 1
+\]
+\[
+C = \frac{T_{..}^2}{N} \quad \text{donde } N=\sum_{i=1}^{k} n_i
+\qquad
+SST = \sum_{i=1}^{k}\sum_{j=1}^{n_i} y_{ij}^2 - C
+\]
+\[
+SS(Tr) = \sum_{i=1}^{k} \frac{T_{i.}^2}{n_i} - C
+\qquad
+SSE = SST - SS(Tr)
+\]
+\begin{center}
+\fit{{\chico
+\begin{tabular}{l c c c c}
+\toprule
+\textbf{Fuente de Variación} & \textbf{gl} & \textbf{Suma de Cuadrados} & \textbf{Media Cuadrada (MS)} & $F_{calc}$ \\
+\midrule
+Tratamientos & $k-1$ & $SS(Tr)$ & $MS(Tr)=\frac{SS(Tr)}{k-1}$ & $\frac{MS(Tr)}{MSE}$ \\
+Error Aleatorio & $N-k$ & $SSE$ & $MSE=\frac{SSE}{N-k}$ & \\
+\midrule
+Total & $N-1$ & $SST$ & & \\
+\bottomrule
+\end{tabular}
+}}
+\end{center}
+
+\tema{6.3 \ Diseño en bloques aleatorios}
+
+El experimentador tiene a disposicion mediciones relativas a ``a'' tratamientos distribuidos en b bloques. Vamos a considerar el caso en q hay una observacion en cada tratamiento de cada bloque.
+
+\begin{center}
+\fit{{\chico
+\setlength{\tabcolsep}{0.8pt}
+\begin{tabular}{l | c c c c | c | c | c}
+\toprule
+\textbf{Tratamiento} & \textbf{Bloque 1} & \textbf{Bloque 2} & $\ldots$ & \textbf{Bloque $b$} & \textbf{Total ($T_{i.}$)} & \textbf{Media ($\bar{y}_{i.}$)} & \textbf{Efecto ($\alpha_i$)} \\
+\midrule
+Tratamiento 1 & $y_{11}$ & $y_{12}$ & $\ldots$ & $y_{1b}$ & $T_{1.}$ & $\bar{y}_{1.}$ & $\alpha_1=\bar{y}_{1.}-\bar{y}_{..}$ \\
+Tratamiento 2 & $y_{21}$ & $y_{22}$ & $\ldots$ & $y_{2b}$ & $T_{2.}$ & $\bar{y}_{2.}$ & $\alpha_2=\bar{y}_{2.}-\bar{y}_{..}$ \\
+$\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ & $\ldots$ \\
+Tratamiento $a$ & $y_{a1}$ & $y_{a2}$ & $\ldots$ & $y_{ab}$ & $T_{a.}$ & $\bar{y}_{a.}$ & $\alpha_a=\bar{y}_{a.}-\bar{y}_{..}$ \\
+\midrule
+\textbf{Total Bloque} & $T_{.1}$ & $T_{.2}$ & $\ldots$ & $T_{.b}$ & $T_{..}$ & & \\
+\textbf{Media Bloque} & $\bar{y}_{.1}$ & $\bar{y}_{.2}$ & $\ldots$ & $\bar{y}_{.b}$ & & $\bar{y}_{..}$ & \\
+\textbf{Efecto Bloque} & $\beta_1$ & $\beta_2$ & $\ldots$ & $\beta_b$ & & & \\
+\bottomrule
+\end{tabular}
+}}
+\end{center}
+
+El modelo matemático aditivo sin interacción es:
+\[
+y_{ij} = \mu + \alpha_i + \beta_j + \epsilon_{ij} \quad \text{para } i=1,\ldots,a; \ j=1,\ldots,b
+\]
+Con las restricciones $\sum_{i=1}^{a}\alpha_i=0$ y $\sum_{j=1}^{b}\beta_j=0$, donde:
+\begin{lista}
+  \item $\mu$: Gran media general.
+  \item $\alpha_i=\bar{y}_{i.}-\bar{y}_{..}$: Efecto fijo del $i$-ésimo tratamiento.
+  \item $\beta_j=\bar{y}_{.j}-\bar{y}_{..}$: Efecto fijo del $j$-ésimo bloque.
+  \item $\epsilon_{ij} \sim iid\ N(0,\sigma^2)$: Error aleatorio.
+\end{lista}
+\[
+C = \frac{T_{..}^2}{a\cdot b}
+\qquad
+SST = \sum_{i=1}^{a}\sum_{j=1}^{b} y_{ij}^2 - C
+\]
+\[
+SS(Tr) = \frac{1}{b}\sum_{i=1}^{a} T_{i.}^2 - C \quad \text{con } a-1 \text{ gl}
+\]
+\[
+SS(Bl) = \frac{1}{a}\sum_{j=1}^{b} T_{.j}^2 - C \quad \text{con } b-1 \text{ gl}
+\]
+\[
+SSE = SST - SS(Tr) - SS(Bl) \quad \text{con } (a-1)(b-1) \text{ gl}
+\]
+\begin{center}
+\fit{{\chico
+\setlength{\tabcolsep}{0.8pt}
+\begin{tabular}{|l|c|c|l|l|}
+\hline
+\textbf{Fuentes de} & \textbf{Grados de} & \textbf{Suma de} & \textbf{Media Cuadrada} & \textbf{F} \\
+\textbf{Variación} & \textbf{Libertad} & \textbf{Cuadrados} & & \\
+\hline
+\textbf{Tratamientos} & a-1 & SS(Tr) & MS(Tr)=SS(Tr)/(a-1) & $F_{Tr} = \frac{MS(Tr)}{MSE}$ \\
+\hline
+\textbf{Bloques} & b-1 & SS(Bl) & MS(Bl)=SS(Bl)/(b-1) & $F_{Bl} = \frac{MS(Bl)}{MSE}$ \\
+\hline
+\textbf{Error} & (a-1).(b-1) & SSE & MSE=SSE/(a-1).(b-1) & \\
+\hline
+\textbf{Total} & a.b-1 & SST & & \\
+\hline
+\end{tabular}
+}}
+\end{center}
+para llegar al error hicimos: Error = total-tratamientos-bloques
+
+\end{multicols}
+\end{document}
