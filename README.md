@@ -1,3 +1,3 @@
 ## Mi unico heroe en este lio.
 
-![Alt text](images/image.png)
+![Alt text](images/image_claude.png)
