@@ -23,7 +23,12 @@
 \setlength{\parskip}{0.8pt}
 \setlength{\columnsep}{0.26cm}
 \setlength{\columnseprule}{0.3pt}
-\setlength{\tabcolsep}{1.6pt}
+\setlength{\tabcolsep}{2.4pt}
+\renewcommand{\arraystretch}{1.12}
+% centros y listas sin espacio vertical extra (tablas pegadas al texto)
+\setlength{\topsep}{0.4pt}
+\setlength{\partopsep}{0pt}
+\setlength{\parsep}{0pt}
 \pagestyle{empty}
 \sloppy
 \hyphenpenalty=50
@@ -33,12 +38,11 @@
 \newcommand{\chico}{\fontsize{4.2}{4.8}\selectfont}
 \newcommand{\fig}{\fontsize{3.4}{3.8}\selectfont}
 
-% Separador de unidad (sin titulo): doble filete a todo el ancho de columna
+% Separador de unidad (sin titulo): un solo filete a todo el ancho de columna
 \newcommand{\unidad}[1]{%
-  \par\vspace{3.5pt}%
-  \noindent\rule{\linewidth}{1.3pt}\par\vspace{1.1pt}%
-  \noindent\rule{\linewidth}{0.4pt}%
-  \par\vspace{2.5pt}}
+  \par\vspace{3pt}%
+  \noindent\rule{\linewidth}{1.3pt}%
+  \par\vspace{2pt}}
 
 % Titulo de tema (gris claro)
 \newcommand{\tema}[1]{%
@@ -89,18 +93,7 @@
 \textbf{Hipótesis alternativa ($H_a$ o $H_1$).} Expresa lo que se concluirá si existe evidencia suficiente para rechazar $H_0$. Se formula con $<$, $>$ o $\neq$.
 
 \sub{Procedimiento prueba hipotesis}
-\begin{enumerate}[label=\textbf{Paso \arabic*.},leftmargin=24pt,itemsep=0pt,topsep=0.5pt,parsep=0pt,labelsep=2pt]
-  \item Preguntar qué quiere demostrar el problema.
-  \item Formular $H_0$ y $H_1$.
-  \item Mirar el signo de $H_1$ y determinar si la prueba es derecha, izquierda o bilateral.
-  \item Fijar el nivel de significancia $\alpha$.
-  \item Elegir el estadístico: $Z$, $t$, $Z_{\bar{X}_1-\bar{X}_2}$, $t_{\bar{X}_1-\bar{X}_2}$ u otro que corresponda: $z_{\text{calc}} = \frac{\bar{x}-\mu_0}{\sigma/\sqrt{n}}$.
-  \item Encontrar el valor crítico y construir la región de rechazo.
-  \item Calcular $z_{calc}$ o $t_{calc}$ con los datos de la muestra.
-  \item Comparar el estadístico calculado con el valor crítico, o comparar el $p$-valor con $\alpha$.
-  \item Decidir: rechazar $H_0$ o no rechazar $H_0$.
-  \item Interpretar la decisión con las palabras del problema.
-\end{enumerate}
+\textbf{Paso 1.} Preguntar qué quiere demostrar el problema. \textbf{Paso 2.} Formular $H_0$ y $H_1$. \textbf{Paso 3.} Mirar el signo de $H_1$ y determinar si la prueba es derecha, izquierda o bilateral. \textbf{Paso 4.} Fijar el nivel de significancia $\alpha$. \textbf{Paso 5.} Elegir el estadístico: $Z$, $t$, $Z_{\bar{X}_1-\bar{X}_2}$, $t_{\bar{X}_1-\bar{X}_2}$ u otro que corresponda: $z_{\text{calc}} = \frac{\bar{x}-\mu_0}{\sigma/\sqrt{n}}$. \textbf{Paso 6.} Encontrar el valor crítico y construir la región de rechazo. \textbf{Paso 7.} Calcular $z_{calc}$ o $t_{calc}$ con los datos de la muestra. \textbf{Paso 8.} Comparar el estadístico calculado con el valor crítico, o comparar el $p$-valor con $\alpha$. \textbf{Paso 9.} Decidir: rechazar $H_0$ o no rechazar $H_0$. \textbf{Paso 10.} Interpretar la decisión con las palabras del problema.
 
 \sub{Eleccion estadistico}
 \begin{center}
@@ -207,13 +200,9 @@ t = \frac{\bar{x} - \mu_0}{s/\sqrt{n}} \quad \text{\textbf{Aplica t-unimuestral}
 \centerline{conclus-$>$\textbf{eficaz} \qquad $qt(0.95,\ df = 9)$ \qquad \textbf{Se rechaza h0}}
 
 \ej{Ejemplo (fertilizante sobre producción de trigo):}
-En una estación agrícola se deseaba ensayar el efecto de un determinado fertilizante sobre la producción de trigo. Para ello se eligieron 24 parcelas de terreno de igual superficie; la mitad de ellas fueron tratadas con el fertilizante y la otra mitad no (grupo control). Todas las demás condiciones fueron las mismas. La media de trigo conseguida fue de 0.264 m$^3$ con una desviación estándar de 0.02 m$^3$, mientras que la media en las parcelas tratadas fue de 0.28 m$^3$ con una desviación estándar de 0.022 m$^3$. ¿Puede decirse que hay un incremento significativo en la producción de trigo por el empleo del fertilizante al nivel de significación del 5\%?
+24 parcelas iguales: 12 sin fertilizante (control) $\bar{x}_2 = 0.264$ m$^3$, $s_2 = 0.02$ m$^3$; 12 tratadas $\bar{x}_1 = 0.28$ m$^3$, $s_1 = 0.022$ m$^3$. Nivel de significación 5\%.
 
-\begin{lista}
-  \item[\textbf{1 --}] Hipótesis Nula $\mu_1 - \mu_2 = 0$, la diferencia se debe al azar. Hipótesis Alternativa $\mu_1 > \mu_2$ (unilateral cola derecha), el fertilizante incrementa significativamente la producción.
-  \item[\textbf{2 -}] Nivel de significancia: $\alpha = 0.05$. $t_\alpha = 1.717$ con $\nu = 22$ grados de libertad.
-  \item[\textbf{3 -}] Para trabajar con tablas normalizadas:
-\end{lista}
+\textbf{1 --} $H_0: \mu_1 - \mu_2 = 0$ (la diferencia se debe al azar); $H_1: \mu_1 > \mu_2$ (unilateral cola derecha). \textbf{2 -} $\alpha = 0.05$; $t_\alpha = 1.717$ con $\nu = 22$ gl. \textbf{3 -} Para trabajar con tablas normalizadas:
 \[
 {\chico t = \frac{\left[\left(\overline{x_1} - \overline{x_2}\right) - \delta\right]}{\sqrt{(n_1-1)\cdot(s_1)^2 + (n_2-1)\cdot(s_2)^2}} \cdot \sqrt{\frac{n_1 \cdot n_2 \cdot (n_1+n_2-2)}{n_1+n_2}}}
 \]
@@ -294,7 +283,7 @@ R = 8350 - 8070 = 280
 2) busco en la tabla $d_2$ a cuanto equivale para $n=5$
 \begin{center}
 {\chico
-\setlength{\tabcolsep}{1pt}
+\setlength{\tabcolsep}{1.8pt}
 \renewcommand{\arraystretch}{0.95}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
 \hline
@@ -497,16 +486,15 @@ Total & 60 & 188 & 152 & 400 \\
 }}
 \end{center}
 
-\textbf{Bondad de ajuste.} En la prueba chi-cuadrado de bondad de ajuste se compara la distribución observada en una muestra con una distribución teórica propuesta. El objetivo es determinar si las diferencias entre ambas pueden atribuirse al azar o si son suficientemente grandes como para concluir que el modelo teórico no ajusta a los datos.
+\textbf{Bondad de ajuste.} Compara la distribución observada con una distribución teórica propuesta: se determina si las diferencias son por azar o si el modelo teórico no ajusta.
 
-\textbf{Poisson} modela la cantidad de sucesos que ocurren en un intervalo fijo.\\
-\textbf{H0:} Los datos siguen la distribución de poisson. \textbf{H1:} No la siguen.
+\textbf{Poisson} modela la cantidad de sucesos en un intervalo fijo. \textbf{H0:} Los datos siguen la distribución de poisson. \textbf{H1:} No la siguen.
 
 \begin{center}
 {\chico\textbf{autos}}
 
 \fit{{\chico
-\setlength{\tabcolsep}{1.6pt}
+\setlength{\tabcolsep}{2pt}
 \renewcommand{\arraystretch}{0.95}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
@@ -540,9 +528,9 @@ Total & 60 & 188 & 152 & 400 \\
 }}
 \end{center}
 
-{\chico $\dashrightarrow$ hubieron 15 intervalos de 5 minutos en el q paso un solo auto. se analizan 400 intervalos de 5 minutos en el control de tráfico en cuanto al paso de autos, comparándola con una distribución de Poisson con $\lambda$=4.6. en los extremos hay una forma acampanada, ya q los valores son mas bajos entonces se unen agrupandolos. se agrupan las frec esp. menos que 5, las agrupo con el siguiente valor. Voy a tener 10 grupos\par}
+{\chico $\dashrightarrow$ hubieron 15 intervalos de 5 min en el q paso un solo auto. Se analizan 400 intervalos de 5 min (paso de autos) contra una Poisson con $\lambda$=4.6. En los extremos los valores son mas bajos: se agrupan las frec. esp. menores que 5 con el valor siguiente $\Rightarrow$ 10 grupos.\par}
 
-Se usa el estadístico para ver si las diferencias entre lo que observamos y lo que esperamos son solo por casualidad:
+Estadístico para ver si las diferencias entre lo observado y lo esperado son solo por casualidad:
 \[
 {\chico \chi^2 = \sum_{i=1}^{k} \frac{\left(o_i - e_i\right)^2}{e_i} \quad \textbf{v=k-m-1 GL}}
 \]
@@ -550,7 +538,7 @@ Se usa el estadístico para ver si las diferencias entre lo que observamos y lo 
 \[
 {\chico \chi^2 = \frac{(18-22.4)^2}{22.4} + \cdots + \frac{(47-42.8)^2}{42.8} = 6.749}
 \]
-{\chico Para cada cantidad posible de autos calculo la probabilidad teórica mediante la fórmula de Poisson, usando $\lambda = 4{,}6$. Por ejemplo, la probabilidad de observar cero autos es $e^{-4{,}6} = 0{,}010$. Luego multiplico cada probabilidad por los 400 intervalos para obtener la frecuencia esperada. Así, para cero autos, la frecuencia esperada es $400\cdot 0{,}010 = 4$. Como esta frecuencia es menor que 5, agrupo la categoría de cero autos con la de un auto. Finalmente comparo las frecuencias observadas con las esperadas mediante el estadístico chi-cuadrado.\par}
+{\chico Cada probabilidad teórica sale de la fórmula de Poisson con $\lambda = 4{,}6$ (ej.: $P(0)=e^{-4{,}6}=0{,}010$) y la frecuencia esperada de multiplicarla por los 400 intervalos ($400\cdot 0{,}010 = 4$; como es $<5$ se agrupa con la de un auto).\par}
 \[
 \text{Poisson} \qquad P(X=x) = \frac{e^{-\lambda}\lambda^{x}}{x!}
 \]
@@ -668,7 +656,7 @@ Se evalúa la eficacia de tres tratamientos preventivos anticorrosión midiendo 
 
 \begin{center}
 {\chico
-\setlength{\tabcolsep}{1.4pt}
+\setlength{\tabcolsep}{2.2pt}
 \begin{tabular}{|l c c c|l c c c|}
 \hline
 Valor & Grupo & \multicolumn{2}{c|}{Rango} & Valor & Grupo & \multicolumn{2}{c|}{Rango} \\
@@ -767,27 +755,6 @@ e_i = y_i - \widehat{y}_i
 \]
 diferencias verticales $\longleftarrow$ (regresión y sobre x)
 
-\begin{center}
-{\chico Regresión lineal simple: valor observado, valor estimado y residuo}
-
-\begin{tikzpicture}[scale=0.33, every node/.style={font=\fig}]
-  \draw[->, gray] (0,0) -- (7.6,0) node[right, black] {$x$};
-  \draw[->, gray] (0,0) -- (0,4.9) node[above, black] {$y$};
-  \draw[thick, black] (0.4,0.75) -- (7.1,4.35);
-  \foreach \p in {(0.9,0.75),(1.9,1.35),(2.6,1.5),(3.55,2.95),(4.5,2.55),(5.9,3.6),(6.7,3.9)}
-    \fill[black] \p circle (2.2pt);
-  \draw[dotted] (3.55,0) -- (3.55,2.95);
-  \draw[dashed] (0,2.95) -- (3.55,2.95);
-  \draw[dashed] (0,2.28) -- (3.55,2.28);
-  \fill[black] (3.55,2.28) circle (2.2pt);
-  \draw[<->, very thick] (3.62,2.30) -- (3.62,2.93);
-  \node[right] at (3.78,1.95) {$e_i = y_i - \widehat{y}_i$};
-  \node[above] at (4.7,3.45) {$\widehat{y} = a + b\,x$};
-  \node[left] at (0,2.95) {$y_i$};
-  \node[left] at (0,2.28) {$\widehat{y}_i$};
-  \node[below] at (3.55,0) {$x_i$};
-\end{tikzpicture}
-\end{center}
 No es viable la suma de los errores, pq se cancelan los (+) con los ($-$)
 
 \textbf{4)} Se busca \textbf{minimizar la suma de los cuadrados de las diferencias} entre los valores reales y los valores estimados $\Rightarrow$ \textbf{a y b se eligirán con:} \hfill \textbf{SCE}
@@ -938,17 +905,25 @@ n & \sum x_i & \sum x_i^2 & \cdots & \sum x_i^p \\
 \tema{5.5 \ Metodo de la varianza residual}
 
 Para evitar el sobreajuste, se calcula la \textbf{varianza residual}:
+
+\begin{minipage}[t]{0.33\linewidth}
+\vspace{1pt}
 \[
 \sigma_{\text{res}}^2 = \frac{\displaystyle\sum_{i=1}^{n} (y_i-\hat{y}_i)^2}{n-(p+1)}
 \]
+\end{minipage}\hfill
+\begin{minipage}[t]{0.64\linewidth}
+\vspace{0pt}
 Donde:
 \begin{lista}
   \item $n$ es la cantidad de puntos de la muestra.
   \item $p$ es el grado del polinomio.
   \item $p+1$ es la cantidad de coeficientes estimados.
-  \item $n-p-1$ representa los \textbf{grados de libertad del modelo}.
-  \item $y_i - \hat{y}_i$ es el residuo, es decir, la diferencia entre el valor observado y el valor estimado.
+  \item $n-p-1$ son los \textbf{grados de libertad del modelo}.
+  \item $y_i - \hat{y}_i$ es el residuo: diferencia entre el valor observado y el estimado.
 \end{lista}
+\end{minipage}
+
 \textbf{Se comienza por :}
 \begin{lista}
   \item una recta, grado 1
@@ -978,24 +953,22 @@ Para cada uno se calcula la varianza residual y se compara los resultados. La su
 
 \tema{5.6 \ Correlacion}
 
-La correlacion nos dice con q grado de intensidad se relacionan 2 variables cuantitativas. el mismo va entre $-1 \leq r \leq 1$
-\begin{lista}
-  \item \textbf{r=1(Relación lineal positiva perfecta)} -$>$ todos los puntos caen sobre una recta de pendiente positiva. Cuando X aumenta Y tambien lo hace
-  \item \textbf{r=-1(Relación Lineal Negativa Perfecta):} todos los puntos estan sobre una recta de pendiente negativa. Cuando X aumenta Y disminuye
-  \item \textbf{r = 0 (Incorrelación Lineal):} En la muestra no se observa asociación lineal apreciable. Puede existir una relación no lineal. La nube de puntos adopta una forma caotica.Simplemente al fenomeno no lo podemos describir con una linea recta.
-  \item \textbf{0 $<$ r $<$ 1 (Relación Lineal Positiva):} Cuanto mas se acerca a 1, mayor es el alineamiento ascendente
-  \item \textbf{$-1 <$ r $< 0$ (Relación Lineal Negativa):} Cuanto más se acerca a $-1$ mayor es el alineamiento descendente
-\end{lista}
-\textbf{En conclusion el coef. de corr. mide la relacion entre 2 variables, no permite explicar una en funcion de la otra.}
+\textbf{coeficiente correlacion:} El coeficiente de correlación sirve para indicar relaciones lineales y comportamientos entre dos variables. Indica asociacion, no causalidad. Se denota comúnmente como r (correlación de Pearson) y varía en cualquier valor entre $-1$ y 1:
 
-Matemáticamente, el coeficiente de correlación $r$ se define como el cociente entre la \textbf{covarianza muestral} de las dos variables y el producto de sus respectivas \textbf{desviaciones estándar}:
+Si $r = 1$ $\rightarrow$ Si una variable aumenta, la otra también\\
+Si $r = -1$ $\rightarrow$ Si una aumenta, la otra disminuye\\
+Si $r = 0$ $\rightarrow$ No hay relación lineal, puede haber de otro tipo
+
+\begin{minipage}[c]{0.26\linewidth}
 \[
 r = \frac{s_{xy}}{s_x \cdot s_y} \tag{2}
 \]
-Desarrollando los estimadores muestrales de cada término, obtenemos la fórmula teórica del coeficiente de Pearson:
+\end{minipage}\hfill
+\begin{minipage}[c]{0.71\linewidth}
 \[
 {\chico r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n}(x_i-\bar{x})^2 \cdot \sum_{i=1}^{n}(y_i-\bar{y})^2}}} \tag{3}
 \]
+\end{minipage}
 
 %=====================================================================
 \unidad{UNIDAD 6 --- ANÁLISIS DE VARIANZA (ANOVA)}
@@ -1015,7 +988,7 @@ Primero considero el diseño completamente aleatorio con tamaños muestrales igu
 
 \begin{center}
 \fit{{\chico
-\setlength{\tabcolsep}{0.8pt}
+\setlength{\tabcolsep}{2.2pt}
 \begin{tabular}{l c c c c c c | c c}
 \toprule
 Tratamiento / Muestra & Obs. 1 & Obs. 2 & $\ldots$ & Obs. $j$ & $\ldots$ & Obs. $n$ & Total ($T_{i.}$) & Media ($\bar{y}_{i.}$) \\
@@ -1066,7 +1039,7 @@ F = \frac{\dfrac{SS(Tr)}{k-1}}{\dfrac{SSE}{k\cdot(n-1)}} \ = \ \frac{\hat{\sigma
 
 \begin{center}
 \fit{{\chico
-\setlength{\tabcolsep}{0.8pt}
+\setlength{\tabcolsep}{2.2pt}
 \begin{tabular}{|l|c|c|l|c|}
 \hline
 \textbf{Fuentes de} & \textbf{Grados de} & \textbf{Suma de} & \textbf{Media Cuadrada} & \textbf{F} \\
@@ -1090,7 +1063,7 @@ cada fila tiene distintas cantidad de columnas
 
 \begin{center}
 \fit{{\chico
-\setlength{\tabcolsep}{0.8pt}
+\setlength{\tabcolsep}{2.2pt}
 \begin{tabular}{|l|c c c c c c|c|c|c|}
 \hline
 \textbf{Tratamiento} & \textbf{Obs. 1} & \textbf{Obs. 2} & $\ldots$ & \textbf{Obs. $j$} & $\ldots$ & \textbf{Obs. $n_i$} & \textbf{Tamaño ($n_i$)} & \textbf{Total ($T_{i.}$)} & \textbf{Media ($\bar{y}_{i.}$)} \\
@@ -1146,7 +1119,7 @@ El experimentador tiene a disposicion mediciones relativas a ``a'' tratamientos 
 
 \begin{center}
 \fit{{\chico
-\setlength{\tabcolsep}{0.8pt}
+\setlength{\tabcolsep}{2.2pt}
 \begin{tabular}{l | c c c c | c | c | c}
 \toprule
 \textbf{Tratamiento} & \textbf{Bloque 1} & \textbf{Bloque 2} & $\ldots$ & \textbf{Bloque $b$} & \textbf{Total ($T_{i.}$)} & \textbf{Media ($\bar{y}_{i.}$)} & \textbf{Efecto ($\alpha_i$)} \\
@@ -1191,7 +1164,7 @@ SSE = SST - SS(Tr) - SS(Bl) \quad \text{con } (a-1)(b-1) \text{ gl}
 \]
 \begin{center}
 \fit{{\chico
-\setlength{\tabcolsep}{0.8pt}
+\setlength{\tabcolsep}{2.2pt}
 \begin{tabular}{|l|c|c|l|l|}
 \hline
 \textbf{Fuentes de} & \textbf{Grados de} & \textbf{Suma de} & \textbf{Media Cuadrada} & \textbf{F} \\
