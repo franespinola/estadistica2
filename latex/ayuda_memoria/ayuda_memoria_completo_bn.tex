@@ -3,7 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage[top=0.4cm,bottom=0.4cm,left=0.4cm,right=0.4cm]{geometry}
+\usepackage[top=0.3cm,bottom=0.3cm,left=0.3cm,right=0.3cm]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage[table]{xcolor}
 \usepackage{booktabs,array,multirow}
@@ -20,8 +20,9 @@
 }
 
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.8pt}
-\setlength{\columnsep}{0.26cm}
+\setlength{\parskip}{0.5pt}
+\setlength{\columnsep}{0.22cm}
+\setlength{\fboxsep}{1.2pt}
 \setlength{\columnseprule}{0.3pt}
 \setlength{\tabcolsep}{2.4pt}
 \renewcommand{\arraystretch}{1.12}
@@ -34,15 +35,21 @@
 \hyphenpenalty=50
 \tolerance=3000
 
-\newcommand{\cuerpo}{\fontsize{4.8}{5.5}\selectfont}
-\newcommand{\chico}{\fontsize{4.2}{4.8}\selectfont}
+\newcommand{\cuerpo}{\fontsize{4.8}{5.05}\selectfont}
+\newcommand{\chico}{\fontsize{4.2}{4.6}\selectfont}
 \newcommand{\fig}{\fontsize{3.4}{3.8}\selectfont}
 
-% Separador de unidad (sin titulo): un solo filete a todo el ancho de columna
+% Separador de unidad (sin titulo): un solo filete a todo el ancho de columna.
+% La primera unidad no lleva filete (no separa nada al inicio del documento).
+\newif\ifprimeraunidad\primeraunidadtrue
 \newcommand{\unidad}[1]{%
-  \par\vspace{3pt}%
-  \noindent\rule{\linewidth}{1.3pt}%
-  \par\vspace{2pt}}
+  \ifprimeraunidad
+    \primeraunidadfalse
+  \else
+    \par\vspace{3pt}%
+    \noindent\rule{\linewidth}{1.3pt}%
+    \par\vspace{2pt}%
+  \fi}
 
 % Titulo de tema (gris claro)
 \newcommand{\tema}[1]{%
@@ -60,7 +67,7 @@
 % Ajusta una tabla al ancho de columna solo si se pasa
 \newcommand{\fit}[1]{\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{#1}}
 % Formula ancha: se encoge al ancho de columna si hace falta
-\newcommand{\fitm}[1]{\par\vspace{0.6pt}\centerline{\fit{$\displaystyle #1$}}\vspace{0.6pt}}
+\newcommand{\fitm}[1]{\par\vspace{0.3pt}\centerline{\fit{$\displaystyle #1$}}\vspace{0.3pt}}
 
 \newenvironment{lista}{\begin{itemize}[leftmargin=7pt,itemsep=0pt,topsep=0.5pt,parsep=0pt,labelsep=2pt]}{\end{itemize}}
 \newenvironment{listan}{\begin{enumerate}[leftmargin=9pt,itemsep=0pt,topsep=0.5pt,parsep=0pt,labelsep=2pt]}{\end{enumerate}}
@@ -158,11 +165,8 @@ z = \frac{(x_{m1} - x_{m2}) - \delta}{\sigma_{xm1} - \sigma_{xm2}} \quad \text{\
 Si las poblaciones son normales, \textbf{se define un estadístico:}
 
 \textbf{1) Para n grande ($n>30$):} $\sigma^2$ \textit{conocido}
-\[
-z = \frac{\left[\bar{x}_1 - \bar{x}_2\right] - \delta}{\sqrt{\dfrac{\sigma_1^2}{n_1} + \dfrac{\sigma_2^2}{n_2}}}
-\quad {\chico \downarrow \textit{varianza de la media muestral}}
-\]
-
+\fitm{z = \frac{\left[\bar{x}_1 - \bar{x}_2\right] - \delta}{\sqrt{\dfrac{\sigma_1^2}{n_1} + \dfrac{\sigma_2^2}{n_2}}}
+\ {\chico \downarrow \textit{varianza de la media muestral}}}
 $\sigma^2$ \textit{desconocido:} \textit{sustituyendo $\sigma_1$ y $\sigma_2$ por $s_1$ y $s_2$}
 
 \textbf{2) Para n chico ($n<30$) con $\sigma^2$ desconocida:} ``\textbf{Prueba t-bimuestral}'' \textit{(muestras independientes)} suponemos $\sigma_1 = \sigma_2$ ($=\sigma$)
@@ -188,15 +192,10 @@ $d_i$ & 9 & 13 & 2 & 5 & $-2$ & 6 & 6 & 5 & 2 & 6 & \\
 \end{tabular}
 }}
 \end{center}
-\[
-\bar{x} = \frac{9 + 13 + 2 + 5 - 2 + 6 + 6 + 5 + 2 + 6}{10} = 5.2
-\]
-\[
-s = \sqrt{\frac{\sum d_i^2 - n \cdot \bar{x}^2}{n-1}} \quad \text{\textbf{n-1 para quitar sesgo}}
-\]
-\[
-t = \frac{\bar{x} - \mu_0}{s/\sqrt{n}} \quad \text{\textbf{Aplica t-unimuestral}}
-\]
+\fitm{\bar{x} = \frac{9 + 13 + 2 + 5 - 2 + 6 + 6 + 5 + 2 + 6}{10} = 5.2
+\qquad
+s = \sqrt{\frac{\sum d_i^2 - n \cdot \bar{x}^2}{n-1}} \ \text{\textbf{\chico n-1 para quitar sesgo}}}
+\fitm{t = \frac{\bar{x} - \mu_0}{s/\sqrt{n}} \quad \text{\textbf{Aplica t-unimuestral}}}
 \centerline{conclus-$>$\textbf{eficaz} \qquad $qt(0.95,\ df = 9)$ \qquad \textbf{Se rechaza h0}}
 
 \ej{Ejemplo (fertilizante sobre producción de trigo):}
@@ -230,35 +229,22 @@ Se usa en \textbf{\uline{Control de Calidad}}
 \chi^2 = \frac{(n-1)\cdot s^2}{\sigma^2} \quad \text{con } \nu = n-1 \text{ gl}
 \]
 {\chico\textit{inter. confianz para $\sigma^2$}}
-\[
-(\chi^2)_{\frac{\alpha}{2}} \;<\; \frac{(n-1)\,s^2}{\sigma^2} \;<\; (\chi^2)_{1-\frac{\alpha}{2}}
-\]
-\[
-\frac{(n-1)\cdot s^2}{(\chi^2)_{1-\frac{\alpha}{2}}} \;<\; \sigma^2 \;<\; \frac{(n-1)\cdot s^2}{(\chi^2)_{\frac{\alpha}{2}}}
-\]
-
+\fitm{(\chi^2)_{\frac{\alpha}{2}} < \frac{(n-1)\,s^2}{\sigma^2} < (\chi^2)_{1-\frac{\alpha}{2}}
+\qquad
+\frac{(n-1)\cdot s^2}{(\chi^2)_{1-\frac{\alpha}{2}}} < \sigma^2 < \frac{(n-1)\cdot s^2}{(\chi^2)_{\frac{\alpha}{2}}}}
 {\chico
 $(\chi^2)_{\frac{\alpha}{2}}$ $\dashrightarrow$ \texttt{qchisq(0.025, $\nu$)} \quad
 $(\chi^2)_{1-\frac{\alpha}{2}}$ $\dashrightarrow$ \texttt{qchisq(0.975, $\nu$)}\par}
 
 {\chico\textit{inter. confienz para $\sigma$ (aplicamos raiz)}}
-\[
-\sqrt{\frac{(n-1)\,s^2}{\chi^2_{1-\frac{\alpha}{2}}}} \;<\; \sigma \;<\; \sqrt{\frac{(n-1)\,s^2}{\chi^2_{\frac{\alpha}{2}}}}
-\]
+\fitm{\sqrt{\frac{(n-1)\,s^2}{\chi^2_{1-\frac{\alpha}{2}}}} < \sigma < \sqrt{\frac{(n-1)\,s^2}{\chi^2_{\frac{\alpha}{2}}}}}
 
-\textbf{4) Para n grande ($\mathbf{n>30}$)} $\dashrightarrow$ Dist Z y Chi cuadrado (innecesario) \ a)
-\[
-z = \frac{s-\sigma}{\dfrac{\sigma}{\sqrt{2\cdot n}}}
-\]
-Con desv. estándar $\frac{\sigma}{\sqrt{2*n}}$ y media sigma $\sigma$ (distrib. norm estánd.). lo que supone una desigualdad, para un intervalo de confianza $(1-\alpha)$
+\textbf{4) Para n grande ($\mathbf{n>30}$)} $\dashrightarrow$ Dist Z y Chi cuadrado (innecesario) \ a) $z = \dfrac{s-\sigma}{\sigma/\sqrt{2\cdot n}}$ \ Con desv. estándar $\frac{\sigma}{\sqrt{2*n}}$ y media sigma $\sigma$ (distrib. norm estánd.). lo que supone una desigualdad, para un intervalo de confianza $(1-\alpha)$
 
 {\chico\textit{inter. confianz para $\sigma$}}
-\[
--z_{\alpha/2} \;<\; \frac{s-\sigma}{\dfrac{\sigma}{\sqrt{2n}}} \;<\; z_{\alpha/2}
-\]
-\[
-\frac{s}{1+\dfrac{z_{\frac{\alpha}{2}}}{\sqrt{2\cdot n}}} \;<\; \sigma \;<\; \frac{s}{1-\dfrac{z_{\frac{\alpha}{2}}}{\sqrt{2\cdot n}}}
-\]
+\fitm{-z_{\alpha/2} < \frac{s-\sigma}{\dfrac{\sigma}{\sqrt{2n}}} < z_{\alpha/2}
+\qquad
+\frac{s}{1+\dfrac{z_{\frac{\alpha}{2}}}{\sqrt{2\cdot n}}} < \sigma < \frac{s}{1-\dfrac{z_{\frac{\alpha}{2}}}{\sqrt{2\cdot n}}}}
 También se podría usar la chi cuadrado ya que con $n > 30$ se aproxima a una dist. normal.
 
 \sub{Hipotesis referida a una varianza}
@@ -296,18 +282,11 @@ N & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
 \end{tabular}
 }
 \end{center}
-Luego la estimación de $\sigma$ queda:
-\[
-\sigma = \frac{R}{d_2} = \frac{280}{2.326} = 120.378
-\]
-mientras que calculado directamente da:
-\[
-{\chico s = \sqrt{\frac{8260^2 + 8130^2 + 8350^2 + 8070^2 + 8340^2 - 5\cdot 8230^2}{4}} = 125.499}
-\]
+Luego la estimación de $\sigma$ queda: \ $\sigma = \frac{R}{d_2} = \frac{280}{2.326} = 120.378$; \ mientras que calculado directamente da:
+\fitm{s = \sqrt{\frac{8260^2 + 8130^2 + 8350^2 + 8070^2 + 8340^2 - 5\cdot 8230^2}{4}} = 125.499
+\qquad
+s = \sqrt{\frac{\sum (x_i^2) - n\cdot \bar{x}^2}{n-1}}}
 Es mucho mas confiable estimar por el R ya q me da menos
-\[
-s = \sqrt{\frac{\sum (x_i^2) - n\cdot \bar{x}^2}{n-1}}
-\]
 
 \tema{3.3 \ Estimacion de proporciones}
 
@@ -317,19 +296,15 @@ s = \sqrt{\frac{\sum (x_i^2) - n\cdot \bar{x}^2}{n-1}}
   \item Debo establecer un inter. de conf. que me permita asegurar con cierto grado de confianza que la proporción real se encuentra en él.
   \item Puedo estimar la proporción poblacional \textbf{p}, a través de la estimación puntual \textbf{x/n}
 \end{lista}
-\[
-p = \frac{x}{n}
+\fitm{p = \frac{x}{n}
 \ \begin{array}{l}
 \rightarrow \text{\chico casos de éxito} \\[-1pt]
 \rightarrow \text{\chico ensayos (muestra)}
 \end{array}
-\ q = 1-p
-\]
-\centerline{(fracasos)}
-Como \textbf{p} tiene \textbf{distribución binomial (dos resultados}: 1 o 0, éxito o fracaso, etc\textbf{)} se verifica:
-\[
-\mu = n\cdot p \qquad \sigma = \sqrt{n\cdot p\cdot (1-p)}
-\]
+\ q = 1-p \ \text{\chico (fracasos)}
+\qquad
+\mu = n\cdot p \qquad \sigma = \sqrt{n\cdot p\cdot (1-p)}}
+Como \textbf{p} tiene \textbf{distribución binomial (dos resultados}: 1 o 0, éxito o fracaso, etc\textbf{)} se verifica lo anterior.
 {\chico\itshape Al sumar todas esas respuestas individuales de 1 o 0, obtenés tu variable ``x'' (los casos de éxito, que en este ejemplo son 35). Es esta variable ``x'' la que sigue una \textbf{Distribución Binomial}, porque representa ``la cantidad de éxitos en ``n'' ensayos independientes''. $\bullet$ \textbf{Éxito (1):} Si toma vino. $\bullet$ \textbf{Fracaso (0):} No toma vino.\par}
 
 \textbf{2 formas de resolución:}
@@ -337,11 +312,7 @@ Como \textbf{p} tiene \textbf{distribución binomial (dos resultados}: 1 o 0, é
   \item[a)] \textbf{Gráfica} (tablas) menos precisa
   \item[b)] \textbf{Analítica}, se debe cumplir que: Si \textbf{n.p} y \textbf{(1-p).n} mayores a \textbf{5}: \textbf{la Dist Binom se aproxima a una Dist Normal}
 \end{lista}
-Entonces Z es \quad (1)
-\[
-z = \frac{x - n{*}p}{\sqrt{n{*}p{*}(1-p)}}
-\]
-como resulta dificil despejar p, se reemplaza por x/n en el denominador \quad (2)
+Entonces Z es \ (1) \ $z = \dfrac{x - n{*}p}{\sqrt{n{*}p{*}(1-p)}}$ \ como resulta dificil despejar p, se reemplaza por x/n en el denominador \ (2)
 \[
 {\chico -z_{\frac{\alpha}{2}} < \frac{x - n\cdot p}{\sqrt{n\cdot p\cdot (1-p)}} < z_{\frac{\alpha}{2}}
 \quad
@@ -353,12 +324,7 @@ como resulta dificil despejar p, se reemplaza por x/n en el denominador \quad (2
 < p <
 \frac{x}{n} + \underbrace{z_{\frac{\alpha}{2}}\sqrt{\frac{\frac{x}{n}\left(1-\frac{x}{n}\right)}{n}}}_{\text{Error max de estimación}}}
 \]
-\begin{lista}
-  \item Cálculo de \textbf{n} para lograr un \textbf{grado de precisión}
-\end{lista}
-\[
-n = p\cdot(1-p)\cdot \left(\frac{z_{\frac{\alpha}{2}}}{E}\right)^{2}
-\]
+$\bullet$ Cálculo de \textbf{n} para lograr un \textbf{grado de precisión}: \ $n = p\cdot(1-p)\cdot \left(\frac{z_{\frac{\alpha}{2}}}{E}\right)^{2}$
 \sub{Hipotesis relativa a una proporcion}
 \fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
 \textbf{H0: p = p0} \quad \textbf{proporción}
@@ -372,88 +338,30 @@ z = \frac{x - n\cdot p_0}{\sqrt{n\cdot p_0\cdot(1-p_0)}}
 
 \tema{3.4 \ Hipotesis relativa a varias proporciones}
 
-Se prueba que todas las proporciones de distintas poblaciones binomiales sean significativamente iguales:
+Se prueba que todas las proporciones de distintas poblaciones binomiales sean significativamente iguales. \textbf{H0:} $p_1 = p_2 = \ldots = p_k = p$; \textbf{H1:} que al menos 1 no lo sea.
 
-\textbf{H0:} $p_1 = p_2 = \ldots = p_k = p$ \quad \textbf{H1:} que al menos 1 no lo sea
-
-\textbf{Método 1:} Si \textbf{n.p} y \textbf{(1-p).n} mayores a \textbf{5}: La D.Binomial se aproxima a D.Normal, entonces, \uline{se calcula para cada población}:
-\[
-z_i = \frac{x_i - n_i\cdot p_i}{\sqrt{n_i\cdot p_i\cdot\left(1-p_i\right)}}
-\qquad Z_i^2 \sim \chi_1^2
-\]
-- El cuadrado de una v. aleatoria con dist. normal, es una v. aleatoria con dist. \textbf{chi-cuadrado} con 1 gl. - La suma de \textbf{k} v aleatorias con distribuciones \textbf{chi-cuadrado} con 1gl dan otra v. aleatoria \textbf{chi-cuadrado} con \textbf{k} gl. \ gl=grados de libertad
-
-Dado que las $p_i$ son todas iguales por hipótesis nula y $p_n = x_n/n_n$, se pueden sustituir por:
-\[
-\widehat{p} = \frac{x_1 + x_2 + \cdots + x_k}{n_1 + n_2 + \cdots + n_k} \quad \text{\chico suma de proporciones}
-\]
-$\bullet$ Obteniendo el estadístico:
-\[
-{\chico \chi^2 = \sum_{i=1}^{k} \frac{\left(x_i - n_i\cdot\widehat{p}\,\right)^2}{n_i\cdot\widehat{p}\cdot\left(1-\widehat{p}\,\right)}}
-\]
-{\chico Dif grandes se mueve hacia la der, dif chicas hacia la izq. \textbf{v=k-1} grados de libertad. fracasos esperados $n_i(1-\widehat{p}\,)$; éxitos esperados $n_i\widehat{p}$\par}
-
-\begin{center}
-{\chico
-\begin{tabular}{l r r r r}
-\toprule
-\textbf{Resultado} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{Total} \\
-Desmoronado & 41 & 27 & 22 & 90 \\
-Resto intacto & 79 & 53 & 78 & 210 \\
-\midrule
-Total & 120 & 80 & 100 & 300 \\
-\bottomrule
-\end{tabular}
-}
-\end{center}
-
-Se quiere determinar si la probabilidad de desmoronamiento es la misma para los materiales \textbf{A}, \textbf{B} y \textbf{C}. En cada material hay dos resultados posibles: desmoronado o resto intacto.
-
-\textbf{metodo 1}
-\fitm{\chi^2 = \sum_{i=1}^{3} \frac{\left(x_i - n_i\widehat{p}\,\right)^2}{n_i\widehat{p}\,(1-\widehat{p}\,)}
-= \frac{(x_1-n_1p)^2}{n_1p(1-p)} + \frac{(x_2-n_2p)^2}{n_2p(1-p)} + \frac{(x_3-n_3p)^2}{n_3p(1-p)}}
-\centerline{$\nu = k-1 = 3-1 = 2.$}
-
-\textbf{Método 2:} para simplificar el cálculo de chi cuadrado se hace una tabla
-\begin{center}
-\fit{{\chico
-\begin{tabular}{l | c | c | c | c | l}
- & Muestra 1 & Muestra 2 & $\cdots$ & Muestra k & Total \\
-\cline{2-5}
-éxitos & $x_1$ & $x_2$ & $\cdots$ & $x_k$ & $x$ \\
-\cline{2-5}
-fallas & $n_1 - x_1$ & $n_2 - x_2$ & $\cdots$ & $n_k - x_k$ & $n-x$ \\
-\cline{2-5}
-Total & $n_1$ & $n_2$ & $\cdots$ & $n_k$ & $n$ \\
-\end{tabular}
-}}
-\end{center}
-$\bullet$ Cada celda es una frecuencia observada. \textbf{Frecuencias esperadas}
-\[
-\text{Éxitos } \frac{n_j\cdot x}{n} \qquad \text{Fracasos } \frac{n_j\cdot (n-x)}{n}
-\]
-\[
-{\chico \chi^2 = \sum_{i=1}^{2}\sum_{j=1}^{k} \frac{\left(o_{i,j} - e_{i,j}\right)^2}{e_{i,j}} \quad \textbf{v=k-1 GL}}
-\]
-{\chico $n_j$ = total columna j; $x$ = total de la fila exitos; $n-x$ = total fila fallas; $n$ = total final\par}
-
-$\bullet$ Este método es lo mismo que aplicar la fórmula del chi cuadrado que se vió más arriba.
-
-\textbf{Este método organiza los mismos datos en una tabla $2\times 3$: dos resultados y tres materiales} \ $\nu = k-1 = 3-1 = 2.$
-
-\textbf{metodo 2}
-\[
-{\chico \chi^2 = \sum_{i=1}^{2}\sum_{j=1}^{3} \frac{\left(O_{ij} - E_{ij}\right)^2}{E_{ij}},
+\textbf{Método 1:} si \textbf{n.p} y \textbf{(1-p).n} $>$ \textbf{5} la D.Binomial se aproxima a D.Normal y se calcula un $z_i$ por población. Como $Z_i^2 \sim \chi_1^2$ y la suma de $k$ chi-cuadrado de 1 gl da $\chi^2$ con $k$ gl, y por H0 las $p_i$ se sustituyen por $\widehat{p}$:
+\fitm{z_i = \frac{x_i - n_i p_i}{\sqrt{n_i p_i (1-p_i)}}
 \quad
-E_{ij} = \frac{(\text{total fila } i)(\text{total columna } j)}{\text{total general}}.}
-\]
+\widehat{p} = \frac{x_1+\cdots+x_k}{n_1+\cdots+n_k}
+\quad
+\chi^2 = \sum_{i=1}^{k} \frac{\left(x_i - n_i\widehat{p}\,\right)^2}{n_i\widehat{p}\,(1-\widehat{p}\,)}}
+{\chico \textbf{v=k-1} gl. Éxitos esperados $n_i\widehat{p}$, fracasos $n_i(1-\widehat{p}\,)$. Dif. grandes se mueven hacia la der., dif. chicas hacia la izq.\par}
+
+\textbf{Método 2:} la misma cuenta organizada en una tabla $2\times k$ (éxitos/fallas por muestra); cada celda es una frecuencia observada y las esperadas son éxitos $\frac{n_j\cdot x}{n}$ y fracasos $\frac{n_j\cdot(n-x)}{n}$, es decir $E_{ij} = \frac{(\text{total fila }i)(\text{total col }j)}{\text{total general}}$:
+\fitm{\chi^2 = \sum_{i=1}^{2}\sum_{j=1}^{k} \frac{\left(o_{i,j} - e_{i,j}\right)^2}{e_{i,j}} \quad \textbf{v=k-1 GL}}
+
+\ej{Ej: desmoronamiento de los materiales A, B y C ($\nu = k-1 = 2$):}
 \begin{center}
 {\chico
 \begin{tabular}{l r r r r}
 \toprule
-\textbf{Esperadas} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{Total} \\
-Desmoronado & 36 & 24 & 30 & 90 \\
-Intacto & 84 & 56 & 70 & 210 \\
+ & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{Total} \\
+\midrule
+Desmoronado (obs.) & 41 & 27 & 22 & 90 \\
+Resto intacto (obs.) & 79 & 53 & 78 & 210 \\
+Desmoronado (esp.) & 36 & 24 & 30 & 90 \\
+Intacto (esp.) & 84 & 56 & 70 & 210 \\
 \midrule
 Total & 120 & 80 & 100 & 300 \\
 \bottomrule
@@ -464,10 +372,8 @@ Total & 120 & 80 & 100 & 300 \\
 \tema{3.5 \ Tablas RxC y bondad de ajuste}
 
 \textbf{igual a anterior no mas que mas de 2 resultados posibles. tenemos r filas x c columnas}
-\[
-{\chico \chi^2 = \sum_{i=1}^{r}\sum_{j=1}^{c} \frac{\left(o_{i,j} - e_{i,j}\right)^2}{e_{i,j}}
+\fitm{\chi^2 = \sum_{i=1}^{r}\sum_{j=1}^{c} \frac{\left(o_{i,j} - e_{i,j}\right)^2}{e_{i,j}}
 \quad \nu = (r-1)(c-1) \ \textbf{gl}}
-\]
 Aprovechamiento en el programa de entrenamiento
 \begin{center}
 \fit{{\chico
@@ -486,62 +392,13 @@ Total & 60 & 188 & 152 & 400 \\
 }}
 \end{center}
 
-\textbf{Bondad de ajuste.} Compara la distribución observada con una distribución teórica propuesta: se determina si las diferencias son por azar o si el modelo teórico no ajusta.
-
-\textbf{Poisson} modela la cantidad de sucesos en un intervalo fijo. \textbf{H0:} Los datos siguen la distribución de poisson. \textbf{H1:} No la siguen.
-
-\begin{center}
-{\chico\textbf{autos}}
-
-\fit{{\chico
-\setlength{\tabcolsep}{2pt}
-\renewcommand{\arraystretch}{0.95}
-\begin{tabular}{|c|c|c|c|c|c|}
-\hline
-\begin{tabular}{@{}c@{}}Número de mensajes\\ en interv. de 5 min.\end{tabular} & \begin{tabular}{@{}c@{}}Frecuencias\\ observadas\end{tabular} & & \begin{tabular}{@{}c@{}}Probabilidad\\ de Poisson\end{tabular} & \begin{tabular}{@{}c@{}}Frecuencias\\ esperadas\end{tabular} & \\
-\hline
-0 & 3 & \multirow{2}{*}{$\left.\rule{0pt}{5.5pt}\right\}18$} & 0.010 & 4.0 & \multirow{2}{*}{$\left.\rule{0pt}{5.5pt}\right\}22.4$} \\
-1 & 15 & & 0.046 & 18.4 & \\
-\hline
-2 & 47 & & 0.107 & 42.8 & \\
-\hline
-3 & 76 & & 0.163 & 65.2 & \\
-\hline
-4 & 68 & & 0.187 & 74.8 & \\
-\hline
-5 & 74 & & 0.173 & 69.2 & \\
-\hline
-6 & 46 & & 0.132 & 52.8 & \\
-\hline
-7 & 39 & & 0.087 & 34.8 & \\
-\hline
-8 & 15 & & 0.050 & 20.0 & \\
-\hline
-9 & 9 & & 0.025 & 10.0 & \\
-\hline
-10 & 5 & \multirow{4}{*}{$\left.\rule{0pt}{11pt}\right\}10$} & 0.012 & 4.8 & \multirow{4}{*}{$\left.\rule{0pt}{11pt}\right\}8.0$} \\
-11 & 2 & & 0.005 & 2.0 & \\
-12 & 2 & & 0.002 & 0.8 & \\
-13 & 1 & & 0.001 & 0.4 & \\
-\hline
-\end{tabular}
-}}
-\end{center}
-
-{\chico $\dashrightarrow$ hubieron 15 intervalos de 5 min en el q paso un solo auto. Se analizan 400 intervalos de 5 min (paso de autos) contra una Poisson con $\lambda$=4.6. En los extremos los valores son mas bajos: se agrupan las frec. esp. menores que 5 con el valor siguiente $\Rightarrow$ 10 grupos.\par}
-
-Estadístico para ver si las diferencias entre lo observado y lo esperado son solo por casualidad:
-\[
-{\chico \chi^2 = \sum_{i=1}^{k} \frac{\left(o_i - e_i\right)^2}{e_i} \quad \textbf{v=k-m-1 GL}}
-\]
-{\chico K= nºgrupos(10); m= 1 $\dashrightarrow$ Nº parametros (lamda); en dist. normal: m=2 $\Rightarrow$ $\mu$ y $\sigma$\par}
-\[
-{\chico \chi^2 = \frac{(18-22.4)^2}{22.4} + \cdots + \frac{(47-42.8)^2}{42.8} = 6.749}
-\]
-{\chico Cada probabilidad teórica sale de la fórmula de Poisson con $\lambda = 4{,}6$ (ej.: $P(0)=e^{-4{,}6}=0{,}010$) y la frecuencia esperada de multiplicarla por los 400 intervalos ($400\cdot 0{,}010 = 4$; como es $<5$ se agrupa con la de un auto).\par}
-\[
-\text{Poisson} \qquad P(X=x) = \frac{e^{-\lambda}\lambda^{x}}{x!}
-\]
+\textbf{Bondad de ajuste.} Compara la distribución observada con una teórica propuesta: determina si las diferencias son por azar o si el modelo no ajusta. \textbf{Poisson} modela la cantidad de sucesos en un intervalo fijo. \textbf{H0:} los datos siguen la distribución de poisson; \textbf{H1:} no la siguen.
+\fitm{\chi^2 = \sum_{i=1}^{k} \frac{\left(o_i - e_i\right)^2}{e_i} \ \ \textbf{v=k-m-1 GL}
+\qquad
+P(X=x) = \frac{e^{-\lambda}\lambda^{x}}{x!}}
+{\chico K= nº grupos; m= nº de parámetros estimados ($\dashrightarrow$ Poisson: m=1, $\lambda$; dist. normal: m=2, $\mu$ y $\sigma$). Cada frec. esperada es $P(x)$ por la cantidad de intervalos; las menores que 5 se agrupan con la siguiente.\par}
+\ej{Ej: paso de autos, 400 intervalos de 5 min, $\lambda=4.6$ $\Rightarrow$ 10 grupos:}
+\fitm{\chi^2 = \frac{(18-22.4)^2}{22.4} + \cdots + \frac{(47-42.8)^2}{42.8} = 6.749}
 
 %=====================================================================
 \unidad{UNIDAD 4 --- PRUEBAS NO PARAMÉTRICAS}
@@ -746,14 +603,8 @@ Se requiere analizar la \textbf{relación} entre dos \textbf{variables cuantitat
 \textbf{2)} Queremos encontrar la recta que mejor ajuste los valores, y que pueda ser utilizada para predecir los valores: - Para esto usamos el \textbf{método de los mínimos cuadrados}, que elige la recta de regresión que minimiza los errores de las diferencias vertices.
 
 \textbf{3)} La recta que mejor se ajusta es: y=$\alpha$ + $\beta$.x , que será estimada por:
-\[
-\widehat{y} = a + b\cdot x
-\]
-a y b (parámetros muestrales) son estimadores de $\alpha$ y $\beta$ (parámetros poblacionales)
-\[
-e_i = y_i - \widehat{y}_i
-\]
-diferencias verticales $\longleftarrow$ (regresión y sobre x)
+\fitm{\widehat{y} = a + b\cdot x \qquad\qquad e_i = y_i - \widehat{y}_i}
+a y b (parámetros muestrales) son estimadores de $\alpha$ y $\beta$ (parámetros poblacionales). $e_i$: diferencias verticales $\longleftarrow$ (regresión y sobre x)
 
 No es viable la suma de los errores, pq se cancelan los (+) con los ($-$)
 
@@ -764,12 +615,9 @@ No es viable la suma de los errores, pq se cancelan los (+) con los ($-$)
 {\chico Al cuadrado para que los errores no se cancelen, no utilizamos el valor absoluto debido a un problema de amiguedad en el f(x)' = 0\par}
 
 \textbf{5)} Para minimizar la suma debemos hacer las \textbf{derivadas parciales} de los coeficientes \textbf{a y b, e igualarlos a 0}. Esto es debido a que la función es convexa entonces al igualar a 0 se encuentra el \textbf{mínimo} de la función
-\[
-\sum_{i=1}^{n} y_i = a\cdot n + b\cdot\sum_{i=1}^{n} x_i
-\]
-\[
-\sum_{i=1}^{n} y_i\cdot x_i = a\cdot\sum_{i=1}^{n} x_i + b\cdot\sum_{i=1}^{n} (x_i)^2
-\]
+\fitm{\sum_{i=1}^{n} y_i = a\cdot n + b\cdot\sum_{i=1}^{n} x_i
+\qquad
+\sum_{i=1}^{n} y_i\cdot x_i = a\cdot\sum_{i=1}^{n} x_i + b\cdot\sum_{i=1}^{n} (x_i)^2}
 \textbf{6)} Formamos un Sist de Ecuaciones Normales con las derivadas:
 \[
 {\chico
@@ -810,16 +658,13 @@ Intervalos de conf. $\alpha$ y $\beta$
 \beta:\ t = \frac{b-\beta}{s_e}\cdot \sqrt{\frac{S_{xx}}{n}}
 \]
 \centerline{$\longrightarrow$ Se compara con el t.crit}
-\[
-{\chico a - t_{\frac{\alpha}{2}} s_e\sqrt{\frac{n S_{xx}}{S_{xx}+(n\bar{x})^2}}
+\fitm{a - t_{\frac{\alpha}{2}} s_e\sqrt{\frac{n S_{xx}}{S_{xx}+(n\bar{x})^2}}
 < \alpha <
-a + t_{\frac{\alpha}{2}} s_e\sqrt{\frac{n S_{xx}}{S_{xx}+(n\bar{x})^2}}}
-\]
-\[
-{\chico b - t_{\frac{\alpha}{2}} s_e\sqrt{\frac{n}{S_{xx}}}
+a + t_{\frac{\alpha}{2}} s_e\sqrt{\frac{n S_{xx}}{S_{xx}+(n\bar{x})^2}}
+\qquad
+b - t_{\frac{\alpha}{2}} s_e\sqrt{\frac{n}{S_{xx}}}
 < \beta <
 b + t_{\frac{\alpha}{2}} s_e\sqrt{\frac{n}{S_{xx}}}}
-\]
 \centerline{\chico Errores máximos de estimación de a y b}
 
 Las pruebas de hipotesis con $\boldsymbol{\beta}$ son muy importantes, pq indica el cambio promedio de \textbf{Y} cuando \textbf{X} aumenta 1 unidad. Si $\beta$=0: \textbf{y} no depende de \textbf{x (recta horizontral)}, si $\beta \neq 0$ : \textbf{y} depende de \textbf{x} por lo que existe relacion lineal.
@@ -831,28 +676,13 @@ Habiendo comprobado q $\beta \neq 0$ osea que existe relacion lineal, podemos ut
 Ahora que pasa si al graficar el diagrama de dispersion vemos que los datos no siguen una trayectoria recta? queremos ajustar con linea recta pero el modelo no va a ser el mas adecuado ya q no representa la naturaleza del fenomeno. Es por esto q usamos un modelo curvilineo. Para lograr este modelo y que se comporte de manera lineal debemos aplicar una transformacion matematica a los datos originales y asi poder aplicar el metodo de los minimos cuadrados que ya veniamos trabajando.
 
 \textbf{Exponencial}
-\[
-y = \alpha\cdot\beta^x \ \textbf{=$>$} \ \log_{10}(y) = \log_{10}(\alpha\cdot\beta^x) \ \textbf{=$>$}
-\]
-\[
-\log_{10}(y) = \log_{10}(\alpha) + x\cdot\log_{10}(\beta)
-\]
-\[
-y^{*} = \log_{10}(y), \quad a = \log_{10}(\alpha), \quad b = \log_{10}(\beta)
-\]
-\[
-\textbf{=$>$} \ y^{*} = a + b\cdot x \qquad \alpha = 10^a \quad \beta = 10^b
-\]
+\fitm{y = \alpha\cdot\beta^x \ \textbf{=$>$} \ \log_{10}(y) = \log_{10}(\alpha\cdot\beta^x) \ \textbf{=$>$} \ \log_{10}(y) = \log_{10}(\alpha) + x\cdot\log_{10}(\beta)}
+\fitm{y^{*} = \log_{10}(y), \ a = \log_{10}(\alpha), \ b = \log_{10}(\beta)
+\ \textbf{=$>$} \ y^{*} = a + b\cdot x \qquad \alpha = 10^a \quad \beta = 10^b}
 \textbf{Potencial}
-\[
-y = \alpha\cdot x^{\beta} \ \textbf{=$>$} \ \log_{10}(y) = \log_{10}(\alpha) + \beta\cdot\log_{10}(x)
-\]
-\[
-\textbf{=$>$} \ y^{*} = \log_{10}(y), \ x^{*} = \log_{10}(x), \ a = \log_{10}(\alpha), \ B = \beta
-\]
-\[
-\textbf{=$>$} \ y^{*} = a + Bx^{*} \qquad \alpha = 10^a \quad \beta = 10^b
-\]
+\fitm{y = \alpha\cdot x^{\beta} \ \textbf{=$>$} \ \log_{10}(y) = \log_{10}(\alpha) + \beta\cdot\log_{10}(x)}
+\fitm{\textbf{=$>$} \ y^{*} = \log_{10}(y), \ x^{*} = \log_{10}(x), \ a = \log_{10}(\alpha), \ B = \beta
+\ \textbf{=$>$} \ y^{*} = a + Bx^{*} \qquad \alpha = 10^a \quad \beta = 10^b}
 \textbf{Reciprocos}
 \[
 y = \frac{1}{\alpha+\beta\cdot x} \ \textbf{=$>$} \ \frac{1}{y} = \alpha + \beta\cdot x
@@ -871,25 +701,13 @@ Si no sabemos cómo es la relación entre x e y (luego de haber probado con regr
 \fitm{S(b_0,\ldots,b_p) = \sum_{i=1}^{n} e_i^2 = \sum_{i=1}^{n} [y_i-\hat{y}_i]^2 = \sum_{i=1}^{n} \left[ y_i - (b_0+b_1 x_i + b_2 x_i^2 + \cdots + b_p x_i^p) \right]^2}
 \textbf{(2)} Derivamos e igualamos a 0 los p+1 valor (b0,b1,b2....)
 \[
-{\chico \frac{\partial S}{\partial b_0} = \sum_{i=1}^{n} \underbrace{2}_{\text{Baja el exp.}} \cdot \underbrace{\left[y_i - (b_0+b_1 x_i+\cdots+b_p x_i^p)\right]}_{\text{Lo de adentro intacto}} \cdot \underbrace{(-1)}_{\text{Deriv. resp. } b_0} = 0}
-\]
-\[
 {\chico \frac{\partial S}{\partial b_k} = \sum_{i=1}^{n} \underbrace{2}_{\text{Baja el exp.}} \cdot \underbrace{\left[y_i - (b_0+b_1 x_i+\cdots+b_p x_i^p)\right]}_{\text{Lo de adentro intacto}} \cdot \underbrace{(-x_i^k)}_{\text{Deriv. resp. } b_k} = 0}
 \]
 \[
 {\chico \underbrace{b_0\sum_{i=1}^{n} x_i^k + b_1\sum_{i=1}^{n} x_i^{k+1} + \cdots + b_p\sum_{i=1}^{n} x_i^{k+p}}_{\text{Fila de incógnitas}} = \underbrace{\sum_{i=1}^{n}(x_i^k y_i)}_{\text{Término indep.}}}
 \]
 \textbf{(3)} Armamos sist. ec. y matriz
-\[
-{\chico
-\begin{aligned}
-k=0: &\ n b_0 + b_1\textstyle\sum x_i + b_2\sum x_i^2 + \cdots + b_p\sum x_i^p = \sum y_i \\
-k=1: &\ b_0\textstyle\sum x_i + b_1\sum x_i^2 + b_2\sum x_i^3 + \cdots + b_p\sum x_i^{p+1} = \sum (x_i y_i) \\
-k=2: &\ b_0\textstyle\sum x_i^2 + b_1\sum x_i^3 + b_2\sum x_i^4 + \cdots + b_p\sum x_i^{p+2} = \sum (x_i^2 y_i) \\
-&\qquad\qquad \vdots \\
-k=p: &\ b_0\textstyle\sum x_i^p + b_1\sum x_i^{p+1} + \cdots + b_p\sum x_i^{2p} = \sum (x_i^p y_i)
-\end{aligned}}
-\]
+\fitm{k=p: \ b_0\textstyle\sum x_i^p + b_1\sum x_i^{p+1} + \cdots + b_p\sum x_i^{2p} = \sum (x_i^p y_i)}
 \fitm{
 \begin{bmatrix}
 n & \sum x_i & \sum x_i^2 & \cdots & \sum x_i^p \\
